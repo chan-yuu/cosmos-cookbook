@@ -1,77 +1,77 @@
-# Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5
+# 使用 Cosmos Transfer 2.5 对 BioTrove 飞蛾进行域迁移
 
-> **Authors:** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)
-> **Organization:** [Voxel51](https://voxel51.com/)
+> **作者：** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)
+> **机构：** [Voxel51](https://voxel51.com/)
 
-## Overview
+## 概述
 
-This recipe demonstrates a complete **domain-transfer pipeline** for addressing **data scarcity** in the BioTrove moth dataset using **Cosmos Transfer 2.5** and [**FiftyOne**](https://docs.voxel51.com/).
-It shows how to convert static images into realistic agricultural scenarios using **edge-based control**, **Python-only inference**, and **FiftyOne visualization** -- even when control signals (depth, segmentation) are missing.
+本配方展示了一个完整的**域迁移流水线**，用于借助 **Cosmos Transfer 2.5** 和 [**FiftyOne**](https://docs.voxel51.com/) 解决 BioTrove moth dataset 中的**数据稀缺**问题。
+即使缺少控制信号（深度、分割），它也展示了如何通过 **基于边缘的控制**、**纯 Python 推理** 和 **FiftyOne 可视化**，将静态图像转换为逼真的农业场景。
 
-> This recipe uses [FiftyOne](https://docs.voxel51.com/), [Voxel51’s](https://voxel51.com/) open-source toolkit for visualizing, cleaning, and evaluating computer vision datasets. Voxel51 builds tools that help researchers and engineers better understand their data and improve model performance.
+> 本配方使用 [FiftyOne](https://docs.voxel51.com/)，这是 [Voxel51](https://voxel51.com/) 的开源工具包，用于可视化、清洗和评估计算机视觉数据集。Voxel51 构建的工具可帮助研究人员和工程师更好地理解其数据并提升模型性能。
 
-> Please visit the [FiftyOne Tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it all in one.
+> 请访问 [FiftyOne 教程](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) 一次性运行完整流程。
 
-| **Model** | **Workload** | **Use Case** |
+| **模型** | **工作负载** | **用例** |
 |-----------|--------------|--------------|
-| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Domain transfer for scarce biological datasets |
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | 推理 | 用于稀缺生物数据集的域迁移 |
 
 ---
 
-## Setup
+## 设置
 
-Before running this recipe, complete the environment configuration:
-**[Setup and System Requirements](setup.md)**
-
----
-
-## Motivation: Data Scarcity and Domain Gap in BioTrove Moths
-
-The [**BioTrove**](https://baskargroup.github.io/BioTrove/) dataset is an extensive multimodal collection, but it contains substantial **class imbalance**. Moths are among the **least represented categories**, and most samples are collected in **laboratory or artificial indoor backgrounds** rather than in agricultural environments. This creates two significant challenges:
-
-- **Data scarcity** — few real scenes of moths in natural field conditions
-- **Domain gap** — models trained on lab-style images fail to generalize to outdoor agricultural settings
-
-To build a robust classifier, we used [**FiftyOne’s semantic search with BioCLIP**](https://github.com/paularamo/fiftyone-workshop-biodiversity) to retrieve **~1000 moth images** from the full dataset. However, most retrieved samples still lacked realistic field backgrounds. The sub-dataset is in Hugging Face Hub, [here](https://huggingface.co/datasets/pjramg/moth_biotrove).
-
-Cosmos Transfer 2.5 enables us to **transform these scarce, lab-style images into photorealistic agricultural scenarios**, while preserving the structure and identity of each moth. Internal experiments show **20–40% improvements in classification accuracy**, thanks to better domain alignment and increased appearance diversity.
-
-This recipe demonstrates a full, reproducible pipeline that:
-
-- Converts moth images into videos
-- Generates edge-based control videos
-- Runs Cosmos Transfer 2.5 inference
-- Builds a multimodal grouped dataset in FiftyOne
-- Computes embeddings + similarity search
-- Produces realistic agricultural moth scenes at scale
+在运行此配方前，请先完成环境配置：
+**[设置与系统要求](setup.md)**
 
 ---
 
-## Pipeline Overview
+## 动机：BioTrove 飞蛾中的数据稀缺与域差距
 
-This is the end‑to‑end flow:
+[**BioTrove**](https://baskargroup.github.io/BioTrove/) 数据集是一个大规模多模态集合，但其中存在明显的**类别不平衡**。飞蛾属于**样本最少的类别之一**，并且大多数样本采集于**实验室或人工室内背景**，而不是农业环境。这带来了两个重要挑战：
 
-1. **Filter and retrieve moth images** using BioCLIP semantic search. Subdataset provided.
-2. **Convert images → videos** (Cosmos requires video input)
-3. **Generate Canny edge maps** as control signals
-4. **Create JSON spec files** required by Cosmos Transfer 2.5
-5. **Run Cosmos-Transfer inference** (Python-only invocation)
-6. **Extract last frames** from generated videos
-7. **Build a grouped dataset** in FiftyOne with synchronized slices
-8. **Compute embeddings + similarity search**
-9. **Visualize results** (side-by-side, embeddings, UMAP)
+- **数据稀缺** —— 自然田间条件下的飞蛾真实场景很少
+- **域差距** —— 在实验室风格图像上训练的模型难以泛化到户外农业环境
+
+为了构建稳健的分类器，我们使用了 [**FiftyOne 的 BioCLIP 语义搜索**](https://github.com/paularamo/fiftyone-workshop-biodiversity) 从完整数据集中检索出 **约 1000 张飞蛾图像**。然而，大多数检索结果仍然缺少逼真的田间背景。该子数据集位于 Hugging Face Hub，可在[这里](https://huggingface.co/datasets/pjramg/moth_biotrove)找到。
+
+Cosmos Transfer 2.5 让我们能够在保留每只飞蛾结构与身份的同时，**将这些稀缺的实验室风格图像转换为照片级真实的农业场景**。内部实验表明，借助更好的域对齐和更丰富的外观多样性，分类准确率可提升 **20–40%**。
+
+本配方演示了一个完整且可复现的流水线，它可以：
+
+- 将飞蛾图像转换为视频
+- 生成基于边缘的控制视频
+- 运行 Cosmos Transfer 2.5 推理
+- 在 FiftyOne 中构建多模态分组数据集
+- 计算嵌入 + 相似性搜索
+- 大规模生成逼真的农业飞蛾场景
 
 ---
 
-### 1. Extracting a Representative Sub-Dataset with BioCLIP
+## 流水线概览
 
-We filter BioTrove with:
+以下是端到端流程：
 
-- **semantic search**
-- **text queries ("moth")**
-- **vector similarity using BioCLIP embeddings**
+1. 使用 BioCLIP 语义搜索**筛选并检索飞蛾图像**。已提供子数据集。
+2. **将图像转换为视频**（Cosmos 需要视频输入）
+3. **生成 Canny 边缘图**作为控制信号
+4. **创建 JSON spec files**，供 Cosmos Transfer 2.5 使用
+5. **运行 Cosmos-Transfer 推理**（纯 Python 调用）
+6. **从生成视频中提取最后一帧**
+7. **在 FiftyOne 中构建分组数据集**，实现同步切片
+8. **计算嵌入 + 相似性搜索**
+9. **可视化结果**（并排对比、嵌入、UMAP）
 
-Use:
+---
+
+### 1. 使用 BioCLIP 提取具有代表性的子数据集
+
+我们通过以下方式筛选 BioTrove：
+
+- **语义搜索**
+- **文本查询（"moth"）**
+- **使用 BioCLIP embeddings 的向量相似性**
+
+使用：
 
 ```python
 import fiftyone as fo
@@ -89,12 +89,12 @@ dataset_src = fouh.load_from_hub(
 
 ---
 
-### 2. Preparing Inputs: Converting Images to Videos
+### 2. 准备输入：将图像转换为视频
 
-Cosmos Transfer 2.5 currently supports **videos** as inputs for inference.
-We convert each image into a **10-frame MP4 clip** via FFmpeg.
+Cosmos Transfer 2.5 当前支持将**视频**作为推理输入。
+我们通过 FFmpeg 将每张图像转换为 **10-frame MP4 clip**。
 
-Python version:
+Python 版本：
 
 ```python
 import os, subprocess
@@ -117,13 +117,13 @@ for img in sorted(images_root.glob("*.jpg")):
 
 ---
 
-### 3. Generating Edge Maps (Control Signals)
+### 3. 生成边缘图（控制信号）
 
-Since BioTrove images lack depth/segmentation, we create **Canny edge videos** as control:
+由于 BioTrove 图像缺少深度/分割信息，我们创建 **Canny 边缘视频** 作为控制：
 
 > ![file_name](https://cdn.voxel51.com/tutorials/cosmos-transfer2_5/edge_control.webp)
 
-This ensures structure preservation while allowing stylistic transformation.
+这样可以在允许风格变换的同时确保结构得以保留。
 
 ```python
 import cv2
@@ -150,9 +150,9 @@ def make_edge_video(input_video, output_video):
 
 ---
 
-### 4. Building JSON Spec Files for Cosmos-Transfer
+### 4. 为 Cosmos-Transfer 构建 JSON spec files
 
-Each video needs a JSON spec describing:
+每个视频都需要一个 JSON spec，用于描述：
 
 - prompt
 - negative prompt
@@ -179,41 +179,41 @@ def write_spec_json(spec_path, video_abs, edge_abs, name):
     spec_path.write_text(json.dumps(obj, indent=2))
 ```
 
-In this step we build one JSON spec per input video.
-Each spec controls:
+在这一步中，我们为每个输入视频构建一个 JSON spec。
+每个 spec 控制以下内容：
 
-```prompt``` / ```negative_prompt``` – text prompts (often generated or expanded with an LLM) that describe the target domain (e.g., outdoor field imagery, natural lighting, realistic foliage, moth appearance). This is where we introduce variations in lighting, background/environment, and moth texture/appearance, while keeping the biological semantics intact.
+```prompt``` / ```negative_prompt``` —— 描述目标域的文本提示（通常由 LLM 生成或扩展），例如户外田野影像、自然光照、真实植被和飞蛾外观。我们正是在这里引入光照、背景/环境以及飞蛾纹理/外观的变化，同时保持生物语义不变。
 
-```video_path``` – path to the original domain video.
+```video_path``` —— 原始域视频的路径。
 
-```edge.control_path``` + ```edge.control_weight``` – path to the Canny edge control video and its weight, which constrains structure and motion.
+```edge.control_path``` + ```edge.control_weight``` —— Canny 边缘控制视频的路径及其权重，用于约束结构和运动。
 
-```guidance```, ```resolution```, ```num_steps``` – generation hyperparameters used by Cosmos Transfer 2.5.
+```guidance```、```resolution```、```num_steps``` —— Cosmos Transfer 2.5 使用的生成超参数。
 
-The prompts (```MOTH_PROMPT``` and its variations) are authored once and then expanded with an LLM to create multiple realistic variants (lighting, environment, texture), which we embed into different JSON spec files for the same base video.
+这些提示（```MOTH_PROMPT``` 及其变体）先统一编写，再由 LLM 扩展为多个逼真的变体（光照、环境、纹理），随后嵌入到针对同一基础视频的不同 JSON spec files 中。
 
-> To see that configuration, please review the [FiftyOne Tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html)
+> 如需查看该配置，请参阅 [FiftyOne 教程](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html)
 
 ---
 
-### 5. Running Cosmos Transfer 2.5 Inference
+### 5. 运行 Cosmos Transfer 2.5 推理
 
-Python-only invocation:
+纯 Python 调用：
 
 ```python
 cmd = [sys.executable, str(INFER_SCRIPT), "-i", str(spec_json), "-o", str(OUT_DIR)]
 subprocess.run(cmd, check=True)
 ```
 
-After running the command, keep in mind the following parameter definitions:
+运行命令后，请注意以下参数定义：
 
-- ```INFER_SCRIPT``` — the path to the Cosmos Transfer 2.5 inference script you want to execute.
-- ```SPEC_JSON``` — the path to the JSON specification file that defines the model, inputs, and control signals.
-- ```OUT_DIR``` — the output directory where generated videos, logs, and metadata will be saved.
+- ```INFER_SCRIPT``` —— 你要执行的 Cosmos Transfer 2.5 推理脚本路径。
+- ```SPEC_JSON``` —— 定义模型、输入和控制信号的 JSON specification file 路径。
+- ```OUT_DIR``` —— 用于保存生成视频、日志和元数据的输出目录。
 
 ---
 
-### 6. Extracting the Last Frame
+### 6. 提取最后一帧
 
 ```python
 last_png = extract_last_frame(out_vid, last_frames_dir)
@@ -223,11 +223,11 @@ last_png = extract_last_frame(out_vid, last_frames_dir)
 
 ---
 
-### 7. Building the Grouped Dataset in FiftyOne
+### 7. 在 FiftyOne 中构建分组数据集
 
-In FiftyOne, a grouped dataset is a dataset that contains multiple slices. In the context of a grouped dataset, a slice refers to one of the components (such as an image, video, or point cloud) within each group. Each group can contain multiple slices, potentially of different modalities, which are organized under a group field. [Grouped Datasets](https://docs.voxel51.com/user_guide/groups.html)
+在 FiftyOne 中，grouped dataset 是包含多个 slice 的数据集。在 grouped dataset 的上下文中，slice 指的是每个组中的一个组成部分（例如图像、视频或点云）。每个组可以包含多个 slice，且这些 slice 可能具有不同模态，并统一组织在 group field 下。[Grouped Datasets](https://docs.voxel51.com/user_guide/groups.html)
 
-Slices generated:
+生成的切片包括：
 
 - `image`
 - `video`
@@ -237,13 +237,13 @@ Slices generated:
 
 > ![file_name](https://cdn.voxel51.com/tutorials/cosmos-transfer2_5/grouped_dataset.webp)
 
-These enable synchronized side‑by‑side comparisons in the app.
+这些切片支持在应用中进行同步的并排比较。
 
 ---
 
-### 8. Embeddings and Similarity Search (CLIP)
+### 8. Embeddings 和相似性搜索（CLIP）
 
-This workflow uses the ```CLIP``` model from the FiftyOne Model Zoo to generate embeddings for each sample in our dataset view (```flattened_view```). The embeddings are stored in the ```embeddings``` field. Then, a similarity index is created using these embeddings, enabling you to perform similarity searches—such as finding visually or semantically similar samples—within the dataset. The brain_key ```key_sim``` is used to reference this similarity index for future queries.
+该工作流使用 FiftyOne Model Zoo 中的 ```CLIP``` 模型，为数据集视图（```flattened_view```）中的每个样本生成 embeddings。生成的 embeddings 存储在 ```embeddings``` 字段中。随后，系统使用这些 embeddings 创建 similarity index，从而支持你在数据集中执行相似性搜索——例如查找视觉上或语义上相似的样本。brain_key ```key_sim``` 用于在后续查询中引用该 similarity index。
 
 ```python
 model = foz.load_zoo_model("clip-vit-base32-torch")
@@ -261,50 +261,50 @@ fob.compute_similarity(
 
 ---
 
-### 9. Results & Observations
+### 9. 结果与观察
 
-While Cosmos Transfer 2.5 produced a high percentage of usable samples, the whole usability depends on refining the control signals. In particular, improving edge-control generation results in a more stable geometry and fewer artifacts in the final outputs. A promising next step is to incorporate a semantic segmentation model such as SAM3 to generate a clean moth mask. This would better preserve insect morphology and any changes in the insect shapes during the domain transfer stage.
+虽然 Cosmos Transfer 2.5 生成了较高比例的可用样本，但整体可用性仍取决于控制信号的优化。尤其是，改进 edge-control 的生成会带来更稳定的几何结构和更少的最终输出伪影。一个很有前景的下一步是引入诸如 SAM3 之类的 semantic segmentation model 来生成干净的飞蛾掩码。这样可以更好地保留昆虫形态，并减少域迁移阶段中昆虫形状发生变化的情况。
 
-Even with these controls, not every synthetic sample will be suitable for training. Each output should still pass a quality inspection step.
+即使有这些控制手段，也不是每个合成样本都适合用于训练。每个输出仍应经过质量检查步骤。
 
-- outputs are realistic agricultural scenes
-- moth morphology preserved*
-- background diversity increased
-- edge controls mainly maintain moth structure - we need to revisit this
-- high visual coherence
+- 输出是逼真的农业场景
+- 飞蛾形态得到保留*
+- 背景多样性增加
+- Edge 控制主要保持飞蛾结构——这一点仍需继续改进
+- 视觉连贯性高
 
-> morphology refers to the actual physical structure of the moth, its shape, wing outline, antennae, body proportions, and overall geometry.
+> morphology 指的是飞蛾实际的物理结构，包括其形状、翅膀轮廓、触角、身体比例和整体几何形态。
 >
 ---
 
-## Conclusion
+## 结论
 
-This recipe demonstrates:
+本配方展示了：
 
-- how to address **dataset scarcity**
-- how to create realistic domain-transfer augmentations
-- how to integrate FiftyOne with Cosmos-Transfer
-- how to build a reproducible Physical AI data pipeline
+- 如何应对 **dataset scarcity**
+- 如何创建逼真的域迁移增强数据
+- 如何将 FiftyOne 与 Cosmos-Transfer 集成
+- 如何构建可复现的物理 AI 数据流水线
 
-This approach can generalize to:
+这种方法可推广到：
 
-- other insect/animal datasets
-- medical scarcity use cases
-- robotics perception domain gaps
-- any scenario lacking real-world diversity
+- 其他昆虫/动物数据集
+- 医疗数据稀缺场景
+- 机器人感知中的域差距问题
+- 任何缺少真实世界多样性的场景
 
-For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run everything at once.
-For more examples, you can explore other Cosmos-Transfer recipes in the cookbook.
+关于环境设置，请参阅[设置指南](setup.md)。当你的环境准备就绪后，请使用这个[教程](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html)一次性运行全部流程。
+如需更多示例，你可以探索 cookbook 中其他的 Cosmos-Transfer 配方。
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** November 26, 2025
+**发布日期：** 2025 年 11 月 26 日
 
-### Citation
+### 引用
 
-If you use this recipe or reference this work, please cite it as:
+如果你使用了此配方或引用了这项工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_domain_transfer_for_2025,
@@ -318,6 +318,6 @@ If you use this recipe or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用：**
 
-> Paula Ramos (2025). Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Voxel51. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html>
+> Paula Ramos（2025）。使用 Cosmos Transfer 2.5 对 BioTrove 飞蛾进行域迁移。载于 *NVIDIA Cosmos Cookbook*。Voxel51。可访问：<https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html>

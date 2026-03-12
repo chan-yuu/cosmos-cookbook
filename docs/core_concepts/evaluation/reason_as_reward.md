@@ -1,23 +1,23 @@
-# Cosmos Reason as Reward Model
+# Cosmos Reason 作为奖励模型
 
-## Overview
+## 概览
 
-NVIDIA Cosmos Reason is an open, customizable, 7B-parameter reasoning vision language model (VLM) for physical AI and robotics. This document covers how to use Cosmos Reason models for video evaluation in two primary modes:
+NVIDIA Cosmos Reason 是一个开放、可定制、参数规模为 7B 的推理型 vision language model（VLM），面向 Physical AI 和机器人领域。本文档介绍如何将 Cosmos Reason 模型用于视频评估，主要包含两种模式：
 
-1. **Reward Model**: Scoring videos for RL training and model selection.
-2. **Video Critic**: Detailed analysis and structured feedback.
+1. **奖励模型（Reward Model）**：为 RL 训练和模型选择对视频打分。
+2. **视频评论器（Video Critic）**：提供详细分析和结构化反馈。
 
-## Model Capabilities
+## 模型能力
 
-- **Physics Understanding**: Gravity, collision, fluid dynamics, object permanence
-- **Spatial-Temporal Reasoning**: 3D relationships and motion consistency
-- **Embodied AI Assessment**: Agent behavior and environmental interaction
-- **Chain-of-Thought Analysis**: Step-by-step reasoning without human annotations
-- **Zero-Shot Evaluation**: Works across diverse domains and scenarios
+- **物理理解**：重力、碰撞、流体动力学、物体恒存性
+- **时空推理**：三维关系与运动一致性
+- **具身 AI 评估**：智能体行为与环境交互
+- **思维链分析**：无需人工标注即可进行逐步推理
+- **零样本评估**：适用于多种领域与场景
 
-## Installation and Setup
+## 安装与设置
 
-### Step 1: Install Dependencies
+### 第 1 步：安装依赖
 
 ```bash
 # Install core dependencies
@@ -28,24 +28,24 @@ pip install mediapy numpy pillow qwen-vl-utils huggingface-hub
 python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}')"
 ```
 
-### Step 2: Download Model
+### 第 2 步：下载模型
 
 ```bash
 # Download Cosmos Reason 1-7B-Reward model
 huggingface-cli download nvidia/Cosmos-Reason1-7B-Reward --local-dir ./checkpoints --token <YOUR_HF_TOKEN>
 ```
 
-> **Note**: Requires HuggingFace account and token with access to nvidia/Cosmos-Reason1-7B-Reward model.
+> **注意**：需要 HuggingFace 账号，以及具有 `nvidia/Cosmos-Reason1-7B-Reward` 模型访问权限的 token。
 
-## Reward Model Usage
+## 奖励模型用法
 
-### Single Video Evaluation
+### 单视频评估
 
 ```bash
 python inference.py --video path/to/video.mp4 --checkpoint ./checkpoints
 ```
 
-**Output:**
+**输出：**
 
 ```
 Video: sample_video.mp4
@@ -53,42 +53,42 @@ Physical accuracy: No
 Score (high is good): 0.2341
 ```
 
-### Batch Processing
+### 批处理
 
 ```bash
 # Process directory of videos
 python batch_inference.py --checkpoint ./checkpoints --video-dir ./test_videos --output-dir ./results
 ```
 
-### Scoring System
+### 评分体系
 
-- **Score Range**: 0.0 to 1.0 (higher = better physical accuracy)
-- **Binary Classification**: "Yes" = anomalies detected, "No" = no anomalies
-- **Thresholds**: High (0.7-1.0), Medium (0.3-0.7), Low (0.0-0.3)
+- **分数范围**：0.0 到 1.0（越高表示物理准确性越好）
+- **二元分类**：`Yes` = 检测到异常，`No` = 未检测到异常
+- **阈值**：高（0.7-1.0）、中（0.3-0.7）、低（0.0-0.3）
 
-### Physics Evaluation Framework
+### 物理评估框架
 
-#### What the Model Evaluates
+#### 模型评估什么
 
-- **Gravity**: Realistic gravitational behavior
-- **Collision**: Proper object interaction physics
-- **Object Interaction**: Logical cause-and-effect relationships
-- **Fluid Dynamics**: Realistic liquid and gas behavior
-- **Object Permanence**: Consistent object existence
-- **Human Motion**: Natural body movement and joint constraints
+- **重力**：是否符合真实的重力行为
+- **碰撞**：物体交互的物理过程是否合理
+- **物体交互**：是否存在合理的因果关系
+- **流体动力学**：液体和气体行为是否真实
+- **物体恒存性**：物体存在是否前后一致
+- **人体运动**：身体动作与关节约束是否自然
 
-#### What the Model Ignores
+#### 模型忽略什么
 
-- Animation style (cartoons not automatically anomalous)
-- Audio content
-- Lighting, shadows, camera effects
-- Artistic style and background elements
+- 动画风格（卡通风格不会自动被判定为异常）
+- 音频内容
+- 光照、阴影、相机效果
+- 艺术风格和背景元素
 
-## Video Critic Usage
+## 视频评论器用法
 
-### Detailed Analysis Mode
+### 详细分析模式
 
-The [Cosmos Reason 1 Video Critic Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) provides structured video analysis:
+[Cosmos Reason 1 Video Critic Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) 提供了结构化视频分析示例：
 
 ```bash
 # Run video critic evaluation
@@ -99,7 +99,7 @@ python video_critic.py \
     --output_format structured
 ```
 
-### Critic Output Format
+### 评论器输出格式
 
 ```json
 {
@@ -123,18 +123,18 @@ python video_critic.py \
 }
 ```
 
-### Video Critic Capabilities
+### 视频评论器能力
 
-- **Physical Plausibility Assessment**: Detailed physics violation analysis
-- **Reasoning Chain Analysis**: Step-by-step logical consistency breakdown
-- **Content Quality Critique**: Visual coherence and temporal consistency assessment
-- **Contextual Understanding**: Scene context and object relationship evaluation
+- **物理合理性评估**：详细分析物理规律违规情况
+- **推理链分析**：逐步拆解逻辑一致性
+- **内容质量点评**：评估视觉一致性与时间一致性
+- **上下文理解**：评估场景上下文与物体关系理解
 
-## Advanced Configuration
+## 高级配置
 
-### Custom Prompt Engineering
+### 自定义提示词工程
 
-Customize evaluation focus by modifying prompts in `inference.py`:
+通过修改 `inference.py` 中的提示词，自定义评估重点：
 
 ```python
 # Focus on specific physics
@@ -147,16 +147,16 @@ SYSTEM_PROMPT = "Evaluate this medical procedure video for physical plausibility
 USER_PROMPT = "Provide step-by-step analysis of physical anomalies with explanations"
 ```
 
-### Domain Adaptation
+### 领域适配
 
-**Medical Videos**: Anatomical accuracy and medical procedure realism
-**Robotics**: Mechanical constraints and robot behavior
-**Synthetic Data**: Simulation physics and rendering accuracy
-**Gaming**: Game physics and character movement realism
+**医疗视频**：解剖准确性与医疗操作真实感  
+**机器人**：机械约束与机器人行为  
+**合成数据**：仿真物理与渲染准确性  
+**游戏**：游戏物理与角色运动真实感
 
-## Integration with Other Metrics
+## 与其他指标结合使用
 
-### Comprehensive Evaluation Pipeline
+### 综合评估流水线
 
 ```bash
 # Combine multiple evaluation approaches
@@ -168,25 +168,25 @@ python comprehensive_evaluation.py \
     --output_report ./evaluation_report.json
 ```
 
-### Use Cases
+### 使用场景
 
-#### Reward Model Applications
+#### 奖励模型应用
 
-- Reinforcement learning training signals
-- Model selection and checkpoint ranking
-- Quality filtering for generated content
-- Large-scale automated evaluation
+- 强化学习训练信号
+- 模型选择与 checkpoint 排序
+- 生成内容的质量过滤
+- 大规模自动化评估
 
-#### Video Critic Applications
+#### 视频评论器应用
 
-- Generated video quality control
-- Training data curation and filtering
-- Benchmark evaluation and model comparison
-- Research analysis and ablation studies
+- 生成视频质量控制
+- 训练数据整理与过滤
+- 基准评估与模型对比
+- 研究分析与消融实验
 
-## Visualization and Analysis
+## 可视化与分析
 
-### Streamlit Interface
+### Streamlit 界面
 
 ```bash
 cd experimental/afasale/visualization
@@ -195,23 +195,23 @@ cd experimental/afasale/visualization
 ./run_streamlit.sh ./results/video ./results/text
 ```
 
-**Features:**
+**功能：**
 
-- Interactive video browsing with scores
-- Statistical analysis of evaluation results
-- Anomaly detection and problematic video identification
-- Comparative analysis across different models
+- 交互式视频浏览与分数查看
+- 评估结果的统计分析
+- 异常检测与问题视频识别
+- 不同模型之间的对比分析
 
-## Performance Optimization
+## 性能优化
 
-### System Requirements
+### 系统要求
 
-- **GPU**: CUDA-enabled GPUs recommended
-- **Memory**: ~15GB VRAM for batch processing
-- **Processing Time**: 10-30 seconds per video
-- **Storage**: Sufficient space for output files and logs
+- **GPU**：建议使用支持 CUDA 的 GPU
+- **内存**：批处理大约需要 15GB VRAM
+- **处理时间**：每个视频约 10-30 秒
+- **存储**：需要足够空间存放输出文件与日志
 
-### Optimization Tips
+### 优化建议
 
 ```bash
 # Large datasets
@@ -224,41 +224,42 @@ python inference.py --video input.mp4 --checkpoint ./checkpoints --low-memory-mo
 python distributed_inference.py --checkpoint ./checkpoints --video-dir ./dataset --num-gpus 4
 ```
 
-## Best Practices
+## 最佳实践
 
-### Evaluation Workflow
+### 评估工作流
 
-1. **Preprocessing**: Ensure videos are in supported formats (MP4, AVI, MOV).
-2. **Validation**: Test on known good/bad examples first.
-3. **Batch Processing**: Use batch inference for large datasets.
-4. **Custom Prompts**: Adapt evaluation criteria for specific domains.
-5. **Result Analysis**: Review both scores and detailed critiques.
-6. **Integration**: Combine with other metrics for comprehensive assessment.
+1. **预处理**：确保视频采用受支持的格式（MP4、AVI、MOV）。
+2. **验证**：先在已知的好/坏样本上测试。
+3. **批处理**：大规模数据集请使用 batch inference。
+4. **自定义提示词**：针对特定领域调整评估标准。
+5. **结果分析**：同时查看分数与详细评论结果。
+6. **组合使用**：与其他指标配合，获得更全面的评估。
 
-### Quality Assurance
+### 质量保证
 
-- **Prompt Engineering**: Record and version control custom prompts.
-- **Result Verification**: Manually verify subset of results for calibration.
-- **Reproducibility**: Use consistent checkpoints and prompts.
-- **Documentation**: Track evaluation configurations and results.
+- **提示词工程**：记录并进行版本管理自定义提示词。
+- **结果验证**：人工核验一部分结果用于校准。
+- **可复现性**：使用一致的 checkpoint 与提示词。
+- **文档记录**：跟踪评估配置和结果。
 
-## Resources
+## 资源
 
-### Official Documentation
+### 官方文档
 
 - [Cosmos Reason 1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
 - [Cosmos Reason 1-7B-Reward Model](https://huggingface.co/nvidia/Cosmos-Reason1-7B-Reward)
 
-### Examples and Tutorials
+### 示例与教程
 
 - [Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md)
 - [Video Critic Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/README.md)
 
-### Additional Resources
+### 其他资源
 
 - [Physical AI and Robotics Documentation](https://research.nvidia.com/labs/dir/)
 - [VLM Evaluation Best Practices](https://research.nvidia.com/vlm-evaluation)
 
-## Citation
+## 引用
 
-When using Cosmos Reason models in research, please cite the appropriate papers and acknowledge the NVIDIA Cosmos project.
+在研究中使用 Cosmos Reason 模型时，请引用相应论文，并注明 NVIDIA Cosmos 项目。
+

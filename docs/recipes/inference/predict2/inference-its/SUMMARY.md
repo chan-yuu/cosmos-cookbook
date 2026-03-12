@@ -1,4 +1,4 @@
 #
 
-- [Setup](setup.md)
-- [Inference](inference.md)
+- [设置](setup.md)
+- [推理](inference.md)

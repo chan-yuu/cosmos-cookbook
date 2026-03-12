@@ -1,39 +1,39 @@
-# Setup and System Requirements
+# 安装与系统要求
 
-This guide covers the setup requirements for running Cosmos Transfer 1 for weather augmentation of ITS images.
+本指南介绍了运行 Cosmos Transfer 1 以对 ITS 图像进行天气增强所需的设置要求。
 
-## System Requirements
+## 系统要求
 
-### Minimum Hardware Requirements
+### 最低硬件要求
 
-- **GPU**: 1 or more GPUs (A100, H100, or later recommended)
-- **Memory**: Sufficient VRAM for model inference
-- **Storage**: Adequate disk space for model weights
+- **GPU**: 1 张或更多 GPU（推荐 A100、H100 或更新型号）
+- **Memory**: 用于模型推理的充足显存
+- **Storage**: 用于模型权重的足够磁盘空间
 
-### Software Requirements
+### 软件要求
 
-The setup requires the Cosmos Transfer 1 repository and model to be properly installed and configured.
+该设置要求已正确安装并配置 Cosmos Transfer 1 仓库和模型。
 
-## Installation
+## 安装
 
-### Cosmos Transfer 1 Setup
+### Cosmos Transfer 1 设置
 
-To set up Cosmos Transfer 1 repository and model, follow the detailed installation and inference setup instructions at:
+要设置 Cosmos Transfer 1 仓库和模型，请按照以下详细安装与推理设置说明操作：
 
-**[Cosmos Transfer 1 Installation Guide](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference)**
+**[Cosmos Transfer 1 安装指南](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference)**
 
-The installation guide provides comprehensive steps for:
+该安装指南提供了以下内容的完整步骤：
 
-- Repository cloning and setup
-- Environment configuration
-- Model weight downloads
-- Dependency installation
-- Inference configuration
+- 仓库克隆与设置
+- 环境配置
+- 模型权重下载
+- 依赖安装
+- 推理配置
 
-### Verification
+### 验证
 
-After completing the installation, verify the setup by running the inference examples provided in the Cosmos Transfer 1 repository to ensure the model is working correctly before proceeding with the weather augmentation pipeline.
+完成安装后，请运行 Cosmos Transfer 1 仓库中提供的推理示例来验证设置，确保模型工作正常，然后再继续进行天气增强流程。
 
-## Next Steps
+## 后续步骤
 
-Once the setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos Transfer 1 for weather augmentation of ITS images.
+设置完成后，请继续阅读[推理教程](inference.md)，了解如何使用 Cosmos Transfer 1 对 ITS 图像进行天气增强。

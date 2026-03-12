@@ -1,64 +1,64 @@
-# Model Evaluation Predict
+# Predict 模型评估
 
-> **Author:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/)
-> **Organization:** NVIDIA
+> **作者：** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/)
+> **机构：** NVIDIA
 
-This page focuses on evaluation of Predict (generative video) models. It introduces commonly used quality metrics, explains what each metric measures and how it works, and then provides source implementations with step‑by‑step instructions to run them.
+本页聚焦于 Predict（生成式视频）模型的评估。它介绍了常用的质量指标，解释每个指标衡量的内容及其工作原理，并提供对应的源码实现与逐步运行说明。
 
-## Key Terms
+## 关键术语
 
-| Term | Definition |
+| 术语 | 定义 |
 |------|------------|
-| **FID** (Fréchet Inception Distance) | A metric that measures the similarity between two sets of images by comparing their feature distributions extracted from a pre-trained neural network. |
-| **FVD** (Fréchet Video Distance) | An extension of FID for videos that captures both spatial (appearance) and temporal (motion) quality by comparing video feature distributions. |
-| **Fréchet Distance** | A statistical measure of similarity between two probability distributions; used in FID/FVD to quantify how "far apart" generated content is from real content. |
-| **Sampson Error** | A geometric error metric that measures the distance from matched keypoints to their corresponding epipolar lines; used to evaluate multi-view consistency. |
-| **TSE** (Temporal Sampson Error) | Sampson error computed between consecutive frames within a single camera view; measures temporal stability. |
-| **CSE** (Cross-view Sampson Error) | Sampson error computed between simultaneous frames from different camera views; measures multi-view geometric alignment. |
-| **Epipolar Geometry** | The geometric relationship between two camera views of the same 3D scene; defines constraints on where corresponding points can appear. |
+| **FID**（Fréchet Inception Distance） | 通过比较从预训练神经网络中提取的特征分布，衡量两组图像之间相似性的指标。 |
+| **FVD**（Fréchet Video Distance） | FID 在视频上的扩展，同时衡量空间质量（外观）与时间质量（运动）。 |
+| **Fréchet Distance** | 衡量两个概率分布相似性的统计量；在 FID/FVD 中用于量化生成内容与真实内容之间“相距多远”。 |
+| **Sampson Error** | 一种几何误差指标，用于衡量匹配关键点到其对应极线的距离；可用于评估多视角一致性。 |
+| **TSE**（Temporal Sampson Error） | 在同一相机视角的连续帧之间计算的 Sampson error；用于衡量时间稳定性。 |
+| **CSE**（Cross-view Sampson Error） | 在不同相机视角的同步帧之间计算的 Sampson error；用于衡量多视角几何对齐。 |
+| **Epipolar Geometry** | 同一三维场景在两个相机视角之间的几何关系；定义了对应点可能出现的位置约束。 |
 
-## Overview: Quality Metrics for Predict Models
+## 概览：Predict 模型的质量指标
 
-Use these metrics to evaluate generative video models (Predict):
+使用以下指标评估生成式视频模型（Predict）：
 
-| Metric | Measures | Use Case | Better Direction |
+| 指标 | 衡量内容 | 使用场景 | 更优方向 |
 |--------|----------|----------|------------------|
-| **FID** | Image realism and diversity | Single-frame quality assessment | Lower ↓ |
-| **FVD** | Spatio-temporal video quality | Overall video quality with motion coherence | Lower ↓ |
-| **TSE** | Temporal geometric consistency | Detecting flickering, jitter, or drift within views | Lower ↓ |
-| **CSE** | Cross-view geometric consistency | Multi-camera alignment and 3D consistency | Lower ↓ |
+| **FID** | 图像真实感与多样性 | 单帧质量评估 | 越低越好 ↓ |
+| **FVD** | 时空视频质量 | 整体视频质量与运动连贯性 | 越低越好 ↓ |
+| **TSE** | 时间维度的几何一致性 | 检测视角内闪烁、抖动或漂移 | 越低越好 ↓ |
+| **CSE** | 跨视角几何一致性 | 多相机对齐与 3D 一致性 | 越低越好 ↓ |
 
-For VLM-based assessment details, refer to [Cosmos Reason as Reward](reason_as_reward.md) and the [Cosmos Reason Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md).
+如需了解基于 VLM 的评估细节，请参阅[Cosmos Reason 作为奖励模型](reason_as_reward.md)以及 [Cosmos Reason Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md)。
 
-## Metrics Cheat Sheet
+## 指标速查表
 
-Use this quick reference to interpret your evaluation scores:
+使用以下速查表快速解读你的评估分数：
 
-### Video Quality (FID/FVD)
+### 视频质量（FID/FVD）
 
-| Rating | FID Score | FVD Score | Interpretation |
+| 评级 | FID 分数 | FVD 分数 | 解释 |
 |--------|-----------|-----------|----------------|
-| Excellent | < 30 | < 100 | High-quality generation, close to ground truth |
-| Good | 30 – 50 | 100 – 200 | Acceptable quality for most applications |
-| Fair | 50 – 100 | 200 – 400 | Noticeable quality gaps; consider improvements |
-| Poor | > 100 | > 400 | Significant quality issues; requires attention |
+| Excellent | < 30 | < 100 | 高质量生成，与 ground truth 非常接近 |
+| Good | 30 – 50 | 100 – 200 | 对大多数应用而言质量可接受 |
+| Fair | 50 – 100 | 200 – 400 | 可见明显质量差距；建议改进 |
+| Poor | > 100 | > 400 | 存在显著质量问题；需要重点关注 |
 
-### Geometric Consistency (Sampson Error)
+### 几何一致性（Sampson Error）
 
-| Rating | TSE/CSE (pixels) | Interpretation |
+| 评级 | TSE/CSE（像素） | 解释 |
 |--------|------------------|----------------|
-| Excellent | < 1.0 | Very high geometric consistency |
-| Good | 1.0 – 3.0 | Acceptable for most applications |
-| Fair | 3.0 – 5.0 | Noticeable inconsistencies; may need improvement |
-| Poor | > 5.0 | Significant geometric errors |
+| Excellent | < 1.0 | 极高的几何一致性 |
+| Good | 1.0 – 3.0 | 对大多数应用而言可接受 |
+| Fair | 3.0 – 5.0 | 可感知到不一致；可能需要改进 |
+| Poor | > 5.0 | 存在显著几何误差 |
 
-> **Note**: These thresholds are general guidelines. Acceptable ranges may vary depending on your specific use case, dataset characteristics, and downstream application requirements.
+> **注意**：这些阈值仅为通用参考。可接受范围会因你的具体使用场景、数据集特征和下游应用需求而有所不同。
 
-## Video Quality Metrics (FID/FVD)
+## 视频质量指标（FID/FVD）
 
-This metric evaluates the quality of generated videos using standardized metrics that compare predicted videos against ground truth.
+该类指标通过将预测视频与 ground truth 进行比较，以标准化方式评估生成视频的质量。
 
-### Step 1: Install Metrics Dependencies
+### 第 1 步：安装指标依赖
 
 ```bash
 # Install all metrics dependencies
@@ -69,26 +69,26 @@ pip install decord torchmetrics[image] torch-fidelity  # For FID
 pip install cd-fvd decord einops scipy                  # For FVD
 ```
 
-### Step 2: Compute FID (Fréchet Inception Distance)
+### 第 2 步：计算 FID（Fréchet Inception Distance）
 
-FID measures the quality and diversity of generated frames by comparing feature distributions from a pre‑trained Inception network.
+FID 通过比较预训练 Inception 网络中的特征分布，衡量生成帧的质量与多样性。
 
-#### What this metric measures
+#### 该指标衡量什么
 
-- Distance between distributions of real vs generated image features (lower is better)
+- 真实图像特征分布与生成图像特征分布之间的距离（越低越好）
 
-#### How this metric works (high level)
+#### 该指标如何工作（高层说明）
 
-- Extract 2048‑D features with InceptionV3 on real and generated frames.
-- Fit Gaussians (means μ and covariances Σ) and compute Fréchet distance:
+- 使用 InceptionV3 从真实帧和生成帧中提取 2048 维特征。
+- 拟合高斯分布（均值 μ 与协方差 Σ），并计算 Fréchet distance：
 
 ```
 FID = ||μ_real - μ_gen||² + Tr(Σ_real + Σ_gen - 2√(Σ_real × Σ_gen))
 ```
 
-#### Example Command
+#### 示例命令
 
-Run the following command to compute FID:
+运行以下命令以计算 FID：
 
 ```bash
 python scripts/metrics/compute_fid_single_view.py \
@@ -98,33 +98,33 @@ python scripts/metrics/compute_fid_single_view.py \
     --output_file fid_results.json
 ```
 
-#### Arguments
+#### 参数
 
-- `--pred_video_paths`, `--gt_video_paths`, `--num_frames`, `--output_file`
+- `--pred_video_paths`、`--gt_video_paths`、`--num_frames`、`--output_file`
 
-### Step 3: Compute FVD (Fréchet Video Distance)
+### 第 3 步：计算 FVD（Fréchet Video Distance）
 
-FVD extends FID to videos by evaluating spatio‑temporal features, capturing both appearance and motion.
+FVD 将 FID 扩展到视频，评估时空特征，同时捕捉外观与运动。
 
-#### What this metric measures
+#### 该指标衡量什么
 
-- Global video quality including temporal coherence and motion dynamics
-- More faithful to user perception than purely frame‑based metrics
+- 包含时间连贯性与运动动态在内的整体视频质量
+- 比纯基于帧的指标更符合用户感知
 
-#### How this metric works (high level)
+#### 该指标如何工作（高层说明）
 
-- Extract video features for real and generated clips.
-- Fit Gaussians and compute Fréchet distance analogously to FID.
+- 为真实视频片段和生成视频片段提取视频特征。
+- 类似 FID 地拟合高斯分布并计算 Fréchet distance。
 
-#### Best practices
+#### 最佳实践
 
-- Use consistent clip length, frame rate, and spatial size.
-- Tune `--batch_size` to balance throughput and memory.
-- Ensure paired, alphabetically sorted file lists (pred ↔ GT).
+- 保持一致的片段长度、帧率和空间尺寸。
+- 调整 `--batch_size` 以平衡吞吐与显存/内存占用。
+- 确保预测与 GT 文件列表一一对应，并按字母顺序排序。
 
-#### Example Command
+#### 示例命令
 
-Run the following command to compute FVD:
+运行以下命令以计算 FVD：
 
 ```bash
 python scripts/metrics/compute_fvd_single_view.py \
@@ -136,14 +136,14 @@ python scripts/metrics/compute_fvd_single_view.py \
     --output_file fvd_results.json
 ```
 
-#### Additional arguments
+#### 额外参数
 
-- `--batch_size`: default: 8
-- `--target_size`: default: 224 224
+- `--batch_size`：默认值为 8
+- `--target_size`：默认值为 224 224
 
-### Output Format
+### 输出格式
 
-#### FID Results (`fid_results.json`)
+#### FID 结果（`fid_results.json`）
 
 ```json
 {
@@ -156,7 +156,7 @@ python scripts/metrics/compute_fvd_single_view.py \
 }
 ```
 
-#### FVD Results (`fvd_results.json`)
+#### FVD 结果（`fvd_results.json`）
 
 ```json
 {
@@ -169,15 +169,15 @@ python scripts/metrics/compute_fvd_single_view.py \
 }
 ```
 
-### Important Notes
+### 重要说明
 
-- **Matching Video Counts**: Both metrics require equal numbers of predicted and ground truth videos.
-- **Video Ordering**: Videos are sorted alphabetically—ensure consistent naming between predicted and GT sets
-- **Memory Management**: FID loads all frames into memory; FVD processes in batches—adjust the `--batch_size` parameter for FVD if needed
-- **GPU Usage**: These scripts use the GPU if available; otherwise, they fall back to the CPU.
-- **Supported Formats**: These scripts support common video formats (MP4, AVI, MOV) via `decord`.
+- **视频数量必须匹配**：这两个指标都要求预测视频与 ground truth 视频数量相等。
+- **视频排序**：视频会按字母顺序排序——请确保预测集与 GT 集的命名一致。
+- **内存管理**：FID 会将所有帧加载到内存中；FVD 则按 batch 处理——必要时请调整 FVD 的 `--batch_size` 参数。
+- **GPU 使用**：若可用，这些脚本会使用 GPU；否则会回退到 CPU。
+- **支持格式**：这些脚本通过 `decord` 支持常见视频格式（MP4、AVI、MOV）。
 
-### Example: Complete Evaluation Pipeline
+### 示例：完整评估流水线
 
 ```bash
 # Define video paths
@@ -197,18 +197,18 @@ python scripts/metrics/compute_fvd_single_view.py \
     --output_file evaluation_fvd.json
 ```
 
-## Geometrical Consistency Metrics (Sampson Error)
+## 几何一致性指标（Sampson Error）
 
-These metrics evaluate the geometric consistency of multi‑view videos and diagnose temporal instability and cross‑view misalignment that are not captured by FID/FVD.
+这些指标用于评估多视角视频的几何一致性，并诊断 FID/FVD 无法捕捉到的时间不稳定和跨视角错位问题。
 
-This metric has the following benefits:
+该指标具有以下优势：
 
-- Lower errors, leading to smoother motion (temporal consistency) and better multi‑view geometry
-- Useful for multi‑camera or stitched 2×3 grid outputs
+- 更低的误差意味着更平滑的运动（时间一致性）和更好的多视角几何关系
+- 适用于多相机或拼接成 2×3 网格输出的视频
 
-### Step 1: Setup Conda Environment for Sampson Metrics
+### 第 1 步：为 Sampson 指标配置 Conda 环境
 
-Create and activate the dedicated conda environment for Sampson error evaluation:
+创建并激活专用于 Sampson error 评估的 conda 环境：
 
 ```bash
 # Navigate to the sampson metrics directory
@@ -221,20 +221,20 @@ conda env create -f environment.yml
 conda activate sampson
 ```
 
-> **Note**: The environment includes Python 3.10, CUDA 12.4.0 support, and the necessary vision packages (OpenCV, Kornia, PyColmap).
+> **注意**：该环境包含 Python 3.10、CUDA 12.4.0 支持，以及所需的视觉相关包（OpenCV、Kornia、PyColmap）。
 
-### Step 2: Prepare Multi‑View Videos
+### 第 2 步：准备多视角视频
 
-Ensure your videos are in the required 2×3 grid format (in MP4):
+请确保视频采用要求的 2×3 网格格式（MP4）：
 
 ```
 [LEFT    FRONT    RIGHT ]
 [REAR_L  REAR_T   REAR_R]
 ```
 
-### Step 3: Compute Sampson Error Metrics
+### 第 3 步：计算 Sampson Error 指标
 
-Run the evaluation script to compute both Temporal Sampson Error (TSE) and Cross‑view Sampson Error (CSE):
+运行评估脚本，同时计算 Temporal Sampson Error（TSE）和 Cross-view Sampson Error（CSE）：
 
 ```bash
 # Single video
@@ -250,27 +250,27 @@ python scripts/metrics/geometrical_consistency/sampson/run_cse_tse.py \
     --output ./sampson_results
 ```
 
-#### Arguments
+#### 参数
 
-- `--input`, `--output`, `--pattern`, `--verbose`
+- `--input`、`--output`、`--pattern`、`--verbose`
 
-### Metrics Explanation
+### 指标解释
 
-#### Sampson Error (overview)
+#### Sampson Error（概览）
 
-- Provides airst‑order approximation of point‑to‑epipolar‑line distance given matched keypoints and the fundamental matrix; lower is better.
+- 在给定匹配关键点和 fundamental matrix 的条件下，它提供点到极线距离的一阶近似；越低越好。
 
-#### Temporal Sampson Error (TSE)
+#### Temporal Sampson Error（TSE）
 
-- Measures geometric consistency across consecutive frames within a view; lower values indicate smoother motion and fewer temporal artifacts.
+- 衡量单个视角内连续帧之间的几何一致性；数值越低表示运动越平滑、时间伪影越少。
 
-#### Cross‑view Sampson Error (CSE)
+#### Cross-view Sampson Error（CSE）
 
-- Measures geometric consistency across simultaneous views; lower values indicate better multi‑view alignment.
+- 衡量同步视角之间的几何一致性；数值越低表示多视角对齐越好。
 
-### Output Format
+### 输出格式
 
-#### Per‑Video Results (`cse_tse/{video_id}.json`)
+#### 单视频结果（`cse_tse/{video_id}.json`）
 
 ```json
 {
@@ -298,7 +298,7 @@ python scripts/metrics/geometrical_consistency/sampson/run_cse_tse.py \
 }
 ```
 
-#### Aggregate Statistics (`aggregate_stats.json`)
+#### 聚合统计（`aggregate_stats.json`）
 
 ```json
 {
@@ -314,31 +314,31 @@ python scripts/metrics/geometrical_consistency/sampson/run_cse_tse.py \
 }
 ```
 
-#### Visualization Plots (`cse_tse/{video_id}.png`)
+#### 可视化图表（`cse_tse/{video_id}.png`）
 
-Generated plots show the following:
+生成的图表会显示以下内容：
 
-- **Solid lines**: Temporal Sampson Errors (TSE) for each view
-- **Dashed lines**: Cross-view Sampson Errors (CSE) for view pairs
-- **Y-axis**: Error in √pixels (capped at 10 for visibility)
-- **X-axis**: Frame number
+- **实线**：每个视角的 Temporal Sampson Error（TSE）
+- **虚线**：视角对之间的 Cross-view Sampson Error（CSE）
+- **Y 轴**：以 √pixels 表示的误差（为便于可视化，截断到 10）
+- **X 轴**：帧编号
 
-### Interpreting Results
+### 结果解读
 
-**Error Value Ranges:**
+**误差范围：**
 
-- **Excellent** (< 1.0 pixels): Very high geometric consistency
-- **Good** (1.0 - 3.0 pixels): Acceptable consistency for most applications
-- **Fair** (3.0 - 5.0 pixels): Noticeable inconsistencies; may need improvement
-- **Poor** (> 5.0 pixels): Significant geometric errors
+- **Excellent**（< 1.0 pixels）：几何一致性非常高
+- **Good**（1.0 - 3.0 pixels）：对大多数应用而言一致性可接受
+- **Fair**（3.0 - 5.0 pixels）：可感知到不一致；可能需要改进
+- **Poor**（> 5.0 pixels）：存在显著几何误差
 
-**What High Errors Indicate:**
+**较高误差意味着什么：**
 
-- **High TSE**: Temporal instability (flickering, jitter, or drift in individual views)
-- **High CSE**: Poor multi-view consistency (misaligned views, incorrect geometry)
-- **Frame spikes**: Sudden error increases suggest problematic frames or scene changes
+- **高 TSE**：时间不稳定（单视角内出现闪烁、抖动或漂移）
+- **高 CSE**：多视角一致性差（视角错位、几何关系错误）
+- **帧级尖峰**：误差突然升高通常意味着问题帧或场景切换
 
-### Example: Complete Sampson Evaluation Pipeline
+### 示例：完整 Sampson 评估流水线
 
 ```bash
 # Setup environment
@@ -361,24 +361,24 @@ python scripts/metrics/geometrical_consistency/sampson/run_cse_tse.py \
 # - $OUTPUT_DIR/aggregate_stats.json (summary statistics)
 ```
 
-### Important Notes
+### 重要说明
 
-Note the following about Geometrical Consistency metrics:
+关于几何一致性指标，请注意以下事项：
 
-- **Video Format**: Videos must be in 2×3 grid format, with 6 camera views.
-- **Feature Matching**: These metrics use SIFT features for correspondence matching between frames/views.
-- **Memory Usage**: Sufficient RAM is required for feature extraction and matching.
-- **GPU Support**: These metrics automatically use GPU acceleration when available for faster processing.
+- **视频格式**：视频必须是 2×3 网格格式，包含 6 个相机视角。
+- **特征匹配**：这些指标使用 SIFT 特征进行帧/视角间对应匹配。
+- **内存使用**：特征提取与匹配需要足够的 RAM。
+- **GPU 支持**：如果可用，这些指标会自动使用 GPU 加速以提升处理速度。
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** October 9, 2025
+**发布日期：** 2025 年 10 月 9 日
 
-### Citation
+### 引用
 
-If you use this content or reference this work, please cite it as:
+如果你使用了本内容或引用了本工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_evaluation_predict_2025,
@@ -391,6 +391,7 @@ If you use this content or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用格式：**
 
-> Arslan Ali (2025). Model Evaluation Predict. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/evaluation/evaluation_predict.html>
+> Arslan Ali（2025）。Predict 模型评估。收录于 *NVIDIA Cosmos Cookbook*。访问地址：<https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/evaluation/evaluation_predict.html>
+

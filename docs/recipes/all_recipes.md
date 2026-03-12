@@ -1,4 +1,4 @@
-# All recipes
+# 全部配方
 
 <style>
   .recipe-page {
@@ -211,85 +211,85 @@
 
 <div class="recipe-page">
   <div class="recipe-intro">
-    <p>Discover Cosmos recipes across every domain in one place.</p>
+    <p>在一个页面中探索覆盖各个领域的 Cosmos 配方。</p>
   </div>
 
   <div class="recipe-board">
   <section class="recipe-category" id="robotics">
     <div class="category-header">
-      <h2>Robotics</h2>
-      <p>Manipulation, navigation, and embodied reasoning workflows for robot training.</p>
+      <h2>机器人</h2>
+      <p>面向机器人训练的操作、导航和具身推理工作流。</p>
     </div>
     <div class="recipe-category-body">
-      <div class="recipe-track" data-page-size="6" aria-label="Robotics recipes">
+      <div class="recipe-track" data-page-size="6" aria-label="机器人配方">
         <a class="recipe-card" href="./end2end/gr00t-dreams/post-training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="./end2end/gr00t-dreams/assets/3.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              您的浏览器不支持 video 标签。
             </video>
           </div>
-          <div class="recipe-title">GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning</div>
-          <div class="recipe-tag recipe-tag--workflow">Workflow</div>
+          <div class="recipe-title">GR00T-Dreams：用于机器人学习的合成轨迹生成</div>
+          <div class="recipe-tag recipe-tag--workflow">工作流</div>
         </a>
         <a class="recipe-card" href="./post_training/predict2/cosmos_policy/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="./post_training/predict2/cosmos_policy/assets/aloha_rollouts/fold_shirt_15x_speed.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              您的浏览器不支持 video 标签。
             </video>
           </div>
-          <div class="recipe-title">Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">Cosmos Policy：面向视觉运动控制与规划的视频模型微调</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./inference/reason2/intbot_showcase/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/intbot_showcase/assets/IntBot-GTC.jpg" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">使用 Cosmos-Reason2-8B 进行第一人称社交与物理推理</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer1/inference-warehouse-mv/inference.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video src="./inference/transfer1/inference-warehouse-mv/assets/combined_grid_rgb.mp4" autoplay muted loop loading="lazy"></video>
           </div>
-          <div class="recipe-title">Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">Cosmos Transfer 1 用于多视角仓库检测与跟踪的 Sim2Real</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer1/gr00t-mimic/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer1/gr00t-mimic/assets/hero.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Isaac GR00T-Mimic for Synthetic Manipulation Motion Generation</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">Isaac GR00T-Mimic 用于合成操作动作生成</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer1/inference-x-mobility/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer1/inference-x-mobility/assets/output_xmob.gif" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Cosmos Transfer Sim2Real for Robotics Navigation Tasks</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">Cosmos Transfer 用于机器人导航任务的 Sim2Real</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./post_training/predict2/gr00t-dreams/post-training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/predict2/gr00t-dreams/assets/hero.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Isaac GR00T-Dreams for Synthetic Trajectory Data Generation</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">Isaac GR00T-Dreams 用于合成轨迹数据生成</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/spatial-ai-warehouse/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason1/spatial-ai-warehouse/assets/data_overview.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Spatial AI for Warehouse Post-Training with Cosmos Reason 1</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 1 进行面向仓库场景的 Spatial AI 后训练</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/temporal_localization/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason1/temporal_localization/assets/cube_stacking.gif" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Cosmos Reason for Mimic Gen temporal localization</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 进行 Mimic Gen 时序定位</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
       </div>
     </div>
@@ -297,90 +297,90 @@
 
   <section class="recipe-category" id="autonomous-vehicles">
     <div class="category-header">
-      <h2>Autonomous Vehicles</h2>
-      <p>Simulation, traffic scenarios, and autonomous-vehicle-scale data generation and evaluation.</p>
+      <h2>自动驾驶汽车</h2>
+      <p>仿真、交通场景，以及面向自动驾驶规模的数据生成与评估。</p>
     </div>
     <div class="recipe-category-body">
-      <div class="recipe-track" data-page-size="6" aria-label="Autonomous Vehicles recipes">
+      <div class="recipe-track" data-page-size="6" aria-label="自动驾驶汽车配方">
         <a class="recipe-card" href="./post_training/reason2/av_3d_grounding/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason2/av_3d_grounding/assets/training_images_overlay_overview.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">3D AV Grounding Post-Training with Cosmos Reason 1 & 2</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 1 和 2 进行 3D AV Grounding 后训练</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason2/video_caption_vqa/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason2/video_caption_vqa/assets/mcq_vqa_results.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Post-train Cosmos Reason 2 for AV Video Captioning & VQA</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">为 AV 视频描述与 VQA 后训练 Cosmos Reason 2</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/transfer2_5/av_world_scenario_maps/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="./post_training/transfer2_5/av_world_scenario_maps/assets/av_rgb_front_wide.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              您的浏览器不支持 video 标签。
             </video>
           </div>
-          <div class="recipe-title">Cosmos Transfer 2.5 Multiview Generation with World Scenario Map Control</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 World Scenario Map 控制的 Cosmos Transfer 2.5 多视角生成</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./inference/predict2/inference-its/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/predict2/inference-its/assets/output.jpg" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">Cosmos Predict 2 用于智能交通系统 (ITS) 图像的 Text2Image</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer1/inference-its-weather-augmentation/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer1/inference-its-weather-augmentation/assets/rainy_night_all_09.jpg" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Cosmos Transfer 1 Weather Augmentation for Intelligent Transportation System (ITS) Images</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">Cosmos Transfer 1 用于智能交通系统 (ITS) 图像的天气增强</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer2_5/inference-carla-sdg-augmentation/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer2_5/inference-carla-sdg-augmentation/assets/augmentation_matrix_grid.gif" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Cosmos Transfer 2.5 Sim2Real for Simulator Videos</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">Cosmos Transfer 2.5 用于仿真器视频的 Sim2Real</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./post_training/predict2/its-accident/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer2_5/inference-carla-sdg-augmentation/assets/augmented_anomaly_trajectory.gif" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Traffic Anomaly Generation with Cosmos Predict2</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Predict2 生成交通异常</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason2/intelligent-transportation/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason2/intelligent-transportation/assets/after_qa.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Intelligent Transportation Post-Training with Cosmos Reason 2</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 2 进行智能交通后训练</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/intelligent-transportation/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason1/intelligent-transportation/assets/e2e_workflow.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Intelligent Transportation Post-Training with Cosmos Reason 1</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 1 进行智能交通后训练</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/av_video_caption_vqa/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason1/av_video_caption_vqa/assets/sft_results.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">SFT for AV video captioning and VQA</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">用于 AV 视频描述与 VQA 的 SFT</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./end2end/smart_city_sdg/workflow_e2e.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./end2end/smart_city_sdg/assets/main_workflow.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Synthetic Data Generation (SDG) for Traffic Scenarios</div>
-          <div class="recipe-tag recipe-tag--workflow">Workflow</div>
+          <div class="recipe-title">面向交通场景的合成数据生成 (SDG)</div>
+          <div class="recipe-tag recipe-tag--workflow">工作流</div>
         </a>
       </div>
     </div>
@@ -388,99 +388,99 @@
 
   <section class="recipe-category" id="vision-ai">
     <div class="category-header">
-      <h2>Vision AI</h2>
-      <p>Visual generation, curation, and domain transfer across image and video modalities.</p>
+      <h2>视觉 AI</h2>
+      <p>覆盖图像与视频模态的视觉生成、数据整理和领域迁移。</p>
     </div>
     <div class="recipe-category-body">
-      <div class="recipe-track" data-page-size="6" aria-label="Vision AI recipes">
+      <div class="recipe-track" data-page-size="6" aria-label="视觉 AI 配方">
         <a class="recipe-card" href="./inference/reason2/worker_safety/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/worker_safety/assets/assets_1_worker_safety.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Worker Safety in a Classical Warehouse with Cosmos Reason 2</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">使用 Cosmos Reason 2 的传统仓库工人安全分析</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/reason2/vss/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/vss/assets/warehouse_summary_example.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Video Search and Summarization with Cosmos Reason</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">使用 Cosmos Reason 进行视频搜索与摘要</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./data_curation/embedding_analysis/embedding_analysis.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./data_curation/embedding_analysis/assets/clusters.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Dataset Video Clustering with Time Series K-Means on Embeddings</div>
-          <div class="recipe-tag recipe-tag--curation">Curation</div>
+          <div class="recipe-title">基于嵌入的 Time Series K-Means 数据集视频聚类</div>
+          <div class="recipe-tag recipe-tag--curation">数据整理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer2_5/biotrove_augmentation/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer2_5/biotrove_augmentation/assets/moth_biotrove.webp" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">使用 Cosmos Transfer 2.5 为 BioTrove 飞蛾进行领域迁移</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer2_5/inference-real-augmentation/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer2_5/inference-real-augmentation/assets/omniverse_background_change_recipe.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Multi-Control Recipes with Cosmos Transfer 2.5</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">使用 Cosmos Transfer 2.5 的多控制配方</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./inference/transfer2_5/inference-image-prompt/inference.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="./inference/transfer2_5/inference-image-prompt/assets/example1_generation-from-edge-sunset.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              您的浏览器不支持 video 标签。
             </video>
           </div>
-          <div class="recipe-title">Style-Guided Video Generation with Cosmos Transfer 2.5</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
+          <div class="recipe-title">使用 Cosmos Transfer 2.5 的风格引导视频生成</div>
+          <div class="recipe-tag recipe-tag--inference">推理</div>
         </a>
         <a class="recipe-card" href="./post_training/predict2_5/sports/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="./post_training/predict2_5/sports/assets/post_trained/12.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              您的浏览器不支持 video 标签。
             </video>
           </div>
-          <div class="recipe-title">LoRA Post-training for Sports Video Generation</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">面向体育视频生成的 LoRA 后训练</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason2/physical-plausibility-check/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="https://videophysics2trainvideos.s3.us-east-2.amazonaws.com/hunyuan_xedit_train/A_robotic_arm_gently_pokes_a_stack_of_plastic_cups,_making_the_bottom_cups_slide_out_and_the_whole_stack_fall.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              您的浏览器不支持 video 标签。
             </video>
           </div>
-          <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 2</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 2 进行物理合理性预测</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/physical-plausibility-check/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              您的浏览器不支持 video 标签。
             </video>
           </div>
-          <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 1</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 1 进行物理合理性预测</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/wafermap_classification/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason1/wafermap_classification/assets/Picture8.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Wafer Map Anomaly Classification with Cosmos Reason 1</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+          <div class="recipe-title">使用 Cosmos Reason 1 进行晶圆图异常分类</div>
+          <div class="recipe-tag recipe-tag--post-training">后训练</div>
         </a>
         <a class="recipe-card" href="./data_curation/predict2_data/data_curation.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="../core_concepts/data_curation/images/grid_preview.png" alt="" loading="lazy" />
           </div>
-          <div class="recipe-title">Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator</div>
-          <div class="recipe-tag recipe-tag--curation">Curation</div>
+          <div class="recipe-title">使用 Cosmos Curator 为 Cosmos Predict 微调整理数据</div>
+          <div class="recipe-tag recipe-tag--curation">数据整理</div>
         </a>
       </div>
     </div>

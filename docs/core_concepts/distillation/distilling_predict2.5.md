@@ -1,82 +1,82 @@
-# Distilling Cosmos Predict 2.5
+# 蒸馏 Cosmos Predict 2.5
 
-> **Authors:** [Qianli Ma](https://qianlim.github.io/)
-> **Organization:** NVIDIA
+> **作者：** [Qianli Ma](https://qianlim.github.io/)
+> **机构：** NVIDIA
 
-## Overview
+## 概览
 
-The distillation process compresses a pre-trained "teacher" video diffusion model, which requires many inference steps, into a "student" model capable of few-step inference. Both models typically share the same architecture. A key benefit is that the teacher's classifier-free guidance (CFG) knowledge is distilled into the student, eliminating the need for CFG during the student's inference and providing an additional 2x speedup.
+蒸馏过程会把一个需要较多推理步骤的预训练“Teacher”视频 diffusion model，压缩成一个能够进行少步推理的“Student”模型。两者通常共享相同的架构。其关键优势之一在于：Teacher 的 classifier-free guidance（CFG）知识会被蒸馏进 Student，因此 Student 在推理时无需再使用 CFG，并额外获得 2 倍加速。
 
-This cookbook presents a case study of how we use the [DMD2 algorithm](https://arxiv.org/abs/2405.14867) to distill the Cosmos Predict 2.5 Video2World model into a 4-step student model. The reference code can be found [here](https://github.com/nvidia-cosmos/cosmos-predict2.5/tree/main/cosmos_predict2/_src/predict2/distill).
+本 cookbook 通过一个案例研究，展示我们如何使用 [DMD2 algorithm](https://arxiv.org/abs/2405.14867) 将 Cosmos Predict 2.5 Video2World 模型蒸馏为一个 4-step student model。参考代码可见[这里](https://github.com/nvidia-cosmos/cosmos-predict2.5/tree/main/cosmos_predict2/_src/predict2/distill)。
 
-During the distillation training, an auxiliary critic network (often called the 'fake score net' in literature and code) is trained alongside the student. The training process alternates between updating the student and the critic networks.
-The process involves the following steps:
+在蒸馏训练过程中，会同时训练一个辅助 critic network（在论文和代码中通常称为 “fake score net”）以及 student。训练过程会在更新 student 和 critic network 之间交替进行。
+该过程包含以下步骤：
 
-- Initialization: Load the pre-trained teacher network. Initialize the student and critic networks using the teacher network's weights.
-- Optional Supervised Warm-up: Generate a synthetic dataset (usually thousands of input-output pairs) using the teacher model. This data can be used to perform a supervised warm-up training for the student model. While common in DMD2-like methods, we empirically found this step unnecessary when distilling a 4-step Text/Video2World model.
-- Alternating Training: Alternate between $K$ critic steps and $1$ student step. We set $K=4$. Both the student and critic training steps include their respective loss functions. Note that we observed no noticeable improvement from adding the GAN loss described in the DMD2 paper, so it is omitted here for simplicity.
+- 初始化：加载预训练的 teacher network。使用 teacher network 的权重初始化 student 和 critic network。
+- 可选的监督式 warm-up：使用 teacher model 生成一个合成数据集（通常为数千组输入输出对）。这些数据可用于对 student model 进行监督式 warm-up 训练。虽然这一步在 DMD2 一类方法中较常见，但我们的实验发现，在蒸馏 4-step Text/Video2World 模型时并非必需。
+- 交替训练：在 $K$ 个 critic step 和 $1$ 个 student step 之间交替。我们设定 $K=4$。student 和 critic 的训练步骤都包含各自的 loss function。注意，我们观察到加入 DMD2 论文中描述的 GAN loss 并没有明显提升，因此这里为简化起见省略了它。
 
-## Difference between Distillation and Regular Model Training
+## 蒸馏与常规模型训练的区别
 
-Below are the key code differences compared to a standard Cosmos video model:
+下面是与标准 Cosmos 视频模型相比的关键代码差异：
 
-- Distillation training uses a dedicated trainer and checkpointer (see `cosmos_predict2/_src/predict2/distill/checkpointer/` and `cosmos_predict2/_src/predict2/distill/trainer/`) to handle saving and loading both the student and critic networks.
-- The training step (see `cosmos_predict2/_src/predict2/distill/models/`) alternates between student and critic updates. The student loss also differs from the standard diffusion / flow-matching loss: we construct a distribution-matching objective so that samples from the student follow the same distribution as the teacher.
-- For the math formulation, we use TrigFlow as introduced in the [sCM paper](https://arxiv.org/abs/2410.11081) as a shared parameterization between DMD2 and consistency distillation (coming soon). This can be converted to and from both EDM and RectifiedFlow, and is compatible with teacher models trained under either formulation.
+- 蒸馏训练使用专门的 trainer 和 checkpointer（见 `cosmos_predict2/_src/predict2/distill/checkpointer/` 和 `cosmos_predict2/_src/predict2/distill/trainer/`），以同时保存和加载 student 与 critic network。
+- 训练步骤（见 `cosmos_predict2/_src/predict2/distill/models/`）会在 student 更新和 critic 更新之间交替进行。student loss 也不同于标准 diffusion / flow-matching loss：我们构造了一个 distribution-matching objective，使得 student 生成的样本遵循与 teacher 相同的分布。
+- 在数学形式上，我们使用了 [sCM paper](https://arxiv.org/abs/2410.11081) 中提出的 TrigFlow，作为 DMD2 与 consistency distillation（即将推出）之间共享的参数化方式。它可以与 EDM 和 RectifiedFlow 相互转换，并兼容以任一形式训练的 teacher model。
 
-The following aspects remain the same as standard Cosmos model training:
+下列方面则与标准 Cosmos 模型训练保持一致：
 
-- Data loading pipeline.
-- Conditioning via the `Conditioner` object, including text embeddings and first-few-frame conditioning in the Video2World setting.
-- Student and critic architectures, which typically mirror and are initialized from the teacher network.
+- 数据加载流水线。
+- 通过 `Conditioner` object 进行条件控制，包括 text embeddings，以及 Video2World 场景中的前几帧条件输入。
+- Student 与 critic 的架构，二者通常会镜像 teacher network，并由其权重初始化。
 
-## A Quick Peek into the Code
+## 快速看一眼代码
 
-To understand how to add DMD2 distillation support to your custom Cosmos model, here’s a quick peek into the code using the Predict 2.5 Video2World model as an example [[code](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/cosmos_predict2/_src/predict2/distill/models/video2world_model_distill_dmd2.py)].
+为了理解如何为你自定义的 Cosmos 模型加入 DMD2 distillation 支持，这里以 Predict 2.5 Video2World 模型为例，快速看一下代码 [[code](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/cosmos_predict2/_src/predict2/distill/models/video2world_model_distill_dmd2.py)]。
 
 ```python
 class Video2WorldModelDistillDMD2TrigFlow(DistillationCoreMixin, TrigFlowMixin, Video2WorldModel):
     ...
 ```
 
-The distillation model inherits common distillation-related codes from the `DistillationCoreMixin`. The `TrigFlowMixin` provides handy training-time timestep sampling functions since we use Trigflow as a unified parameterization for both distillation methods. Then the model then inherits the teacher model class -- in this case the Predict 2.5 `Video2WorldModel`, to reuse most of its functions including tokenizer, data handling, conditioner, etc. Note that the order of inheritance matters here.
+蒸馏模型从 `DistillationCoreMixin` 继承通用的蒸馏相关代码。由于我们使用 Trigflow 作为两种蒸馏方法统一的参数化形式，`TrigFlowMixin` 提供了便捷的训练期 timestep sampling 函数。随后，该模型再继承 teacher model 类——这里是 Predict 2.5 的 `Video2WorldModel`——以复用其大部分功能，包括 tokenizer、数据处理、conditioner 等。请注意，这里的继承顺序很重要。
 
-The key of implementation is to rewrite the training step. The high-level training_step that alternates student and critic phases is in `DistillationCoreMixin`. For DMD2, implement two methods in your model:
+实现的关键在于重写 training step。负责在 student 和 critic 阶段之间交替的高层 `training_step` 位于 `DistillationCoreMixin` 中。对于 DMD2，你需要在自己的模型中实现两个方法：
 
-Student phase (`training_step_generator`):
+Student 阶段（`training_step_generator`）：
 
-- Freeze critic (and discriminator if enabled); unfreeze student.
-- Sample time and noise; generate few-step student samples from noise.
-- Re-noise the student-generated samples to the sampled time, then feed this re-noised state to the teacher twice (cond/uncond) to form the CFG target; also feed the same re-noised state to the critic if enabled.
-- Compute DMD2 losses from teacher and critic predictions; backprop into the student only. Optionally include GAN terms if configured.
+- 冻结 critic（以及启用时的 discriminator）；解冻 student。
+- 采样时间和噪声；从噪声生成少步的 student 样本。
+- 将 student 生成的样本重新加噪到采样时间，然后将该 re-noised 状态分别以 cond/uncond 形式输入 teacher 以形成 CFG target；若启用了 critic，也将同一 re-noised 状态输入 critic。
+- 根据 teacher 和 critic 的预测计算 DMD2 losses；仅对 student 回传梯度。若已配置，也可以选择加入 GAN 项。
 
-Critic phase (`training_step_critic`):
+Critic 阶段（`training_step_critic`）：
 
-- Freeze student; unfreeze critic (and discriminator if enabled).
-- Generate student samples via a short backward simulation (few reverse steps); re-noise to the sampled time.
-- Train the critic on these student samples to fit the denoising target; if a discriminator head is used, also run the real/noisy-real path and apply GAN loss.
+- 冻结 student；解冻 critic（以及启用时的 discriminator）。
+- 通过一个短的 backward simulation（少量 reverse step）生成 student 样本；再重新加噪到采样时间。
+- 在这些 student 样本上训练 critic 以拟合 denoising target；如果使用了 discriminator head，还要运行 real/noisy-real 路径并应用 GAN loss。
 
-## Explanation of Key Hyperparameters
+## 关键超参数说明
 
-- `scaling`: controls how the time (noise level) coefficients are mapped into the TrigFlow parameterization. Set this according to how the teacher model was trained (`'edm'` or `'rectified_flow'`).
-- `optimizer_fake_score_config`: configuration for the critic (fake score) network optimizer; in particular, the `lr` field specifies the critic’s learning rate.
-- `student_update_freq`: controls how often the student training step runs. The default is 5, meaning every 5th training step updates the student, while the remaining steps update only the critic.
-- `tangent_warmup`: number of initial steps during which we only train the student (without alternating with the critic). In our DMD2 experiments this warmup did not provide a clear benefit.
+- `scaling`：控制时间（噪声级别）系数如何映射到 TrigFlow 参数化中。应根据 teacher model 的训练方式设置（`'edm'` 或 `'rectified_flow'`）。
+- `optimizer_fake_score_config`：critic（fake score）network optimizer 的配置；其中 `lr` 字段指定 critic 的学习率。
+- `student_update_freq`：控制运行 student training step 的频率。默认值为 5，表示每第 5 个训练 step 更新一次 student，其余 step 仅更新 critic。
+- `tangent_warmup`：初始阶段只训练 student（不与 critic 交替）的步数。在我们的 DMD2 实验中，这个 warmup 并未带来明确收益。
 
-## Example Training Progress
+## 示例训练进展
 
-The DMD2 distillation process usually achieves quick convergence. For instance, in the given example, satisfactory video quality is obtained from the 4-step student after 1500 iterations, which corresponds to 300 student steps and 1200 critic steps.
+DMD2 蒸馏过程通常收敛很快。例如，在给定示例中，4-step student 在 1500 次迭代后就获得了令人满意的视频质量，这对应于 300 个 student step 和 1200 个 critic step。
 ![DMD2 Predict 2.5 vis 2k](../../assets/images/distillation/dmd2_predict2.5_step2k.png)
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** November 30, 2025
+**发布日期：** 2025 年 11 月 30 日
 
-### Citation
+### 引用
 
-If you use this content or reference this work, please cite it as:
+如果你使用了本内容或引用了本工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_distilling_predict2_5_2025,
@@ -89,6 +89,7 @@ If you use this content or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用格式：**
 
-> Qianli Ma (2025). Distilling Cosmos Predict 2.5. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_predict2.5.html>
+> Qianli Ma（2025）。蒸馏 Cosmos Predict 2.5。收录于 *NVIDIA Cosmos Cookbook*。访问地址：<https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_predict2.5.html>
+

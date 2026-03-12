@@ -1,3 +1,3 @@
 #
 
-- [Inference](inference.md)
+- [推理](inference.md)

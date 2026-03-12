@@ -1,20 +1,20 @@
-# Vision AI Gallery
+# Vision AI 示例集
 
-> **Authors:** [Aiden Chang](https://www.linkedin.com/in/aiden-chang/) • [Akul Santhosh](https://www.linkedin.com/in/akulsanthosh/)
+> **作者：** [Aiden Chang](https://www.linkedin.com/in/aiden-chang/) • [Akul Santhosh](https://www.linkedin.com/in/akulsanthosh/)
 
-> **Organization:** NVIDIA
+> **机构：** NVIDIA
 
-We provide a dedicated Brev instance to help you follow along with these examples. The default configuration uses 8× H100 GPUs, but you can switch to 1× H100 to reduce costs (with slower inference performance).
+我们提供了专用的 Brev 实例，帮助您跟随这些示例进行实践。默认配置使用 8× H100 GPU，但您也可以切换为 1× H100 以降低成本（推理速度会更慢）。
 
-[![Brev Instance](./vs_assets/nv-lb-dark.svg)](https://brev.nvidia.com/launchable/deploy/now?launchableID=env-36zmq6sDzikZ1gBSN5Fu3sKezJC)
+[![Brev 实例](./vs_assets/nv-lb-dark.svg)](https://brev.nvidia.com/launchable/deploy/now?launchableID=env-36zmq6sDzikZ1gBSN5Fu3sKezJC)
 
-## Overview
+## 概述
 
-This page showcases results generated with Cosmos Transfer 2.5 for Vision AI applications. The examples demonstrate sim-to-real transfer across a variety of urban and roadway scenarios, illustrating how source videos can be transformed to reflect different times of day, lighting conditions, weather, environmental effects, and scene elements.
+本页展示了使用 Cosmos Transfer 2.5 为 Vision AI 应用生成的结果。这些示例演示了多种城市和道路场景下的 sim-to-real 迁移，说明了如何将源视频转换为体现不同时间段、光照条件、天气、环境效果和场景元素的结果。
 
-To understand what each control modality does, please refer to our [control modality concepts page](../core_concepts/control_modalities/overview.md). This page will be focused on showing some different results that we can make.
+如需了解每种控制模态的作用，请参阅我们的[控制模态概念页面](../core_concepts/control_modalities/overview.md)。本页重点展示我们可以生成的一些不同结果。
 
-**Use Case**: Vision based applications can leverage these techniques to train, test, and validate perception systems under diverse and challenging conditions without additional data collection.
+**使用场景**：基于视觉的应用可以利用这些技术，在无需额外采集数据的情况下，于多样且具有挑战性的条件下训练、测试和验证感知系统。
 
 <style>
 .carousel {
@@ -143,9 +143,9 @@ To understand what each control modality does, please refer to our [control moda
 }
 </style>
 
-### Input Video
+### 输入视频
 
-We showcase the different input control modalities used for this highway scene.
+我们展示了该高速公路场景中使用的不同输入控制模态。
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -153,14 +153,14 @@ We showcase the different input control modalities used for this highway scene.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_1_short.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Original RGB Video</div>
+          <div class="label">原始 RGB 视频</div>
           <span class="preview-text"></span>
         </div>
       </div>
@@ -169,14 +169,14 @@ We showcase the different input control modalities used for this highway scene.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_1_edge.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Edge Control</div>
+          <div class="label">边缘控制</div>
         </div>
       </div>
     </article>
@@ -184,14 +184,14 @@ We showcase the different input control modalities used for this highway scene.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_1_seg.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Segmentation Control</div>
+          <div class="label">分割控制</div>
         </div>
       </div>
     </article>
@@ -199,14 +199,14 @@ We showcase the different input control modalities used for this highway scene.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_1_depth.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Depth Control</div>
+          <div class="label">深度控制</div>
         </div>
       </div>
     </article>
@@ -214,14 +214,14 @@ We showcase the different input control modalities used for this highway scene.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_1_vis.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Vis Control</div>
+          <div class="label">Vis 控制</div>
         </div>
       </div>
     </article>
@@ -229,23 +229,23 @@ We showcase the different input control modalities used for this highway scene.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_1_mask.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Mask used</div>
+          <div class="label">使用的掩码</div>
         </div>
       </div>
     </article>
   </div>
 </div>
 
-We now show example results generated using these control modalities.
+下面展示使用这些控制模态生成的示例结果。
 
-### Examples
+### 示例
 
 <style>
 .masonry-grid {
@@ -317,48 +317,48 @@ We now show example results generated using these control modalities.
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/vs_fog.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Fog</div>
+      <div class="label">参数 - 雾</div>
       <div class="params">guidance: 3, edge: 0.5, depth: 1.0</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a highway with a dense, heavy fog hangs low over the highway, dramatically reducing visibility and softening the outlines of the surrounding hills and leafless trees. A white sedan travels away from the camera in the right lane, its taillights glowing dimly through the fog. The scene conveys slow-moving traffic under conditions with near-whiteout visibility.</div>
     </div>
   </div>
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/vs_morning_sun.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Morning Sunlight</div>
+      <div class="label">参数 - 晨间阳光</div>
       <div class="params">guidance: 3, edge: 1.0, depth: 0.9</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills under clear morning sunlight. The low sun casts long, soft shadows across the gently curving roadway and illuminates dry brown grass and leafless trees along the roadside with a warm, golden glow. A white sedan travels away from the camera in the right lane. The sky is pale blue with thin, high clouds, and the scene captures the calm flow of light traffic in crisp, early-day conditions.</div>
     </div>
   </div>
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/vs_night.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Night</div>
+      <div class="label">参数 - 夜晚</div>
       <div class="params">guidance: 3, edge: 0.5, depth: 1.0</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills at night. The scene is illuminated primarily by vehicle headlights and sparse roadside lighting, with reflective lane markings and road signs glowing against the dark asphalt. The surrounding hills and leafless trees fade into deep shadows beyond the roadway. A white sedan travels away from the camera in the right lane, its red taillights tracing the gentle S-curve. The sky is black and clouded, and the scene conveys light traffic moving steadily through a quiet, nighttime rural environment.</div>
     </div>
   </div>
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/vs_rain.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Rain</div>
+      <div class="label">参数 - 雨天</div>
       <div class="params">guidance: 3, edge: 0.9, depth: 1.0</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills, now soaked by a severe rainstorm. The roadway is partially flooded, with standing water pooling across multiple lanes and flowing toward the shoulders, where drainage ditches have overflowed. Dark, rain-slick asphalt reflects headlights and the gray sky above. A white sedan travels away from the camera in the right lane, sending up wide sprays of water. Sheets of rain reduce visibility, and low clouds hang heavy over the scene, conveying hazardous driving conditions during a flood event.
   </div>
     </div>
@@ -366,36 +366,36 @@ We now show example results generated using these control modalities.
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/vs_snow.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Snow</div>
+      <div class="label">参数 - 雪天</div>
       <div class="params">guidance: 3, edge: 0.9, depth: 1.0</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills blanketed in snow, with patches of icy pavement and snowbanks lining the shoulders. Leafless trees are dusted with fresh snow. A white sedan travels away from the camera in the right lane. The scene captures the flow of light traffic under a cold, gray, overcast winter sky.</div>
     </div>
   </div>
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/wooden_road_1.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Wooden Road</div>
+      <div class="label">参数 - 木质道路</div>
       <div class="params">guidance: 7, edge: 0.6, seg: 0.4</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills, dry brown grass, and leafless trees. The roadway is constructed from long, weathered wooden planks laid lengthwise, with visible seams, grain patterns, and slight warping between boards. The wooden surface follows the gentle curves of the highway and shows subtle wear from traffic. A white sedan travels away from the camera in the right lane. The scene captures the flow of light traffic on a gray, overcast day.</div>
     </div>
   </div>
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/object.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Debris</div>
+      <div class="label">参数 - 障碍物</div>
       <div class="params">guidance: 7, edge: 0.5, seg: 0.8, depth: 0.4</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills, dry brown grass, and leafless trees under a gray, overcast sky. A large brown bear stands in the middle of the roadway near the center divide, facing slightly toward the oncoming lanes.
       </div>
     </div>
@@ -403,49 +403,49 @@ We now show example results generated using these control modalities.
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/small_car.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Small Car</div>
+      <div class="label">参数 - 小型汽车</div>
       <div class="params">guidance: 3, edge: 0.5, seg: 0.4, seg_mask: True, depth: 1.0</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills, dry brown grass, and leafless trees. A blue Smart Fortwo microcar travels away from the camera in the right lane, appearing notably small against the wide roadway. The scene captures the flow of light traffic on a gray, overcast day.</div>
     </div>
   </div>
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/van.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - Van</div>
+      <div class="label">参数 - 厢式货车</div>
       <div class="params">guidance: 7, edge: 0.5, seg: 0.8, seg_mask: True, depth: 0.5</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills, dry brown grass, and leafless trees. A black Ford Transit cargo van travels away from the camera in the right lane, its tall, boxy profile clearly visible against the wide roadway. The scene captures the flow of light traffic on a gray, overcast day.</div>
     </div>
   </div>
   <div class="masonry-card">
     <video autoplay loop muted playsinline>
       <source src="./vs_assets/people_generation.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      您的浏览器不支持视频标签。
     </video>
     <div class="masonry-overlay">
-      <div class="label">Parameters - People Generation</div>
+      <div class="label">参数 - 行人生成</div>
       <div class="params">guidance: 3, edge: 0.5, seg: 0.7, depth: 0.5</div>
-      <div class="label">Input Prompt</div>
+      <div class="label">输入提示词</div>
       <div class="prompt">A video of a winding four-lane divided highway cutting through a rural landscape of rolling hills, dry brown grass, and leafless trees. A white sedan travels away from the camera in the right lane. Both sides of the road are lined with wide sidewalks densely populated with pedestrians—dozens of clearly visible people walking in clusters and alone. Individuals wear jackets, hats, and backpacks, some talking to each other, others looking at their phones or walking dogs. The constant movement of people along the sidewalks is a dominant visual element, contrasting with the light vehicle traffic on the road. The scene unfolds under a gray, overcast sky, emphasizing a cool, busy daytime atmosphere.</div>
     </div>
   </div>
 
 </div>
 
-## Edge & Depth Control only for Environmental Variations
+## 仅使用 Edge 与 Depth Control 实现环境变化
 
-This example demonstrates how to transform videos into scenes with different environmental conditions and surface materials using edge and depth control. Edge control preserves the original scene structure and motion, while depth control maintains the spatial relationships between objects. All the prompts are the same as the above examples.
+该示例演示了如何利用 edge 和 depth control，将视频转换为具有不同环境条件和表面材质的场景。Edge control 保留原始场景结构与运动，depth control 则维持物体之间的空间关系。所有提示词均与上述示例相同。
 
-### Fog Changes
+### 雾天变化
 
-This scene shows different fog augmentations generated by varying the control modalities.
+该场景展示了通过调整控制模态生成的不同雾天增强效果。
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -453,14 +453,14 @@ This scene shows different fog augmentations generated by varying the control mo
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_fog.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 0.5, depth: 1.0</span>
         </div>
@@ -470,14 +470,14 @@ This scene shows different fog augmentations generated by varying the control mo
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_fog_1.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 7, edge: 0.5, depth: 1.0</span>
         </div>
@@ -486,9 +486,9 @@ This scene shows different fog augmentations generated by varying the control mo
   </div>
 </div>
 
-### Lighting Changes
+### 光照变化
 
-This scene shows different lighting conditions generated by varying the control modalities.
+该场景展示了通过调整控制模态生成的不同光照条件。
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -496,14 +496,14 @@ This scene shows different lighting conditions generated by varying the control 
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_morning_sun_1.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 0.9, depth: 1.0</span>
         </div>
@@ -513,14 +513,14 @@ This scene shows different lighting conditions generated by varying the control 
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_morning_sun_2.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 0.5, depth: 1.0</span>
         </div>
@@ -530,14 +530,14 @@ This scene shows different lighting conditions generated by varying the control 
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_morning_sun.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 1.0, depth: 0.9</span>
         </div>
@@ -547,14 +547,14 @@ This scene shows different lighting conditions generated by varying the control 
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_morning_sun_3.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 7, edge: 0.9, depth: 1.0</span>
         </div>
@@ -563,9 +563,9 @@ This scene shows different lighting conditions generated by varying the control 
   </div>
 </div>
 
-### Night Augmentations
+### 夜间增强
 
-This scene shows different night conditions generated by varying the control modalities.
+该场景展示了通过调整控制模态生成的不同夜间条件。
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -573,14 +573,14 @@ This scene shows different night conditions generated by varying the control mod
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_night.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 0.5, depth: 1.0</span>
         </div>
@@ -590,14 +590,14 @@ This scene shows different night conditions generated by varying the control mod
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_night_1.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 0.9, depth: 1.0</span>
         </div>
@@ -607,14 +607,14 @@ This scene shows different night conditions generated by varying the control mod
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_night_2.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 7, edge: 0.5, depth: 1.0</span>
         </div>
@@ -623,9 +623,9 @@ This scene shows different night conditions generated by varying the control mod
   </div>
 </div>
 
-### Rain Augmentations
+### 雨天增强
 
-This scene shows different rainy conditions generated by varying the control modalities.
+该场景展示了通过调整控制模态生成的不同雨天条件。
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -633,14 +633,14 @@ This scene shows different rainy conditions generated by varying the control mod
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_rain.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 0.9, depth: 1.0</span>
         </div>
@@ -650,14 +650,14 @@ This scene shows different rainy conditions generated by varying the control mod
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_rain_1.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 1.0, depth: 0.9</span>
         </div>
@@ -666,9 +666,9 @@ This scene shows different rainy conditions generated by varying the control mod
   </div>
 </div>
 
-### Snow Augmentations
+### 雪天增强
 
-This scene shows different snowy conditions generated by varying the control modalities.
+该场景展示了通过调整控制模态生成的不同雪天条件。
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -676,14 +676,14 @@ This scene shows different snowy conditions generated by varying the control mod
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_snow_1.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 1.0</span>
         </div>
@@ -693,14 +693,14 @@ This scene shows different snowy conditions generated by varying the control mod
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/vs_snow.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters</div>
+          <div class="label">参数</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 1.0, depth: 0.9</span>
         </div>
@@ -709,11 +709,11 @@ This scene shows different snowy conditions generated by varying the control mod
   </div>
 </div>
 
-## Other Video Examples
+## 其他视频示例
 
-Here are some results from similar other videos.
+以下是其他相似视频的一些结果。
 
-### Video Example 1
+### 视频示例 1
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -721,14 +721,14 @@ Here are some results from similar other videos.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_2_short.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Original RGB Video</div>
+          <div class="label">原始 RGB 视频</div>
         </div>
       </div>
     </article>
@@ -736,29 +736,29 @@ Here are some results from similar other videos.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_2_lighting_augment.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters - Lighting Augmentation</div>
+          <div class="label">参数 - 光照增强</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 1.0, depth: 0.9</span>
         </div>
         <div class="text-block">
-          <div class="label">Input Prompt</div>
+          <div class="label">输入提示词</div>
           <span class="preview-text"></span>
           <span class="full-text">A video overlooking a roadway intersection in bright morning sunlight. Soft golden light casts long, gentle shadows across the pavement, replacing the earlier overcast atmosphere. In the foreground, a black SUV navigates a sweeping curved lane moving from right to left. Beyond a grassy median, a silver sedan travels along a multi-lane main road that runs past a large concrete building and leafless trees. The scene captures a quiet suburban traffic flow, with crisp visibility and the highway stretching into the distance under a clear early-day sky.</span>
         </div>
-        <button class="see-more" type="button">Show full prompt</button>
+        <button class="see-more" type="button">展开完整提示词</button>
       </div>
     </article>
   </div>
 </div>
 
-### Video Example 2
+### 视频示例 2
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -766,14 +766,14 @@ Here are some results from similar other videos.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_3_short.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Original RGB Video</div>
+          <div class="label">原始 RGB 视频</div>
         </div>
       </div>
     </article>
@@ -781,29 +781,29 @@ Here are some results from similar other videos.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_3_night_augment.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters - Night Augmentation</div>
+          <div class="label">参数 - 夜间增强</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 0.5, depth: 1.0</span>
         </div>
         <div class="text-block">
-          <div class="label">Input Prompt</div>
+          <div class="label">输入提示词</div>
           <span class="preview-text"></span>
           <span class="full-text">A video looking down at a busy multi-lane intersection at night. Streetlights and traffic signals illuminate the scene, casting pools of warm light and reflections on the dark asphalt. Traffic accelerates forward from the stop line, led by a dark gray sedan and a silver sedan, followed closely by a black muscle car with distinctive white racing stripes. To the right, a black SUV turns onto the cross street, passing a red pickup truck parked on the shoulder. In the distance, a large white FedEx truck travels beneath a metal overhead gantry, its headlights and taillights glowing against embankments of dry grass and leafless trees silhouetted in the darkness.</span>
         </div>
-        <button class="see-more" type="button">Show full prompt</button>
+        <button class="see-more" type="button">展开完整提示词</button>
       </div>
     </article>
   </div>
 </div>
 
-### Video Example 3
+### 视频示例 3
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
@@ -811,14 +811,14 @@ Here are some results from similar other videos.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_4_short.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Original RGB Video</div>
+          <div class="label">原始 RGB 视频</div>
         </div>
       </div>
     </article>
@@ -826,23 +826,23 @@ Here are some results from similar other videos.
       <div class="media-wrap">
         <video autoplay loop muted playsinline>
           <source src="./vs_assets/clip_4_rain_augment.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          您的浏览器不支持视频标签。
         </video>
-        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
-        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+        <button class="carousel-btn prev" type="button" aria-label="上一个">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一个">›</button>
       </div>
       <div class="text-stack">
         <div class="text-block">
-          <div class="label">Parameters - Rain Augmentation</div>
+          <div class="label">参数 - 雨天增强</div>
           <span class="preview-text"></span>
           <span class="full-text">guidance: 3, edge: 1.0, depth: 0.9</span>
         </div>
         <div class="text-block">
-          <div class="label">Input Prompt</div>
+          <div class="label">输入提示词</div>
           <span class="preview-text"></span>
           <span class="full-text">A video overlooking a wide bridge during steady rain. The roadway is darkened and slick with water, reflecting headlights and taillights across multiple lanes of traffic. The weather is gloomy and rainy. </span>
         </div>
-        <button class="see-more" type="button">Show full prompt</button>
+        <button class="see-more" type="button">展开完整提示词</button>
       </div>
     </article>
   </div>
@@ -875,14 +875,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const toggle = slide.querySelector(".see-more");
       if (toggle) {
         const originalText = toggle.textContent.trim();
-        const isParameters = originalText.includes("parameters");
+        const isParameters = originalText.includes("参数");
         toggle.addEventListener("click", () => {
           slide.classList.toggle("expanded");
           const expanded = slide.classList.contains("expanded");
           if (isParameters) {
-            toggle.textContent = expanded ? "Hide full parameters" : "Show full parameters";
+            toggle.textContent = expanded ? "收起完整参数" : "展开完整参数";
           } else {
-            toggle.textContent = expanded ? "Hide full prompt" : "Show full prompt";
+            toggle.textContent = expanded ? "收起完整提示词" : "展开完整提示词";
           }
         });
       }
@@ -900,8 +900,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const priorToggle = slides[index].querySelector(".see-more");
       if (priorToggle) {
         const originalText = priorToggle.textContent.trim();
-        const isParameters = originalText.includes("parameters");
-        priorToggle.textContent = isParameters ? "Show full parameters" : "Show full prompt";
+        const isParameters = originalText.includes("参数");
+        priorToggle.textContent = isParameters ? "展开完整参数" : "展开完整提示词";
       }
       index = (nextIndex + slides.length) % slides.length;
       slides[index].classList.add("is-active");
@@ -935,13 +935,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** December 20, 2025
+**发布日期：**2025 年 12 月 20 日
 
-### Citation
+### 引用
 
-If you use this content or reference this work, please cite it as:
+如果您使用了本内容或引用了这项工作，请按以下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_vision_ai_gallery_2025,
@@ -954,6 +954,6 @@ If you use this content or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用：**
 
-> Aiden Chang, & Akul Santhosh (2025). Vision AI Gallery. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/vision_ai_inference.html>
+> Aiden Chang 和 Akul Santhosh（2025）。《Vision AI 示例集》。载于 *NVIDIA Cosmos Cookbook*。访问地址：<https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/vision_ai_inference.html>

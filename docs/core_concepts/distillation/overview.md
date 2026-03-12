@@ -1,59 +1,60 @@
-# Distillation
+# 模型蒸馏
 
-Model distillation is a powerful technique for creating efficient "Student" models that maintain the quality and capabilities of "Teacher" models while dramatically reducing computational requirements. This process enables deployment of high-performance models in resource-constrained environments while preserving output quality and diversity.
+模型蒸馏是一项非常强大的技术，可用于构建高效的 “Student” 模型：在大幅降低计算需求的同时，尽可能保留 “Teacher” 模型的质量与能力。借助这一过程，可以在资源受限的环境中部署高性能模型，同时维持输出质量和多样性。
 
-There are two primary distillation approaches widely used today:
+当前广泛使用的蒸馏方式主要有两类：
 
-- **Size Distillation**: Compresses a large model into a smaller architecture while maintaining performance.
+- **尺寸蒸馏（Size Distillation）**：将大模型压缩为更小的架构，同时尽量保持性能。
 
-- **Step Distillation**: Reduces the number of inference steps required.
+- **步数蒸馏（Step Distillation）**：减少推理所需的步数。
 
-This guide concentrates on step distillation – where you train Student models to achieve comparable results in a single diffusion step – compared to Teacher models, which require multiple steps (e.g. 36 diffusion steps in Cosmos Transfer 1).
+本指南重点讨论步数蒸馏——即训练 Student 模型，使其仅通过一次 diffusion step 就能取得与 Teacher 模型相近的结果——而 Teacher 模型则通常需要多步（例如 Cosmos Transfer 1 中的 36 个 diffusion steps）。
 
-In a typical distillation workflow, several variables can be adjusted to optimize model outcomes:
+在典型的蒸馏工作流中，可以调整多个变量来优化模型效果：
 
-**Data Mixture**: The composition of the distillation training dataset is critical for distillation effectiveness. Both sufficient scale and high quality of video data in the target domain are essential for achieving optimal distilled model performance. The dataset should be diverse, representative of the intended use cases, and free from artifacts that could degrade the Student model capabilities.
+**数据混合（Data Mixture）**：蒸馏训练数据集的构成对蒸馏效果至关重要。目标领域中的视频数据既需要足够规模，也需要足够高质量，才能获得最佳的蒸馏模型性能。数据集应具备多样性、能够代表预期使用场景，并尽量不含会削弱 Student 模型能力的伪影。
 
-**Training Strategy**: The choice of distillation training strategy depends on data availability, task complexity, and computational budget. Distillation typically employs multi-stage curriculum training, with each stage utilizing different algorithms optimized for specific learning objectives. The following are supported approaches:
+**训练策略（Training Strategy）**：蒸馏训练策略的选择取决于数据可用性、任务复杂度和计算预算。蒸馏通常采用多阶段 curriculum training，不同阶段使用针对特定学习目标优化的不同算法。目前支持的方式包括：
 
-- **Knowledge Distillation (KD)**: A lightweight yet effective distillation method that aligns the Student model with the Teacher model using regression loss on model outputs. This approach requires generating a comprehensive synthetic dataset of input-output pairs using the Teacher model, making it ideal as an initial training stage to establish baseline alignment between models.
-- **Improved Distribution Matching Distillation (DMD2)**: A distribution-matching approach that combines adversarial training with variational score distillation to preserve output diversity and quality. This method requires a diverse dataset of ground-truth videos and involves training multiple models simultaneously (Student, Teacher, fake score network, and discriminator), resulting in higher memory requirements. See [DMD2 paper](https://arxiv.org/abs/2405.14867).
+- **Knowledge Distillation（KD）**：一种轻量但有效的蒸馏方法，通过对模型输出施加回归损失，让 Student 模型与 Teacher 模型对齐。该方法需要先使用 Teacher 模型生成完整的输入输出对合成数据集，因此非常适合作为初始训练阶段，用于建立模型之间的基础对齐。
+- **Improved Distribution Matching Distillation（DMD2）**：一种分布匹配方法，结合对抗训练与 variational score distillation，以保留输出的多样性和质量。该方法需要一个多样化的真实视频数据集，并且要同时训练多个模型（Student、Teacher、fake score network 和 discriminator），因此会带来更高的显存需求。参见 [DMD2 paper](https://arxiv.org/abs/2405.14867)。
 
-**Hyperparameter Tuning**: Careful optimization of hyperparameters such as learning rate and batch size is essential for achieving optimal distillation results. The relative importance of specific hyperparameters varies by distillation strategy. Systematic small-scale experimentation is recommended to identify optimal configurations before full-scale training.
+**超参数调优（Hyperparameter Tuning）**：对学习率、batch size 等超参数进行细致优化，对于获得最佳蒸馏结果至关重要。不同蒸馏策略下，具体超参数的重要性也不同。建议先进行系统化的小规模实验，以确定最佳配置，再开展完整规模训练。
 
-The distillation process is iterative, with evaluation playing a key role at each stage to verify quality improvements, generalization ability, and alignment with intended deployment conditions.
+蒸馏过程是迭代式的，而评估在每个阶段都扮演关键角色，用于验证质量提升、泛化能力以及与预期部署条件之间的对齐程度。
 
-## Success Metrics
+## 成功指标
 
-Key metrics for evaluating distillation success include:
+评估蒸馏是否成功时，可重点关注以下指标：
 
-Inference Efficiency
+推理效率
 
-- **Step Reduction**: Measure the ratio of Teacher steps to Student steps.
-- **Effective Speedup**: Account for CFG elimination. With CFG distilled into the Student, inference requires only 1 forward pass versus 2× steps (due to conditional/unconditional passes).
-- **Latency**: Measure end-to-end inference time on target hardware.
+- **步数缩减**：衡量 Teacher 步数与 Student 步数之间的比值。
+- **实际加速比**：将 CFG 的消除考虑在内。由于 CFG 已被蒸馏进 Student，推理只需 1 次 forward pass，而不是 2×steps（因为条件/无条件各需一次）。
+- **延迟**：在目标硬件上测量端到端推理时间。
 
-Output Quality
+输出质量
 
-- **FID/FVD**: Compare Student and Teacher outputs against ground truth. See [Predict Evaluation](../evaluation/evaluation_predict.md) for detailed metric guidance.
-- **Control Fidelity** (for Transfer models): Measure Blur SSIM, Canny-F1, Depth RMSE, and Seg mIOU to ensure the Student preserves conditioning signal adherence. See [Transfer Evaluation](../evaluation/evaluation_transfer.md).
-- **Visual Inspection**: Monitor training with periodic sample visualizations comparing Student output, Teacher output, and ground truth across temporal samples.
+- **FID/FVD**：将 Student 和 Teacher 的输出与 ground truth 进行比较。详见 [Predict 评估](../evaluation/evaluation_predict.md) 中的指标说明。
+- **控制保真度**（适用于 Transfer 模型）：测量 Blur SSIM、Canny-F1、Depth RMSE 和 Seg mIOU，以确保 Student 仍然遵循条件信号。详见 [Transfer 评估](../evaluation/evaluation_transfer.md)。
+- **视觉检查**：在训练过程中定期可视化样本，对比 Student 输出、Teacher 输出和 ground truth 的不同时间采样。
 
-## Limitations
+## 局限性
 
-Computational Requirements
+计算需求
 
-- **Memory Overhead**: DMD2 requires maintaining multiple networks simultaneously (Student, Teacher, fake score network, and optionally discriminator), significantly increasing GPU memory demands. Mitigation strategies include FSDP, gradient checkpointing, and gradient accumulation.
-- **Multi-Node Training**: Large-scale distillation often requires distributed training across multiple nodes to achieve effective batch sizes (e.g., 64) within memory constraints.
+- **额外显存开销**：DMD2 需要同时维护多个网络（Student、Teacher、fake score network，以及可选的 discriminator），会显著提高 GPU 显存需求。可通过 FSDP、gradient checkpointing 和 gradient accumulation 等方式缓解。
+- **多节点训练**：大规模蒸馏通常需要跨多个节点进行分布式训练，才能在显存受限的情况下实现足够的有效 batch size（例如 64）。
 
-Quality-Speed Tradeoffs
+质量与速度的权衡
 
-- **Single-Step Artifacts**: Extreme step reduction (e.g., 36→1 steps) may introduce subtle quality degradation compared to multi-step Teacher outputs, particularly in fine details or complex motion.
-- **Domain Generalization**: Distilled models may exhibit reduced generalization to out-of-domain inputs compared to the Teacher model.
+- **单步伪影**：极端步数压缩（例如 36→1 步）相较于多步 Teacher 输出，可能会带来细节或复杂运动上的轻微质量退化。
+- **领域泛化能力**：蒸馏模型在分布外输入上的泛化能力，可能弱于 Teacher 模型。
 
-## Case Studies
+## 案例研究
 
-Explore practical implementations of distillation techniques for Cosmos models:
+探索适用于 Cosmos 模型的蒸馏技术实际实现：
 
-- **[Distilling Cosmos Transfer 1](distilling_transfer1.md)** - Step-by-step guide to distilling Cosmos Transfer 1 using Knowledge Distillation (KD) and DMD2 for single-step inference
-- **[Distilling Cosmos Predict 2.5](distilling_predict2.5.md)** - Case study demonstrating DMD2 distillation to compress Cosmos Predict 2.5 Video2World model into a 4-step student model
+- **[蒸馏 Cosmos Transfer 1](distilling_transfer1.md)** - 使用 Knowledge Distillation（KD）和 DMD2 将 Cosmos Transfer 1 蒸馏为单步推理模型的分步指南
+- **[蒸馏 Cosmos Predict 2.5](distilling_predict2.5.md)** - 展示如何通过 DMD2 蒸馏将 Cosmos Predict 2.5 Video2World 模型压缩为 4-step student model 的案例研究
+

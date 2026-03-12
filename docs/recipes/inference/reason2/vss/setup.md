@@ -1,7 +1,7 @@
-# Setup and System Requirements
+# 环境设置与系统要求
 
-The Video Search and Summarization (VSS) blueprint can be deployed on a wide range of GPU configurations in the cloud or local instances. The VSS documentation has detailed information on supported platforms, pre-requisites and deployment steps.
+Video Search and Summarization (VSS) blueprint 可以部署在云端或本地实例中的多种 GPU 配置上。VSS 文档提供了关于受支持平台、前置要求和部署步骤的详细信息。
 
-- [Supported Platforms](https://docs.nvidia.com/vss/latest/content/supported_platforms.html)
-- [Software Pre-requisites](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html)
-- [Deployment Guide](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html)
+- [受支持平台](https://docs.nvidia.com/vss/latest/content/supported_platforms.html)
+- [软件前置要求](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html)
+- [部署指南](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html)

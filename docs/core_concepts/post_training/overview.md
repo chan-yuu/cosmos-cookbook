@@ -1,21 +1,22 @@
-# Post-Training
+# 后训练
 
-Post-training is a critical step for adapting foundation models to domain-specific tasks and improving performance beyond the capabilities of general-purpose checkpoints. While zero-shot models provide strong baselines, many applications require improved accuracy, physical realism, or domain alignment that can only be achieved through targeted fine-tuning.
+后训练是将基础模型适配到特定领域任务、并进一步提升通用 checkpoint 能力上限的关键步骤。虽然零样本模型能够提供强有力的基线，但许多应用仍需要更高的准确性、物理真实感或领域对齐，这些通常只能通过有针对性的微调来实现。
 
-In a typical post-training workflow, several variables can be adjusted to optimize model outcomes:
+在典型的后训练工作流中，可以调整多个变量来优化模型效果：
 
-- **Data Mixture**: The composition of the training dataset plays a central role in post-training effectiveness. Mixing data from multiple sources—each with different levels of quality, camera perspective, or content relevance—requires careful balancing. Post-training often follows a two-stage approach: broader exposure during early training followed by focused fine-tuning on high-quality subsets.
+- **数据混合（Data Mixture）**：训练数据集的构成对后训练效果起着核心作用。将多个来源的数据混合在一起时，这些数据在质量、相机视角或内容相关性上往往各不相同，因此需要仔细平衡。后训练通常遵循两阶段方式：在训练早期进行更广泛的暴露，然后在高质量子集上进行聚焦式微调。
 
-- **Training Strategy**: The choice of training strategy depends on data availability, task complexity, and computational budget. Cosmos models support three approaches:
+- **训练策略（Training Strategy）**：训练策略的选择取决于数据可用性、任务复杂度和计算预算。Cosmos 模型支持三种方式：
 
-  - **Full Post-Training**: This method updates all model parameters and is recommended when large amounts of training data are available and the goal requires significant adaptation or full control over model behavior.
+  - **全量后训练（Full Post-Training）**：该方法会更新模型的所有参数，适用于拥有大量训练数据、且目标任务需要显著适配或需要完全控制模型行为的场景。
 
-  - **LoRA Post-Training**: This is a parameter-efficient fine-tuning method that requires fewer resources and enables faster iteration. This method is ideal when data is limited but sufficient and the learning objectives are relatively simple or when maintaining base model capabilities is important.
+  - **LoRA 后训练（LoRA Post-Training）**：这是一种参数高效的微调方法，所需资源更少，迭代速度更快。适用于数据量有限但足够、学习目标相对简单，或希望保留基础模型能力的场景。
 
-  - **Reinforcement Learning (for Cosmos Reason only)**: This method is applicable when data is scarce but of high quality, and is especially useful for learning complex reasoning behavior. RL is not currently supported for diffusion-based models such as Cosmos-Predict or Cosmos-Transfer.
+  - **强化学习（仅适用于 Cosmos Reason）**：当数据稀缺但质量很高时，该方法尤为适合学习复杂推理行为。RL 目前不支持 Cosmos-Predict 或 Cosmos-Transfer 这类基于 diffusion 的模型。
 
-- **Hyperparameter Tuning**: Fine-tuning hyperparameters such as learning rate, batch size, and optimizer settings is essential to achieve convergence without overfitting. Small-scale experiments or overfitting tests on a few samples are often used to validate pipeline correctness and identify promising configurations before scaling up.
+- **超参数调优（Hyperparameter Tuning）**：对学习率、batch size、optimizer 设置等超参数进行细致调优，是实现收敛且避免过拟合的关键。在扩展到完整规模之前，通常会先在少量样本上做小规模实验或过拟合测试，以验证流水线正确性并识别有潜力的配置。
 
-- **Data Augmentation and Filtering**: In some cases, synthetic data augmentation or filtering pipelines are introduced to increase training signal density or improve realism by removing noisy samples and aligning content with the target use case.
+- **数据增强与过滤（Data Augmentation and Filtering）**：在某些情况下，会引入合成数据增强或过滤流水线，以提升训练信号密度，或通过去除噪声样本和使内容与目标场景对齐来增强真实感。
 
-The post-training process is iterative, with evaluation playing a key role at each stage to verify quality improvements, generalization ability, and alignment with intended deployment conditions.
+后训练是一个迭代过程，而评估在每个阶段都发挥着关键作用，用于验证质量提升、泛化能力，以及与预期部署条件之间的对齐程度。
+

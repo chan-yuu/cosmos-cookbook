@@ -1,40 +1,41 @@
-# Model Evaluation Reason
+# Reason 模型评估
 
-## Standard Benchmarks
+## 标准基准测试
 
-Cosmos Reason models can be evaluated using standardized benchmarks that assess reasoning capabilities across diverse scenarios. The [Cosmos Reason 1 Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) provides instructions for running evaluation subsets, including physical reasoning, spatial understanding, and temporal consistency assessments.
+Cosmos Reason 模型可以使用标准化基准进行评估，以衡量其在不同场景下的推理能力。[Cosmos Reason 1 Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) 提供了运行评估子集的说明，包括物理推理、空间理解和时间一致性评估。
 
-## Custom Evaluation on Your Data
+## 在你的数据上进行自定义评估
 
-Use your own video data (e.g., robotics, egocentric) to probe task‑specific reasoning.
+使用你自己的视频数据（例如 robotics、egocentric）来探测任务特定的推理能力。
 
-### Prompt Templates
+### 提示词模板
 
-- "What is happening in this clip?"
-- "Describe the motion"
-- Domain-specific questions tailored to your use case
+- “这个片段里发生了什么？”
+- “请描述运动过程”
+- 针对你的使用场景定制的领域特定问题
 
-### What to Measure
+### 评估内容
 
-- **Answer correctness**: Manual review or LLM-as-a-judge
-- **Consistency across time**: Temporal coherence of responses
-- **Groundedness**: References what is actually visible
-- **Precision vs hallucination**: Especially important for post-training
+- **答案正确性**：人工审核或使用 LLM-as-a-judge
+- **跨时间一致性**：回答在时间维度上的连贯性
+- **扎根性（Groundedness）**：是否引用了画面中真实可见的内容
+- **精确性与幻觉**：这在后训练中尤为重要
 
-## Automatic Metrics (During Post-Training)
+## 自动指标（后训练期间）
 
-### Instruction Tuning (SFT)
+### 指令微调（SFT）
 
-Generate answers on a held‑out set and measure:
+在一个留出集上生成答案，并测量：
 
-- **Per-token loss / perplexity**: Used on held‑out instruction-response pairs
-- **Text similarity**: BLEU, ROUGE, METEOR vs. ground‑truth captions
-- **Embedding similarity**: CLIPScore, BERTScore vs. reference answers
+- **每 token loss / perplexity**：用于留出的 instruction-response 对
+- **文本相似度**：与 ground-truth captions 比较的 BLEU、ROUGE、METEOR
+- **嵌入相似度**：与参考答案比较的 CLIPScore、BERTScore
 
-### Video–Caption Post-Training
+### 视频-字幕后训练
 
-When post‑training on `<video, caption>` pairs, ensure the following:
+当使用 `<video, caption>` 对进行后训练时，请确保以下几点：
 
-- Build an evaluation set in **MCQ/BCQ** format with ground truth.
-- Track whether the model improves at video understanding over time.
-- Monitor reasoning and comprehension improvements.
+- 构建带有 ground truth 的 **MCQ/BCQ** 格式评估集。
+- 跟踪模型是否随着时间推移提升了视频理解能力。
+- 监控推理与理解能力的提升。
+

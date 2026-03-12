@@ -1,30 +1,31 @@
-# Setup and System Requirements
+# 设置与系统要求
 
-This guide covers the setup requirements for running Cosmos Predict 2 for traffic anomaly generation using LoRA post-training.
+本指南介绍如何配置环境，以运行使用 LoRA 后训练进行交通异常生成的 Cosmos Predict 2。
 
-## System Requirements
+## 系统要求
 
-### Minimum Hardware Requirements
+### 最低硬件要求
 
-- **GPU**: Single node with 8 GPUs (A100, H100, or later recommended)
-- **Memory**: Sufficient VRAM for model inference and training (50GB+ recommended)
-- **Storage**: Adequate disk space for model weights, datasets, and checkpoints
+- **GPU**：单节点 8 GPUs（推荐 A100、H100 或更新型号）
+- **内存**：足够用于模型推理和训练的 VRAM（推荐 50GB+）
+- **存储**：有足够磁盘空间存放模型权重、数据集和 checkpoints
 
-### Software Requirements
+### 软件要求
 
-Setup requires the Cosmos Predict 2 repository and model to be properly installed and configured.
+配置过程要求 Cosmos Predict 2 仓库和模型已正确安装并完成设置。
 
-## Installation
+## 安装
 
-### Cosmos Predict 2 Setup
+### Cosmos Predict 2 设置
 
-To set up the Cosmos Predict 2 repository and model, follow the installation and inference setup instructions in the
-[Cosmos Predict 2 Setup Guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/setup.md).
+要设置 Cosmos Predict 2 仓库和模型，请按照
+[Cosmos Predict 2 Setup Guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/setup.md)
+中的安装和推理环境设置说明进行操作。
 
-### Verification
+### 验证
 
-Before proceeding with the post-training pipeline, verify that the model is working correctly by running [inference examples](https://github.com/nvidia-cosmos/cosmos-predict2?tab=readme-ov-file#user-guide) provided in the Cosmos Predict 2 repository.
+在进入后训练流水线之前，请通过运行 Cosmos Predict 2 仓库中提供的[inference examples](https://github.com/nvidia-cosmos/cosmos-predict2?tab=readme-ov-file#user-guide)，验证模型工作正常。
 
-## Next Steps
+## 后续步骤
 
-Once the setup and verification are complete, proceed to the [post-training tutorial](post_training.md) to learn how to use Cosmos Predict 2 for traffic anomaly generation with LoRA adaptation.
+完成设置和验证后，请继续阅读[后训练教程](post_training.md)，了解如何使用经过 LoRA 适配的 Cosmos Predict 2 进行交通异常生成。

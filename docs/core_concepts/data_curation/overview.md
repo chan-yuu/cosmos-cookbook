@@ -1,155 +1,155 @@
-# Data Curation
+# 数据整理
 
-> **Authors:** [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) • [Alice Luo](https://www.linkedin.com/in/aliceluoqian) > **Organization:** NVIDIA
+> **作者：** [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) • [Alice Luo](https://www.linkedin.com/in/aliceluoqian) > **机构：** NVIDIA
 
-## Overview
+## 概览
 
-> **The principle of "garbage in, garbage out" is especially relevant in post-training.**
-> High-quality datasets with sufficient quantity, fidelity, and domain coverage are essential for enabling models to learn new generative and reasoning capabilities.
+> **“输入的是垃圾，输出的也会是垃圾”这一原则在后训练中尤为重要。**
+> 只有具备足够数量、保真度和领域覆盖度的高质量数据集，模型才能学会新的生成与推理能力。
 
-Data curation is the foundation of successful post-training. Models struggle to generate or reason about content types that are underrepresented or missing in their training corpus. This makes it crucial to **source datasets that closely match the target domain** in both content distribution and structural format.
+数据整理是成功开展后训练的基础。对于训练语料中代表性不足或缺失的内容类型，模型往往难以生成或推理。因此，**获取与目标领域在内容分布和结构格式上都高度匹配的数据集** 至关重要。
 
-While pre-training pipelines such as **Cosmos-Predict2.5** focus on scaling to hundreds of millions of videos, the same principles apply to post-training — though at smaller, more focused scales. Post-training curation emphasizes **domain alignment, data precision, and semantic quality** over raw volume, enabling efficient fine-tuning for specialized tasks in robotics, physical AI, and embodied reasoning.
-
----
-
-### Key Requirements
-
-- **Domain Alignment** – Data reflects the nuances, edge cases, and variations of the intended use domain.
-- **Quality Control** – Active filtering and validation to ensure signal relevance.
-- **Scale and Coverage** – Sufficient quantity and diversity for robust generalization.
-- **Format Consistency** – Structured data compatible with training pipelines and evaluation frameworks.
-- **Ethical and Legal Compliance** – Respect data licenses, privacy, and redistribution constraints.
+虽然 **Cosmos-Predict2.5** 等预训练流水线侧重于扩展到数亿级视频规模，但同样的原则也适用于后训练——只是规模更小、目标更聚焦。后训练中的数据整理更强调 **领域对齐、数据精度和语义质量**，而不是单纯追求数据量，从而支持在机器人、Physical AI 和具身推理等专门任务上进行高效微调。
 
 ---
 
-## The Cosmos Data Curation Pipeline
+### 关键要求
 
-Data curation is a complex, multi-stage process. As shown below, it systematically transforms large-scale, heterogeneous video sources into refined, semantically rich datasets through segmentation, transcoding, filtering, captioning, and deduplication.
-
-![Comprehensive Data Curation Pipeline](images/data_curation_pipeline.png)
-
-The **Cosmos video curation pipeline**—first established in _Cosmos-Predict1_ and later scaled in _Cosmos-Predict2.5_—consists of seven stages:
-
-1. **Shot-Aware Video Splitting** – Long-form videos are segmented into coherent clips using shot boundary detection. Short (<5 s) clips are discarded, while longer ones (5–60 s) form the basis for downstream curation.
-2. **GPU-Based Transcoding** – Each clip is transcoded in parallel to optimize format, frame rate, and compression quality for model ingestion.
-3. **Video Cropping** – Black borders, letterboxing, and spatial padding are removed to ensure consistent aspect ratios.
-4. **Filtering** – A multi-stage filtering pipeline removes unsuitable data. Filters include:
-
-   - **Aesthetic Quality Filter** – Screens for poor composition or lighting.
-   - **Motion Filter** – Removes clips with excessive or insufficient movement.
-   - **OCR Filter** – Detects overlays, watermarks, or subtitles.
-   - **Perceptual Quality Filter** – Detects technical distortions (blur, compression, noise).
-   - **Semantic Artifacts Filter** – Removes video-in-video effects or abrupt transitions.
-   - **Vision-Language Model (VLM) Filter** – Applies high-precision semantic validation using models such as Qwen2.5-VL.
-   - **Content-Type Classifier** – Excludes synthetic or non-physical content (e.g., games or animations).
-
-   Only around **4%** of input clips survive this pipeline, forming a highly curated corpus of roughly **200 M** clips from roughly **6 billion** raw videos—spanning domains such as **driving**, **object manipulation**, **navigation**, **human interaction**, and **natural scenes**.
-
-5. **Video Captioning** – Each surviving clip is segmented into 5-second windows and captioned using a large vision-language model. Targeted prompt engineering ensures captions emphasize factual scene details—objects, motion, and context—at multiple lengths (short, medium, long). These captions serve as **supervision signals and conditioning prompts** for later training.
-6. **Semantic Deduplication** – Embedding-based clustering identifies near-duplicate clips. Within each cluster, the highest-resolution clip is kept. An **online deduplication strategy** supports incremental updates while maintaining semantic diversity.
-7. **Structured Sharding** – Clips are grouped along multiple axes: content type, resolution, aspect ratio, and temporal length. This structured dataset layout supports efficient sampling, curriculum-based training, and fine-grained domain balancing.
-
-The result is a dataset that is **clean, diverse, and semantically organized**—a template for post-training curation workflows at any scale.
+- **领域对齐** – 数据能够反映目标使用领域中的细微差别、边界情况和变化形式。
+- **质量控制** – 通过主动过滤和验证来确保有效信号的相关性。
+- **规模与覆盖度** – 具备足够的数量和多样性，以支持稳健的泛化能力。
+- **格式一致性** – 数据结构应与训练流水线和评估框架兼容。
+- **伦理与法律合规** – 尊重数据许可、隐私和再分发约束。
 
 ---
 
-## From Pre-Training to Post-Training
+## Cosmos 数据整理流水线
 
-Although _Cosmos-Predict2.5_ operates at petabyte scale, its principles directly inform post-training data practices:
+数据整理是一个复杂的多阶段过程。如下面所示，它通过分段、转码、过滤、字幕生成和去重等步骤，系统性地将大规模、异构的视频来源转化为精炼且语义丰富的数据集。
 
-- **Scale down, specialize up:** Post-training uses smaller but more domain-specific datasets.
-- **Refine rather than expand:** Instead of collecting more data, focus on _improving alignment_ and _removing noise_.
-- **Iterate via feedback loops:** Use model evaluation results to guide the next round of curation—closing the loop between data and learning outcomes.
+![综合数据整理流水线](images/data_curation_pipeline.png)
 
-In other words, post-training data curation inherits the _structure_ of pre-training pipelines but applies it to **targeted, feedback-driven refinement**.
+**Cosmos 视频整理流水线** 最早建立于 _Cosmos-Predict1_，随后在 _Cosmos-Predict2.5_ 中扩展，整体包含七个阶段：
+
+1. **基于镜头感知的视频切分** – 使用镜头边界检测将长视频切分为语义连贯的片段。较短的片段（<5 s）会被丢弃，而较长的片段（5–60 s）则作为后续整理的基础。
+2. **基于 GPU 的转码** – 对每个片段并行转码，以优化模型摄取所需的格式、帧率和压缩质量。
+3. **视频裁剪** – 去除黑边、信箱条和空间填充，以确保统一的纵横比。
+4. **过滤** – 多阶段过滤流水线会移除不适合的数据。过滤器包括：
+
+   - **美学质量过滤器** – 筛除构图或光照较差的内容。
+   - **运动过滤器** – 移除运动过多或过少的片段。
+   - **OCR 过滤器** – 检测叠加层、水印或字幕。
+   - **感知质量过滤器** – 检测模糊、压缩失真和噪声等技术问题。
+   - **语义伪影过滤器** – 去除画中画效果或突兀转场。
+   - **视觉语言模型（VLM）过滤器** – 使用 Qwen2.5-VL 等模型执行高精度语义验证。
+   - **内容类型分类器** – 排除合成内容或非物理内容（例如游戏或动画）。
+
+   最终只有大约 **4%** 的输入片段能够通过该流水线，形成一个高度整理过的语料库：从约 **60 亿** 个原始视频中筛得约 **2 亿** 个片段，覆盖 **驾驶**、**物体操作**、**导航**、**人类交互** 和 **自然场景** 等领域。
+
+5. **视频字幕生成** – 将每个保留下来的片段切分成 5 秒窗口，并使用大型视觉语言模型生成字幕。通过有针对性的提示词工程，确保字幕在不同长度（短、中、长）下都突出客观场景细节——包括物体、运动和上下文。这些字幕会作为后续训练的 **监督信号和条件提示词**。
+6. **语义去重** – 基于 embedding 的聚类用于识别近重复片段。在每个聚类中，仅保留分辨率最高的片段。**在线去重策略** 支持增量更新，同时维持语义多样性。
+7. **结构化分片** – 按多个维度对片段进行分组：内容类型、分辨率、纵横比和时间长度。这样的结构化数据集布局有助于高效采样、基于课程的训练和细粒度的领域平衡。
+
+最终得到的是一个 **干净、多样且按语义组织** 的数据集——它可作为任意规模后训练数据整理工作流的模板。
 
 ---
 
-## Data Sourcing
+## 从预训练到后训练
 
-Data sourcing involves acquiring datasets from diverse locations—internal storage, public repositories, and the web—while ensuring ethical and license compliance.
+尽管 _Cosmos-Predict2.5_ 在 PB 级规模上运行，但其中的原则同样可以直接指导后训练中的数据实践：
 
-> **Important:** Always verify dataset usage rights, privacy policies, and redistribution terms before processing.
-> Curation should prioritize transparency, data lineage tracking, and respect for original content sources.
+- **缩小规模，增强专精：** 后训练使用更小但更具领域针对性的数据集。
+- **重在精炼，而非扩张：** 不再一味收集更多数据，而是聚焦于 _提升对齐度_ 和 _去除噪声_。
+- **通过反馈回路迭代：** 使用模型评估结果来指导下一轮数据整理——形成数据与学习结果之间的闭环。
 
-### Cloud Storage Tools
+换句话说，后训练中的数据整理继承了预训练流水线的 _结构_，但应用方式是 **面向目标、由反馈驱动的精细化改进**。
 
-| Tool        | Purpose                                       | Best For                       |
+---
+
+## 数据获取
+
+数据获取包括从不同来源采集数据集——内部存储、公共仓库以及网络——同时确保符合伦理和许可证要求。
+
+> **重要：** 在处理数据集之前，务必核实其使用权、隐私政策和再分发条款。
+> 整理工作应优先保证透明性、数据来源追踪以及对原始内容来源的尊重。
+
+### 云存储工具
+
+| 工具 | 用途 | 最适合 |
 | ----------- | --------------------------------------------- | ------------------------------ |
-| **s5cmd**   | High-performance S3-compatible storage client | Large-scale parallel transfers |
-| **AWS CLI** | Official AWS command-line tool                | AWS-native workflows           |
-| **rclone**  | Multi-cloud sync for 70+ providers            | Complex multi-cloud setups     |
+| **s5cmd**   | 高性能 S3 兼容存储客户端 | 大规模并行传输 |
+| **AWS CLI** | 官方 AWS 命令行工具 | AWS 原生工作流 |
+| **rclone**  | 面向 70+ 云服务商的多云同步工具 | 复杂的多云部署 |
 
-> **Practical guidance:** Use **s5cmd** for high-throughput S3 transfers (10-100x faster than AWS CLI for bulk operations). Use **rclone** when syncing across different cloud providers or when you need advanced features like encryption and bandwidth limiting.
+> **实用建议：** 对于高吞吐量 S3 传输，请使用 **s5cmd**（批量操作下通常比 AWS CLI 快 10-100 倍）。当需要跨不同云服务商同步，或需要加密、限带宽等高级功能时，请使用 **rclone**。
 
-### Web Content Tools
+### Web 内容工具
 
-| Tool                | Purpose                              | Best For                              |
+| 工具 | 用途 | 最适合 |
 | ------------------- | ------------------------------------ | ------------------------------------- |
-| **HuggingFace CLI** | Access to model/dataset repositories | Community datasets and checkpoints    |
-| **yt-dlp**          | High-throughput video downloader     | Batch ingestion and quality selection |
-| **wget/curl**       | General-purpose file downloaders     | API retrieval and recursive crawling  |
+| **HuggingFace CLI** | 访问模型/数据集仓库 | 社区数据集和 checkpoint |
+| **yt-dlp**          | 高吞吐量视频下载器 | 批量采集和质量筛选 |
+| **wget/curl**       | 通用文件下载工具 | API 拉取和递归抓取 |
 
-### Physical AI Datasets
+### Physical AI 数据集
 
-For Physical AI developers working with Cosmos models, NVIDIA provides open, curated, and commercial-grade datasets for Physical AI development in **[NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai)** on Hugging Face, including:
+对于使用 Cosmos 模型的 Physical AI 开发者，NVIDIA 在 Hugging Face 上的 **[NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai)** 中提供了开放、精心整理且具备商业级质量的数据集，包括：
 
-- Autonomous vehicle datasets (driving scenes, synthetic data, teleoperation)
-- Robotics datasets (GR00T, manipulation, grasping, navigation)
-- Smart spaces and warehouse datasets
-- Domain-specific training and evaluation datasets
+- 自动驾驶数据集（驾驶场景、合成数据、远程操作）
+- 机器人数据集（GR00T、操作、抓取、导航）
+- 智能空间与仓储数据集
+- 领域特定训练与评估数据集
 
-These datasets are designed to work seamlessly with Cosmos models and can serve as starting points for domain-specific post-training workflows.
+这些数据集专为 Cosmos 模型设计，可作为领域化后训练工作流的起点。
 
-### Data Processing Tools
+### 数据处理工具
 
-| Tool           | Purpose                                | Best For                         |
+| 工具 | 用途 | 最适合 |
 | -------------- | -------------------------------------- | -------------------------------- |
-| **ffmpeg**     | Video transcoding and frame extraction | Reformatting and quality control |
-| **PIL/Pillow** | Python imaging library                 | Lightweight image manipulation   |
+| **ffmpeg**     | 视频转码与帧提取 | 格式转换与质量控制 |
+| **PIL/Pillow** | Python 图像库 | 轻量级图像处理 |
 
-### Quality Control Tools
+### 质量控制工具
 
-| Tool        | Purpose                 | Best For                              |
+| 工具 | 用途 | 最适合 |
 | ----------- | ----------------------- | ------------------------------------- |
-| **OpenCV**  | Computer vision toolkit | Visual inspection and analysis        |
-| **FFprobe** | Metadata extraction     | Duration, codec, and resolution stats |
+| **OpenCV**  | 计算机视觉工具包 | 视觉检查与分析 |
+| **FFprobe** | 元数据提取 | 时长、编码格式与分辨率统计 |
 
 ---
 
-## Data Sampling and Visualization
+## 数据采样与可视化
 
-Before large-scale processing or filtering, it is critical to perform **data analysis and sampling** to understand the structure, quality, and coverage of your dataset.
-Effective sampling helps reveal issues such as compression artifacts, aspect ratio inconsistencies, or irrelevant content — problems that are far easier to correct before the main curation workflow begins.
+在进行大规模处理或过滤之前，执行 **数据分析与采样** 以理解数据集的结构、质量与覆盖范围至关重要。
+有效采样有助于发现压缩伪影、纵横比不一致或无关内容等问题——而这些问题若能在主要整理流程开始前修正，会简单得多。
 
-At this stage, the goal is not to process the entire dataset, but to **analyze representativeness and integrity**. You should aim to answer questions such as:
+在这一阶段，目标不是处理整个数据集，而是 **分析其代表性与完整性**。你应该尝试回答如下问题：
 
-- Does the dataset align with the target domain and intended post-training goal?
-- Are there missing or overrepresented scene types?
-- What kinds of artifacts, distortions, or noise are common?
-- Is the metadata (if present) informative and reliable?
+- 数据集是否与目标领域和预期后训练目标一致？
+- 是否存在缺失或过度代表的场景类型？
+- 常见的伪影、失真或噪声有哪些？
+- 元数据（如果存在）是否具有信息量且可靠？
 
-### Recommended Analysis Practices
+### 推荐的分析实践
 
-1. **Consult Dataset Documentation**
-   When available, start by reading **dataset cards**, research papers, or technical reports describing the dataset’s collection process, quality guarantees, and known limitations. Understanding provenance and annotation methodology helps anticipate potential biases or failure modes.
+1. **查阅数据集文档**
+   如果有相关资料，请先阅读 **dataset card**、论文或技术报告，了解数据集的采集流程、质量保证和已知局限。理解数据来源和标注方法，有助于提前预判潜在偏差或失败模式。
 
-2. **Perform Structured Sampling**
-   Use **randomized or stratified sampling** to preview a manageable subset of videos. Evaluate visual quality, diversity, and semantic consistency before investing in large-scale processing.
+2. **执行结构化采样**
+   使用 **随机采样或分层采样** 预览一小部分可控规模的视频，在投入大规模处理之前先评估视觉质量、多样性和语义一致性。
 
-3. **Use Visualization Tools**
-   Sampling utilities—like the examples below—help quickly visualize data distribution and detect common quality issues.
+3. **使用可视化工具**
+   采样工具——例如下文示例——可以帮助你快速可视化数据分布，并发现常见质量问题。
 
 ---
 
-### Grid Preview Generation
+### 网格预览生成
 
-Grid preview videos provide at-a-glance dataset overviews by arranging multiple sampled videos into a single tiled visualization. This quick and efficient approach enables rapid quality assessment across large video collections without manual inspection of individual files, making it an ideal method for quickly understanding video datasets at scale.
+网格预览视频会将多个采样视频平铺到一个可视化结果中，从而快速概览整个数据集。这种方式高效且直观，无需逐个检查文件，就能快速评估大型视频集合的整体质量，是理解大规模视频数据集的理想方法。
 
-**Rationale**: By resizing and arranging randomly sampled videos into a grid layout (e.g., 10×10), you can visually assess diversity, detect outliers, and identify quality issues in seconds. Each video is scaled to a uniform thumbnail size and played synchronously for a fixed duration, creating a comprehensive snapshot of your dataset's visual characteristics.
+**原理说明：** 通过将随机采样的视频缩放后排列为网格布局（例如 10×10），你可以在几秒钟内直观评估多样性、发现异常样本并识别质量问题。每个视频会被缩放到统一的缩略图尺寸，并以相同时间长度同步播放，从而形成数据集视觉特征的综合快照。
 
-**Implementation approach** using ffmpeg's `xstack` filter:
+**实现方式**：使用 ffmpeg 的 `xstack` filter：
 
 ```bash
 # Sample 100 videos and create a 10x10 grid preview
@@ -162,16 +162,16 @@ ffmpeg -i video1.mp4 -i video2.mp4 ... -i video100.mp4 \
   -map "[out]" -r 30 output_grid.mp4
 ```
 
-**Output Example:**
+**输出示例：**
 ![](images/grid_preview.png)
 
-### Interactive Video Sampling
+### 交互式视频采样
 
-For more detailed inspection, an interactive web interface built with Streamlit enables paginated browsing and closer examination of individual videos. This approach is ideal when you need to analyze specific samples, compare similar videos, or make manual quality assessments.
+如果需要更细致的检查，可以使用基于 Streamlit 构建的交互式 Web 界面，对单个视频进行分页浏览和近距离观察。这种方式特别适合分析特定样本、比较相似视频，或进行人工质量评估。
 
-**Rationale**: While grid previews provide rapid overviews, interactive browsing allows for deeper inspection—pausing, replaying, and examining metadata for each video. A paginated interface (e.g., 3×4 grid showing 12 videos per page) balances screen real estate with detailed viewing, making it practical to review hundreds of samples systematically.
+**原理说明：** 虽然网格预览适合快速总览，但交互式浏览支持暂停、重放，以及查看每个视频的元数据，从而进行更深入的检查。分页界面（例如 3×4 网格、每页显示 12 个视频）能够在屏幕空间与细致查看之间取得平衡，使系统化审查数百个样本成为可能。
 
-**Implementation approach** using Streamlit:
+**实现方式**：使用 Streamlit：
 
 ```python
 import streamlit as st
@@ -207,36 +207,37 @@ for row in range(3):
                 st.caption(videos_to_show[idx].name)
 ```
 
-This creates a navigable interface where users can browse through sampled videos, with native playback controls and filename display for each video.
+这样就能创建一个可导航的界面，用户可以浏览采样视频，并使用原生播放控件查看每个视频，同时显示文件名。
 
-**Sample Output**:
+**示例输出：**
 ![](images/video_preview.png)
 
 ---
 
-## Data Curation Best Practices
+## 数据整理最佳实践
 
-Effective curation begins long before the first filtering job runs.
-Success depends on understanding the dataset, establishing clear objectives, and iteratively validating quality throughout the process.
+有效的数据整理，远在第一项过滤任务启动之前就已经开始。
+是否成功取决于你能否理解数据集、建立清晰目标，并在整个过程中持续迭代验证质量。
 
-### Key Principles
+### 关键原则
 
-- **Start with exploratory sampling** — Analyze dataset composition and potential issues before automated processing.
-- **Apply filters strategically** — Focus first on eliminating low-quality or irrelevant data.
-- **Iterate at small scale** — Validate each stage on subsets before scaling up to full production.
-- **Use the right tools for the task** — Combine visualization, transcoding, and filtering utilities for efficiency.
-- **Track lineage and versioning** — Maintain reproducibility through consistent metadata and experiment logging.
-- **Consult available references** — Dataset cards, academic papers, and internal documentation often contain valuable curation guidance.
+- **从探索性采样开始** — 在自动化处理前先分析数据集构成和潜在问题。
+- **有策略地应用过滤器** — 优先移除低质量或无关数据。
+- **先小规模迭代** — 在扩展到完整生产规模之前，先在子集上验证每个阶段。
+- **为任务选择合适的工具** — 结合可视化、转码和过滤工具以提高效率。
+- **跟踪来源与版本** — 通过一致的元数据和实验记录保证可复现性。
+- **参考可用资料** — Dataset card、学术论文和内部文档往往包含很有价值的整理建议。
 
-> **Performance tip:** For large-scale filtering runs, enable distributed processing via [Ray](https://docs.ray.io/). Cosmos Curator is built on Ray and supports parallel execution across multiple nodes, significantly accelerating filtering, captioning, and deduplication stages.
+> **性能提示：** 对于大规模过滤任务，请通过 [Ray](https://docs.ray.io/) 启用分布式处理。Cosmos Curator 基于 Ray 构建，支持跨多个节点并行执行，可显著加速过滤、字幕生成和去重阶段。
 
 ---
 
-## Next Steps: Core Curation
+## 下一步：核心数据整理
 
-Once you have completed the data sourcing, sampling, and visualization phases outlined above, you're ready to move to the core curation stage. This involves the following:
+当你完成了上述数据获取、采样和可视化阶段后，就可以进入核心数据整理阶段。该阶段包括以下内容：
 
-- **Video splitting** into shorter, scene-coherent clips
-- **Automated captioning** with sophisticated prompting strategies
-- **Quality filtering** and content validation
-- **Dataset sharding** for optimized training workflows
+- **视频切分** 为更短、场景更连贯的片段
+- 使用更复杂提示策略进行 **自动字幕生成**
+- **质量过滤** 与内容验证
+- 面向训练工作流优化的 **数据集分片**
+

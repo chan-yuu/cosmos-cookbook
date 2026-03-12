@@ -1,4 +1,4 @@
-# SDG for BioTrove Augmentation with Cosmos Transfer 2.5
+# 使用 Cosmos Transfer 2.5 进行 BioTrove 增强的 SDG
 
-- [Setup](setup.md)
-- [Inference](inference.md)
+- [设置](setup.md)
+- [推理](inference.md)

@@ -1,5 +1,5 @@
-# Gallery
+# 示例画廊
 
-- [Robotics](./robotics_inference.md)
-- [Autonomous Driving](./av_inference.md)
+- [机器人](./robotics_inference.md)
+- [自动驾驶](./av_inference.md)
 - [Vision AI](./vision_ai_inference.md)

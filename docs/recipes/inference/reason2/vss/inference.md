@@ -1,106 +1,106 @@
-# Video Search and Summarization with Cosmos Reason
+# 使用 Cosmos Reason 的视频搜索与摘要
 
-> **Authors:** [Sammy Ochoa](https://www.linkedin.com/in/sammy-ochoa/)
-> **Organization:** NVIDIA
+> **作者：** [Sammy Ochoa](https://www.linkedin.com/in/sammy-ochoa/)
+> **组织：** NVIDIA
 
-## Overview
+## 概览
 
-| **Model** | **Workload** | **Use Case** |
+| **模型** | **工作负载** | **用例** |
 |-----------|--------------|--------------|
-| [Cosmos Reason 2 8B](https://huggingface.co/nvidia/Cosmos-Reason2-8B)| Inference | Large scale video search and summarization. |
+| [Cosmos Reason 2 8B](https://huggingface.co/nvidia/Cosmos-Reason2-8B)| 推理 | 大规模视频搜索与摘要。 |
 
-Large volumes of video data contain critical information for understanding and optimizing operations in warehouses, factories, retail stores, cities and more. Both archived video files and live streaming camera feeds require time-consuming manual review to extract valuable insights from the videos.
+海量视频数据包含了理解并优化仓库、工厂、零售门店、城市等场景运营所需的关键信息。无论是归档视频文件还是实时摄像头流，都需要耗时的人工审查，才能从视频中提取有价值的洞察。
 
-The [Video Search and Summarization Blueprint](https://build.nvidia.com/nvidia/video-search-and-summarization) (VSS) from NVIDIA is a reference architecture for combining vision language models, computer vision models and large language models to analyze and understand large volumes of video data. VSS is easily configured through various prompts to tune the model responses based on the target use case.
+NVIDIA 的 [Video Search and Summarization Blueprint](https://build.nvidia.com/nvidia/video-search-and-summarization)（VSS）是一种参考架构，用于结合视觉语言模型、计算机视觉模型和大语言模型来分析和理解海量视频数据。VSS 可以通过多种提示轻松配置，从而根据目标用例调整模型响应。
 
 ![VSS UI Example](assets/warehouse_summary_example.png)
 
-VSS allows the user to upload video files or connect live streaming camera feeds to generate summaries, answer questions or send alerts when events of interest occur.
+VSS 允许用户上传视频文件或连接实时摄像头流，以生成摘要、回答问题，或在关注事件发生时发送告警。
 
-Cosmos Reason is used as the default vision language model in VSS to produce high quality captions across the input videos. VSS first breaks the input video into small chunks (10s-30s) then provides them to Cosmos Reason as a part of a GPU optimized inference pipeline to rapidly caption the video chunks in parallel.
+Cosmos Reason 在 VSS 中被用作默认视觉语言模型，以便为输入视频生成高质量描述。VSS 首先将输入视频切分为较小片段（10s-30s），然后把这些片段作为 GPU 优化推理流水线的一部分提供给 Cosmos Reason，从而快速并行地为视频片段生成描述。
 
-In addition to the captions from Cosmos Reason, extra data sources such as detection data and audio transcription are combined with the video captions. This data is stored in vector and graph database, then retrieved by an LLM to generate summaries, answer questions and trigger alerts based on user prompts.
+除了来自 Cosmos Reason 的描述外，还会将检测数据和音频转录等额外数据源与视频描述结合起来。这些数据会存储到向量数据库和图数据库中，随后由 LLM 检索，以根据用户提示生成摘要、回答问题并触发告警。
 
-The NVIDIA Brev Launchable is a quick way to launch a pre-configured environment for VSS testing.
+NVIDIA Brev Launchable 是快速启动 VSS 预配置环境的一种便捷方式。
 
 - [VSS Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html)
 
-For Nebius deployment, an 8xH100 GPU instance is recommended using the local deployment profile. Alternatively, a single 1xH100 instance can be used with smaller models by following the single GPU deployment profile.
+对于 Nebius 部署，建议使用本地部署配置的 8xH100 GPU 实例。或者，也可以按照单 GPU 部署配置，使用单个 1xH100 实例配合更小的模型。
 
-- [Multi-GPU local deployment profile](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html#local-deployment)
-- [Single-GPU local deployment profile](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html#fully-local-deployment-single-gpu)
+- [多 GPU 本地部署配置](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html#local-deployment)
+- [单 GPU 本地部署配置](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html#fully-local-deployment-single-gpu)
 
-For custom deployments on local systems or other cloud instances, the VSS documentation provides several deployment profiles for various hardware configurations.
+对于本地系统或其他云实例上的自定义部署，VSS 文档提供了适用于多种硬件配置的若干部署方案。
 
-- [Setup and System Requirements](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html#)
+- [环境设置与系统要求](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html#)
 
-## Key Features
+## 关键特性
 
-- **Video Summarization**: Generate custom video summaries based on user prompts.
-- **Video Q&A**: Answer questions using advanced Graph-RAG techniques on video files and streams.
-- **Livestream Alerts**: Receive alerts on live streaming video when events of interest occur.
+- **视频摘要**：根据用户提示生成自定义视频摘要。
+- **视频问答**：基于视频文件和流，使用高级 Graph-RAG 技术回答问题。
+- **直播告警**：当实时视频中出现感兴趣事件时接收告警。
 
-## VSS Blueprint Architecture
+## VSS Blueprint 架构
 
 ![VSS Architecture](assets/vss_architecture.jpg)
 
-VSS is composed of two main parts:
+VSS 由两个主要部分组成：
 
-- **Ingestion Pipeline**: Extract visual insights from the input video in the
-  form of captions and scene descriptions.
-- **Retrieval Pipeline**: Visual insights from the ingestion pipeline are further
-  processed, indexed, and used in retrieval tasks like summarization, Q&A and alerts.
+- **摄取流水线**：从输入视频中提取视觉洞察，
+  形式包括描述和场景说明。
+- **检索流水线**：对摄取流水线中的视觉洞察进一步处理、索引，
+  并用于摘要、问答和告警等检索任务。
 
-### Ingestion Pipeline
+### 摄取流水线
 
-The ingestion pipeline supports offline and batch processing of video and image files as well
-as online processing of live streams from cameras.
+摄取流水线既支持离线和批量处理视频/图像文件，
+也支持对来自摄像头的实时流进行在线处理。
 
-- Video files are divided into smaller segments—typically 10 to 30 seconds, depending on the model and application. Processing of individual chunks is distributed across the GPUs in parallel for better performance.
+- 视频文件会被划分为较小片段——通常为 10 到 30 秒，具体取决于模型和应用。单个片段的处理会并行分布到多个 GPU 上，以获得更好的性能。
 
-- For each video chunk, a set number of frames are sampled. For example 10 frames from a 10 second video chunk will be provided to Cosmos Reason to produce a caption. These values are configurable based on the use case and model context length.
+- 对于每个视频片段，会采样固定数量的帧。例如，从一个 10 秒的视频片段中采样 10 帧并提供给 Cosmos Reason 以生成描述。这些数值可根据用例和模型上下文长度进行配置。
 
-- Audio transcription using Riva ASR can optionally be enabled to generate audio transcripts of each video chunk.
+- 可选启用基于 Riva ASR 的音频转录，为每个视频片段生成音频转录文本。
 
-- A Grounding Dino based detection and tracking pipeline can be enabled to gain extra insight into specific objects in the video. The detection and tracking data is overlaid onto the video then provided to Cosmos Reason to produce more detailed captions.
+- 可启用基于 Grounding Dino 的检测与跟踪流水线，以获得关于视频中特定对象的更多洞察。检测和跟踪数据会叠加到视频上，然后提供给 Cosmos Reason，以生成更详细的描述。
 
-- The VLM captions, audio transcripts, CV metadata and timestamp information for each chunk are sent to the retrieval pipeline for further processing and indexing.
+- 每个片段的 VLM 描述、音频转录、CV 元数据和时间戳信息都会发送到检索流水线，以进行进一步处理和索引。
 
-### Retrieval Pipeline
+### 检索流水线
 
-The retrieval pipeline, implemented in the [CA-RAG library](https://github.com/NVIDIA/context-aware-rag), is responsible for processing the output of the ingestion pipeline and using it for various retrieval tasks like summarization of long video files, live streams, and Q&A on the indexed data.
+检索流水线由 [CA-RAG library](https://github.com/NVIDIA/context-aware-rag) 实现，负责处理摄取流水线的输出，并将其用于长视频摘要、实时流摘要以及基于索引数据的问答等多种检索任务。
 
-- VLM captions, audio transcripts and associated metadata are processed and indexed and stored in vector and graph databases.
+- VLM 描述、音频转录及其相关元数据会被处理、索引并存储到向量数据库和图数据库中。
 
-- The accelerated NeMo Retriever Embedding NIM is used for high throughput text embedding of the VLM captions. These text embeddings, along with associated metadata, are inserted in the vector database.
+- 加速版 NeMo Retriever Embedding NIM 用于对 VLM 描述进行高吞吐量文本嵌入。这些文本嵌入会连同相关元数据一起写入向量数据库。
 
-- LLMs like Llama 3.1 70B are used for tool calling, parsing the VLM captions, and generating the insertion API calls for the graph database to build a knowledge graph of the video.
+- 类似 Llama 3.1 70B 的 LLM 用于工具调用、解析 VLM 描述，并生成写入图数据库的插入 API 调用，以构建视频的知识图谱。
 
-- For summarization, the VLM captions and audio transcripts are summarized together to get a final aggregated summary using an LLM.
+- 在摘要任务中，VLM 描述和音频转录会一同汇总，再由 LLM 生成最终聚合摘要。
 
-- For Q&A, with the help of LLM tool calling, information relevant to your query is extracted from the knowledge graph and the vector database. The retrieved information is passed to the NeMo reranking service and the output is used as context by the LLM for generating the answer to your question.
+- 在问答任务中，借助 LLM 工具调用，会从知识图谱和向量数据库中提取与你查询相关的信息。检索到的信息会传递给 NeMo reranking 服务，其输出将作为上下文供 LLM 生成问题答案。
 
-## Getting Started
+## 快速开始
 
-To use VSS with Cosmos Reason, you must first deploy it either to a cloud instance or to your local GPUs. After deployment, VSS offers a reference front-end interface for quick video summarization and a REST API backend for seamless integration with your custom applications.
+要将 VSS 与 Cosmos Reason 一起使用，你必须先将其部署到云实例或本地 GPU 上。部署完成后，VSS 提供了用于快速视频摘要的参考前端界面，以及便于与你的自定义应用无缝集成的 REST API 后端。
 
-### Cloud Deployment
+### 云端部署
 
 - [VSS Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html)
 
-### Local Deployment
+### 本地部署
 
-- [Setup and System Requirements](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html#)
+- [环境设置与系统要求](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html#)
 
-Once deployed, you can follow the [UI documentation page](https://docs.nvidia.com/vss/latest/content/ui_app.html) to learn how to use the reference UI for quickly testing your own videos and live streams.
+部署完成后，你可以参阅 [UI documentation page](https://docs.nvidia.com/vss/latest/content/ui_app.html)，了解如何使用参考 UI 快速测试你自己的视频和实时流。
 
-### Example Code Walkthrough
+### 示例代码讲解
 
-Once you are ready build a custom application around VSS, you can directly access the back end REST APIs instead of using the UI.
+当你准备围绕 VSS 构建自定义应用时，可以直接访问后端 REST API，而无需使用 UI。
 
-1. Once deployed, VSS will provide a backend port by default at port 8100. This is where the REST APIs are available.
+1. 部署完成后，VSS 默认会在 8100 端口提供后端服务。REST API 可通过该端口访问。
 
-1. Import the requests library and setup the REST API paths. The full REST API documentation can be found [here](https://docs.nvidia.com/vss/latest/content/API_doc.html).
+1. 导入 requests 库并设置 REST API 路径。完整的 REST API 文档可在[这里](https://docs.nvidia.com/vss/latest/content/API_doc.html)找到。
 
     ```
     import requests
@@ -111,7 +111,7 @@ Once you are ready build a custom application around VSS, you can directly acces
     qna_endpoint = vss_host + "/chat/completions" #ask questions for ingested video
     ```
 
-1. Upload a video file to VSS and receive a video ID
+1. 将视频文件上传到 VSS，并接收一个视频 ID。
 
     ```
     video_file_path = "/path/to/your/video.mp4"
@@ -125,7 +125,7 @@ Once you are ready build a custom application around VSS, you can directly acces
     video_id = response["id"] #save file ID for summarization request
     ```
 
-1. With the video id, a summarization request can be sent along with prompts to control the VLM captioning and output summary.
+1. 有了 video id 后，就可以发送摘要请求，并附带用于控制 VLM 描述和输出摘要的提示。
 
     ```
     body = {
@@ -146,7 +146,7 @@ Once you are ready build a custom application around VSS, you can directly acces
     print(summary)
     ```
 
-1. Once the video has been ingested, additional Q&A requests can be sent to ask questions about the video.
+1. 视频完成摄取后，还可以发送额外的问答请求，就视频内容提问。
 
     ```
     question = "What did you see in the video?"
@@ -163,26 +163,26 @@ Once you are ready build a custom application around VSS, you can directly acces
     print(answer)
     ```
 
-## Conclusion
+## 结论
 
-Cosmos Reason is used in VSS to generate high-quality video captions through an optimized GPU accelerated inference pipeline. The captions are analyzed and indexed using a combination of embedding and large language models to store key information in vector and graph databases to power long video summarization, Q&A and live stream alerts.
+Cosmos Reason 在 VSS 中通过优化的 GPU 加速推理流水线生成高质量视频描述。这些描述随后结合嵌入模型和大语言模型进行分析与索引，将关键信息存储到向量数据库和图数据库中，以支持长视频摘要、问答和实时流告警。
 
-VSS can easily be deployed through the [Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html) or by following the local deployment guide. Once deployed, the reference web UI can be used to quickly test custom videos and prompts. To integrate with your own application, the [VSS REST APIs](https://docs.nvidia.com/vss/latest/content/API_doc.html) can be used programmatically to access all VSS features.
+VSS 可以通过 [Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html) 轻松部署，也可以遵循本地部署指南完成部署。部署完成后，可以使用参考 Web UI 快速测试自定义视频和提示。若要集成到你自己的应用中，可通过编程方式调用 [VSS REST APIs](https://docs.nvidia.com/vss/latest/content/API_doc.html) 以访问 VSS 的全部功能。
 
-## Resources
+## 资源
 
-- **[VSS Documentation](https://docs.nvidia.com/vss/latest/index.html)** - Primary documentation for VSS
-- **[VSS Github Repository](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization)** - Open Source GitHub Repository for VSS
+- **[VSS Documentation](https://docs.nvidia.com/vss/latest/index.html)** - VSS 主文档
+- **[VSS Github Repository](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization)** - VSS 开源 GitHub 仓库
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** January 29, 2026
+**发布日期：** 2026 年 1 月 29 日
 
-### Citation
+### 引用
 
-If you use this recipe or reference this work, please cite it as:
+如果你使用了本配方或参考了这项工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_video_search_and_2026,
@@ -196,6 +196,6 @@ If you use this recipe or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的正文引用：**
 
 > Sammy Ochoa (2026). Video Search and Summarization with Cosmos Reason. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html>

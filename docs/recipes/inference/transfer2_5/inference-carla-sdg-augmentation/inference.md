@@ -1,238 +1,238 @@
-# Cosmos Transfer 2.5 Sim2Real for Simulator Videos
+# Cosmos Transfer 2.5 用于模拟器视频的 Sim2Real
 
-> **Authors:** [Ryan Ji](https://www.linkedin.com/in/ryan-ji-a73300206/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
-> **Organization:** NVIDIA
+> **作者：** [Ryan Ji](https://www.linkedin.com/in/ryan-ji-a73300206/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
+> **机构：** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
+| **模型** | **工作负载** | **用例** |
 |-----------|--------------|--------------|
-| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Sim to Real data augmentation |
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | 推理 | Sim to Real 数据增强 |
 
-This tutorial demonstrates how to use the Cosmos Transfer 2.5 model to augment synthetic data from simulations, converting limited simulator outputs into photorealistic datasets while reducing the manual effort needed to scale diversity.
+本教程演示如何使用 Cosmos Transfer 2.5 模型增强来自仿真的合成数据，将有限的模拟器输出转换为照片级真实数据集，同时减少扩展多样性所需的人工工作量。
 
-- [Setup and System Requirement](setup.md)
+- [设置与系统要求](setup.md)
 
-## Why Simulator-to-Real Augmentation Matters
+## 为什么 Sim2Real 增强很重要
 
-There are significant challenges associated with creating diverse, photorealistic training data from simulators:
+从模拟器创建多样化、照片级真实的训练数据存在显著挑战：
 
-- **Domain Gap**: While simulators provide perfect ground truth and controllable scenarios, their synthetic appearance creates a substantial domain gap that limits the performance of models trained on simulator data when deployed in real-world environments.
+- **域差距**：虽然模拟器能够提供完美的真值和可控场景，但其合成外观会造成明显的域差距，从而限制基于模拟器数据训练的模型在真实环境部署时的表现。
 
-- **Scalability Constraints**: Manually crafting diverse scenarios in simulators requires substantial engineering effort and computational resources, making it prohibitively expensive to scale up data diversity.
+- **可扩展性限制**：在模拟器中手动构建多样化场景需要大量工程投入和计算资源，导致扩展数据多样性的成本极高。
 
-- **Limited Visual Realism**: Traditional simulator outputs lack the photorealistic quality needed for robust real-world model deployment, requiring additional post-processing or domain adaptation techniques.
+- **视觉真实感有限**：传统模拟器输出缺乏真实世界部署所需的照片级真实质量，因此需要额外的后处理或域适配技术。
 
-Cosmos Transfer 2.5 can transform simulator outputs into photorealistic, diverse datasets that bridge the sim-to-real gap and improve downstream model performance in real-world deployment.
+Cosmos Transfer 2.5 可以将模拟器输出转换为照片级真实且多样的数据集，弥合 sim-to-real 差距，并提升下游模型在真实部署中的表现。
 
-## Demonstration Overview
+## 演示概览
 
-This is a demonstration of **Cosmos Transfer 2.5** being used for simulator-to-real augmentation of synthetic data. This tutorial walks through the step-by-step process of transforming synthetic simulator outputs into photorealistic, diverse datasets. By leveraging the advanced generative capabilities of the Cosmos Transfer 2.5 model, we showcase how to bridge the sim-to-real gap while maintaining the structural integrity and semantic information from the original simulator data.
+这是一个使用 **Cosmos Transfer 2.5** 对合成数据进行 Sim2Real 增强的演示。本教程将逐步介绍如何把模拟器输出的合成结果转换为照片级真实且多样的数据集。借助 Cosmos Transfer 2.5 模型先进的生成能力，我们展示了如何在保持原始模拟器数据的结构完整性和语义信息的同时，弥合 sim-to-real 差距。
 
-## Creating Anomaly Scenarios in Simulators
+## 在模拟器中创建异常场景
 
-### The Challenge of Manual Scenario Creation
+### 手动创建场景的挑战
 
-Creating traffic anomaly scenarios in simulators requires manual effort and technical expertise:
+在模拟器中创建交通异常场景需要人工投入和技术专长：
 
-- **Map Design**: Custom road networks must be manually constructed or modified to support specific anomaly scenarios.
-- **Traffic Setup**: Each vehicle needs individual placement, trajectory planning, and behavior scripting.
-- **Anomaly Engineering**: Wrong-way driving behaviors require careful programming to ensure realistic yet unsafe patterns.
-- **Camera Configuration**: Multiple viewpoints must be positioned and calibrated to capture the anomaly from relevant angles
-- **Environment Tuning**: Lighting, weather, and time-of-day settings need manual adjustment for each variation.
+- **地图设计**：必须手动构建或修改自定义道路网络，以支持特定异常场景。
+- **交通设置**：每辆车都需要单独进行位置摆放、轨迹规划和行为脚本编写。
+- **异常工程**：逆行行为需要精心编程，以确保其既真实又具有不安全特征。
+- **相机配置**：必须布置并校准多个视角，以从相关角度捕捉异常情况
+- **环境调节**：每种变化都需要手动调整光照、天气和一天中的时间设置。
 
-This labor-intensive process makes it prohibitively expensive to create diverse anomaly datasets at scale.
+这种高劳动强度的流程使得大规模创建多样化异常数据集的成本高得难以承受。
 
-### Wrong-Way Driving Scenario
+### 逆行驾驶场景
 
-The demonstration video showcases a critical traffic safety scenario captured in the synthetic environment of the simulator:
+演示视频展示了一个在模拟器合成环境中捕获的关键交通安全场景：
 
-> "The scene depicts a large urban intersection marked with a prominent yellow grid box to prevent vehicles from blocking the crossing, surrounded by multiple lanes with clearly defined stop lines, crosswalks, and sidewalks lined with streetlights, palm trees, and banners. Traffic lights hang overhead, coordinating flows from all directions, with most vehicles orderly queued at red signals or moving forward on green, while one vehicle is notably traveling against the proper lane direction, creating a wrong-way traffic anomaly. The background features tall, detailed stone and glass buildings with arched entrances, a mix of modern and classical architectural styles, along with visible signage and distant street activity, giving the environment a realistic, bustling city atmosphere."
+> “该场景描绘了一个大型城市十字路口，路面上有醒目的黄色网格框，用于防止车辆堵塞路口；周围有多条车道，带有清晰的停止线、人行横道和道路两侧点缀着路灯、棕榈树与横幅的人行道。交通灯悬挂在上方，协调来自各个方向的车流，大多数车辆在红灯前有序排队或在绿灯时向前通行，而其中一辆车明显逆着正确车道方向行驶，形成了逆行交通异常。背景中可见高大且细节丰富的石材与玻璃建筑、带拱形入口的楼宇，以及现代与古典建筑风格的混合，还有清晰的标识和远处的街道活动，使整个环境呈现出真实、繁忙的都市氛围。”
 
-This complex urban scenario demonstrates the following:
+这个复杂的城市场景展示了以下特点：
 
-- **Traffic Anomaly**: One vehicle driving against the proper lane direction amidst otherwise orderly traffic.
-- **Rich Urban Context**: Detailed intersection with traffic infrastructure, buildings, and urban elements.
-- **Synthetic Appearance**: Despite the detailed scene composition, the characteristic rendering style reveals its simulator origin.
-- **Safety-Critical Behavior**: The wrong-way vehicle creates a dangerous situation that autonomous systems must detect.
+- **交通异常**：一辆车在其他交通基本有序的情况下逆着正确车道方向行驶。
+- **丰富的城市语境**：细节丰富的路口、交通基础设施、建筑物和城市元素。
+- **合成外观**：尽管场景构成细致，但其典型的渲染风格仍暴露了模拟器来源。
+- **安全关键行为**：逆行车辆制造了危险情境，自主系统必须检测到它。
 
-### Available Ground Truth from the Simulator
+### 模拟器提供的真值
 
-The simulator provides comprehensive ground truth data for each frame:
+模拟器为每一帧提供了完整的真值数据：
 
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
   <div style="flex: 1 1 45%; min-width: 300px;">
-    <strong>RGB Video</strong>: The original synthetic rendering showing the traffic scenario
-    <video controls width="100%" aria-label="RGB video showing traffic intersection with wrong-way vehicle anomaly">
+    <strong>RGB 视频</strong>：展示交通场景的原始合成渲染
+    <video controls width="100%" aria-label="展示交通路口中逆行车辆异常的 RGB 视频">
       <source src="./assets/simulator_rgb_input.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      你的浏览器不支持 video 标签。
     </video>
   </div>
   <div style="flex: 1 1 45%; min-width: 300px;">
-    <strong>Depth Map</strong>: Precise distance information for every pixel in the scene
-    <video controls width="100%" aria-label="Depth map video showing distance information for traffic scene">
+    <strong>深度图</strong>：场景中每个像素的精确距离信息
+    <video controls width="100%" aria-label="展示交通场景距离信息的深度图视频">
       <source src="./assets/simulator_depth.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      你的浏览器不支持 video 标签。
     </video>
   </div>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; margin-top: 20px;">
   <div style="flex: 1 1 45%; min-width: 300px;">
-    <strong>Edge Detection</strong>: Geometric boundaries of all objects and road infrastructure
-    <video controls width="100%" aria-label="Edge detection video showing geometric boundaries of objects and infrastructure">
+    <strong>边缘检测</strong>：所有物体和道路基础设施的几何边界
+    <video controls width="100%" aria-label="展示物体与基础设施几何边界的边缘检测视频">
       <source src="./assets/simulator_edge.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      你的浏览器不支持 video 标签。
     </video>
   </div>
   <div style="flex: 1 1 45%; min-width: 300px;">
-    <strong>Semantic Segmentation</strong>: Pixel-perfect labels for vehicles, roads, sidewalks, and other scene elements
-    <video controls width="100%" aria-label="Semantic segmentation video showing labeled scene elements including vehicles and roads">
+    <strong>语义分割</strong>：对车辆、道路、人行道和其他场景元素的像素级标签
+    <video controls width="100%" aria-label="展示包含车辆和道路等已标注场景元素的语义分割视频">
       <source src="./assets/simulator_segmentation.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      你的浏览器不支持 video 标签。
     </video>
   </div>
 </div>
 
-These control signals serve as the foundation for the Cosmos Transfer 2.5 model's photorealistic augmentation while ensuring the anomaly behavior is preserved.
+这些控制信号构成了 Cosmos Transfer 2.5 模型进行照片级真实增强的基础，同时确保异常行为得到保留。
 
-## Prompt Engineering for Photorealistic Augmentation
+## 面向照片级真实增强的 Prompt Engineering
 
-### Transforming Synthetic Data Through Strategic Prompting
+### 通过策略性提示改造合成数据
 
-Cosmos Transfer 2.5 leverages carefully crafted prompts to transform synthetic simulator outputs into photorealistic scenes. The key to successful augmentation lies in three critical components:
+Cosmos Transfer 2.5 利用精心设计的提示，将模拟器输出的合成结果转换为照片级真实场景。成功增强的关键在于三个核心组成部分：
 
-1. **Positive Prompts**: Detailed descriptions that guide the model toward photorealistic qualities while preserving the anomaly behavior
-2. **Negative Prompts**: Constraints that prevent unrealistic artifacts and maintain structural integrity
-3. **Model's Inherent Capabilities**: The model's understanding of real-world physics and lighting to enhance realism
+1. **Positive Prompts**：详细描述，引导模型在保留异常行为的同时朝着照片级真实效果生成
+2. **Negative Prompts**：用于防止不真实伪影并保持结构完整性的约束
+3. **模型自身能力**：模型对真实世界物理和光照的理解，用于增强真实感
 
-### Scene Understanding with Physical AI Model Cosmos Reason 1
+### 使用物理 AI 模型 Cosmos Reason 1 进行场景理解
 
-Our prompt engineering pipeline leverages Cosmos Reason 1, a model densely trained on AV and robotics data for superior physical scene understanding, in a two-stage approach to embed specific variations into the scene description:
+我们的提示工程流水线利用 Cosmos Reason 1——一个在 AV 与机器人数据上进行密集训练、具备卓越物理场景理解能力的模型——通过两阶段方法将特定变化嵌入场景描述中：
 
-#### Stage 1: Global Scene Captioning
+#### 阶段 1：全局场景描述
 
-We use Cosmos Reason 1-7B to generate a comprehensive caption that captures all scene elements with physical AI expertise:
+我们使用 Cosmos Reason 1-7B 生成全面的说明文字，以基于物理 AI 专长捕捉所有场景元素：
 
-- Traffic infrastructure (roads, intersections, traffic lights)
-- Vehicles and their behaviors (including anomalies)
-- Environmental context (buildings, vegetation, urban features)
-- Current conditions (time of day, weather, visibility)
+- 交通基础设施（道路、路口、交通灯）
+- 车辆及其行为（包括异常）
+- 环境上下文（建筑、植被、城市特征）
+- 当前条件（一天中的时间、天气、能见度）
 
-#### Stage 2: Variation-Specific Augmentation
+#### 阶段 2：特定变化的增强
 
-The global caption is then processed by Llama-3.1-8B-Instruct to inject specific augmentation keywords while preserving the core scene structure. The LLM is prompted with the following:
+然后，使用 Llama-3.1-8B-Instruct 对全局描述进行处理，在保留核心场景结构的同时注入特定增强关键词。向该 LLM 提供的内容包括：
 
-- The original global caption from Cosmos Reason 1-7B
-- Target variation keywords (e.g. "night", "snow falling", "puddles")
-- Instructions to realistically modify only the relevant aspects
+- 来自 Cosmos Reason 1-7B 的原始全局描述
+- 目标变化关键词（例如 “night”“snow falling”“puddles”）
+- 仅对相关方面进行真实修改的指令
 
-This approach ensures that the anomaly behavior and scene structure remain intact while only the desired visual attributes are transformed. The Cosmos Reason 1 model's specialized training on autonomous vehicle and robotics data ensures accurate understanding of spatial relationships, vehicle dynamics, and traffic scenarios that are critical for maintaining ground truth integrity during augmentation.
+这种方法确保异常行为和场景结构保持不变，而只有期望的视觉属性被转换。Cosmos Reason 1 模型在自动驾驶和机器人数据上的专项训练，使其能够准确理解空间关系、车辆动力学和交通场景，这对于在增强过程中维持真值完整性至关重要。
 
-### Augmentation Categories and Prompt Design
+### 增强类别与提示设计
 
-To maximize data diversity, we employ 18 distinct augmentation types, organized into three high-level categories:
+为了最大化数据多样性，我们采用了 18 种不同的增强类型，并将其组织为三个高级类别：
 
-| Category | Conditions & Augmentation Ideas |
+| 类别 | 条件与增强思路 |
 |----------|--------------------------------|
-| **Environment Lighting** | **Sunrise**: Warm morning light, long shadows, orange–pink eastern sky<br>**Sunset**: Warm evening light, long shadows, orange–pink western sky<br>**Twilight**: Cool blue cast, low ambient light, diffused backgrounds<br>**Mid-morning**: Clear daylight, balanced shadows, crisp textures<br>**Afternoon**: Neutral daylight, natural shadows, bright exposure<br>**Zenith**: Harsh overhead light, short shadows, strong contrast<br>**Golden hour**: Soft warm tones, elongated shadows, enhanced depth<br>**Blue hour**: Deep blue tones, low light, soft ambient illumination<br>**Night**: Low light, high contrast, vehicle/headlight glow, streetlamps |
-| **Weather** | **Clear Sky**: High visibility, distinct shadows, light blue gradient<br>**Overcast**: Flat diffuse lighting, gray/white sky, reduced shadows<br>**Snow Falling**: Snow overlays, cold white balance, desaturated tone<br>**Raining**: Rain streaks, puddle reflections, wet road sheen<br>**Fog**: Depth-based haze, white/gray overlay, obscured distance |
-| **Road Surface** | **Dry road**: Clean asphalt, visible lane markings, consistent reflectance<br>**Snow on ground**: White surface cover, tire tracks, snow piles<br>**Sand on ground**: Light tan surface, granular texture, dust haze<br>**Puddles**: Water accumulation, mirror-like reflections, ripples |
+| **环境光照** | **Sunrise**：温暖的晨光、长阴影、东方橙粉色天空<br>**Sunset**：温暖的傍晚光线、长阴影、西方橙粉色天空<br>**Twilight**：冷蓝色调、低环境光、漫射背景<br>**Mid-morning**：清晰日光、平衡阴影、清晰纹理<br>**Afternoon**：中性日光、自然阴影、明亮曝光<br>**Zenith**：强烈顶光、短阴影、强对比<br>**Golden hour**：柔和暖色调、拉长的阴影、更强的景深感<br>**Blue hour**：深蓝色调、弱光、柔和环境照明<br>**Night**：低照度、高对比、车灯/前灯辉光、路灯 |
+| **天气** | **Clear Sky**：高能见度、明显阴影、浅蓝色渐变天空<br>**Overcast**：平坦的漫射光、灰白天空、阴影减少<br>**Snow Falling**：飘雪覆盖、冷白平衡、低饱和色调<br>**Raining**：雨丝、积水反射、湿路面光泽<br>**Fog**：基于深度的雾霾、白/灰叠加、远处遮蔽 |
+| **路面状况** | **Dry road**：干净沥青、可见车道线、一致反射率<br>**Snow on ground**：白色地表覆盖、轮胎痕迹、积雪堆<br>**Sand on ground**：浅褐色表面、颗粒纹理、尘雾<br>**Puddles**：积水、镜面反射、涟漪 |
 
-### Preserving Anomaly Behaviors
+### 保留异常行为
 
-When crafting prompts for each augmentation, special attention is given to the following guidelines:
+为每种增强编写提示时，会特别关注以下准则：
 
-- **Maintaining Visibility**: Ensuring the wrong-way vehicle remains detectable across all conditions.
-- **Preserving Spatial Relationships**: Keeping relative positions and trajectories intact.
-- **Enhancing Realism**: Adding photorealistic elements without obscuring safety-critical features
+- **保持可见性**：确保逆行车辆在所有条件下都能被检测到。
+- **保留空间关系**：保持相对位置和轨迹不变。
+- **增强真实感**：在不遮蔽安全关键特征的前提下加入照片级真实元素
 
-Example prompt structure for snow-covered ground augmentation:
+雪地增强的提示结构示例：
 
-**Positive Prompt:**
+**Positive Prompt：**
 
 ```
 "The video depicts a bustling urban intersection during daytime, with clear skies and ample sunlight illuminating the scene, casting a pale light on the snow-covered ground. The environment is characterized by modern buildings with large windows and classical architectural elements, suggesting a cityscape that blends contemporary and historical design. The intersection is marked with yellow grid lines on the road, now partially obscured by a layer of snow, indicating pedestrian crossing areas. Several vehicles are present, including a red car in the foreground moving diagonally across the intersection, leaving behind dark tire tracks in the snow, a black SUV turning right, and other cars in various colors such as blue, white, and green, all navigating through the busy street, their tires creating visible grooves in the snow. Traffic lights are visible at the intersection, with some showing red signals, and snow piles are accumulated along road edges and curbs."
 ```
 
-**Negative Prompt:**
+**Negative Prompt：**
 
 ```
 "The video captures a game playing, with bad crappy graphics and cartoonish frames. It represents a recording of old outdated games. The lighting looks very fake. The textures are very raw and basic. The geometries are very primitive. The images are very pixelated and of poor CG quality. There are many subtitles in the footage. Overall, the video is unrealistic at all."
 ```
 
-This prompt engineering approach ensures the following:
+这种提示工程方法确保了以下几点：
 
-- The anomaly (vehicle moving diagonally/wrong-way) remains clearly visible.
-- Snow effects are realistically applied without obscuring critical details.
-- The synthetic appearance is transformed into photorealistic quality.
-- Ground truth information from the simulator is preserved.
+- 异常（车辆斜向移动/逆行）始终清晰可见。
+- 雪效会以真实方式应用，而不会遮挡关键细节。
+- 合成外观被转换为照片级真实质量。
+- 来自模拟器的真值信息得到保留。
 
-## Cosmos Transfer 2.5 Output Examples
+## Cosmos Transfer 2.5 输出示例
 
-### Comparing Control Model Impacts
+### 比较控制模型的影响
 
-To demonstrate the versatility of Cosmos Transfer 2.5, we showcase outputs using different control configurations across three augmentation categories. Each control model (depth, segmentation, and edge) produces distinct photorealistic transformations while preserving the critical anomaly behavior.
+为了展示 Cosmos Transfer 2.5 的多样能力，我们展示了跨三类增强类型的不同控制配置输出。每种控制模型（depth、segmentation 和 edge）都会在保留关键异常行为的同时，生成不同的照片级真实变换结果。
 
-### Selected Augmentation Examples
+### 选定的增强示例
 
-To showcase the versatility of Cosmos Transfer 2.5, we present five representative augmentations demonstrating different environmental conditions and control strategies:
+为了展示 Cosmos Transfer 2.5 的多样能力，我们给出了五个具有代表性的增强示例，展示不同环境条件和控制策略：
 
-#### 1. Night Augmentation (Using Depth Control)
+#### 1. 夜间增强（使用 Depth Control）
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Night augmentation showing traffic scene with street lighting and vehicle headlights">
+<video controls width="100%" style="max-width: 800px;" aria-label="展示带有路灯和车辆前灯的夜间增强交通场景">
   <source src="./assets/night_depth_output.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  你的浏览器不支持 video 标签。
 </video>
-*Depth control preserves spatial relationships while creating dramatic nighttime lighting with street lamps and vehicle headlights*
+*Depth control 在创建具有路灯和车灯效果的戏剧化夜间光照时，能保留空间关系*
 
-#### 2. Mid-Morning Augmentation (Using Segmentation Control)
+#### 2. 上午中段增强（使用 Segmentation Control）
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Mid-morning augmentation showing traffic scene in bright daylight conditions">
+<video controls width="100%" style="max-width: 800px;" aria-label="展示明亮日间条件下交通场景的上午增强效果">
   <source src="./assets/mid_morning_seg_output.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  你的浏览器不支持 video 标签。
 </video>
-*Segmentation control ensures consistent object boundaries under bright, natural daylight conditions*
+*Segmentation control 可在明亮自然的日光条件下确保物体边界一致*
 
-#### 3. Snow Falling Augmentation (Using Edge Control)
+#### 3. 降雪增强（使用 Edge 控制）
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Snow falling augmentation showing traffic scene with heavy snowfall">
+<video controls width="100%" style="max-width: 800px;" aria-label="展示大雪天气交通场景的降雪增强效果">
   <source src="./assets/snow_falling_edge_output.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  你的浏览器不支持 video 标签。
 </video>
-*Edge control maintains geometric clarity through heavy snowfall, preserving critical road boundaries*
+*Edge control 能在大雪中保持几何清晰度，保留关键道路边界*
 
-#### 4. Fog Augmentation (Using Depth Control)
+#### 4. 雾天增强（使用 Depth Control）
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Fog augmentation showing traffic scene with reduced visibility due to fog">
+<video controls width="100%" style="max-width: 800px;" aria-label="展示因雾而能见度降低的交通场景雾天增强效果">
   <source src="./assets/fog_depth_output.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  你的浏览器不支持 video 标签。
 </video>
-*Depth-based fog naturally obscures distant objects while maintaining visibility of nearby vehicles and road features*
+*基于深度的雾效会自然遮蔽远处物体，同时保持近处车辆和道路特征可见*
 
-#### 5. Twilight Augmentation (Using Depth Control)
+#### 5. 黄昏增强（使用 Depth Control）
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Twilight augmentation showing traffic scene during dusk with transitional lighting">
+<video controls width="100%" style="max-width: 800px;" aria-label="展示黄昏过渡光照条件下交通场景的暮光增强效果">
   <source src="./assets/twilight_depth_output.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  你的浏览器不支持 video 标签。
 </video>
-*Twilight conditions with deep blue tones and transitional lighting capture the challenging visibility of dusk*
+*带有深蓝色调与过渡光照的黄昏条件，呈现出暮色下具有挑战性的可见性*
 
-### Key Observations
+### 关键观察
 
-- **Depth Control**: Best for maintaining 3D spatial consistency and realistic occlusions
-- **Segmentation Control**: Optimal for preserving semantic boundaries and object-specific transformations
-- **Edge Control**: Excellent for retaining structural details and geometric precision
+- **Depth Control**：最适合保持 3D 空间一致性和真实遮挡关系
+- **Segmentation Control**：最适合保留语义边界和针对特定物体的变换
+- **Edge 控制**：非常适合保留结构细节和几何精度
 
-All outputs successfully transform the synthetic appearance into photorealistic scenes, while ensuring the wrong-way vehicle anomaly remains clearly detectable for training robust safety systems.
+所有输出都成功将合成外观转换为照片级真实场景，同时确保逆行车辆异常在训练稳健安全系统时仍清晰可检测。
 
-## Control Parameters in Cosmos Transfer 2.5
+## Cosmos Transfer 2.5 中的控制参数
 
-### Configuration Structure
+### 配置结构
 
-Cosmos Transfer 2.5 provides flexible control parameters that allow fine-tuning of the augmentation process. The configuration determines how closely the output adheres to the structural information from the simulator while achieving photorealistic transformation.
+Cosmos Transfer 2.5 提供灵活的控制参数，可对增强过程进行微调。配置决定了输出在实现照片级真实变换的同时，应多大程度遵循来自模拟器的结构信息。
 
-### Basic Configuration Format
+### 基本配置格式
 
-The configuration file follows a JSON structure that specifies the input paths, output directory, and control parameters:
+配置文件采用 JSON 结构，用于指定输入路径、输出目录和控制参数：
 
 ```json
 {
@@ -246,124 +246,124 @@ The configuration file follows a JSON structure that specifies the input paths, 
 }
 ```
 
-### Control Types
+### 控制类型
 
-To use different control types, simply replace `"edge"` in the configuration with `"seg"` for segmentation control or `"depth"` for depth control, while updating the `control_path` accordingly.
+若要使用不同的控制类型，只需将配置中的 `"edge"` 替换为表示分割控制的 `"seg"` 或表示深度控制的 `"depth"`，同时相应更新 `control_path`。
 
-## Maintaining Ground Truth Integrity
+## 保持真值完整性
 
-### Preserving Critical Anomaly Behaviors
+### 保留关键异常行为
 
-A fundamental requirement for simulator-to-real augmentation is maintaining the integrity of ground truth data. Cosmos Transfer 2.5 excels at transforming synthetic visuals while preserving the exact behaviors and trajectories that make the data valuable for training.
+Sim2Real 增强的一个基本要求是保持真值数据的完整性。Cosmos Transfer 2.5 擅长在改造合成视觉效果的同时，保留使这些数据对训练有价值的精确行为和轨迹。
 
-### Visual Validation of Anomaly Preservation
+### 异常保留的可视化验证
 
-The generated augmented videos clearly maintain the wrong-way driving behavior across all environmental conditions:
+生成的增强视频在所有环境条件下都清晰保留了逆行行为：
 
-#### Anomaly Behavior Comparison
+#### 异常行为对比
 
-| Original Simulator | Augmented Output | Anomaly Status |
+| 原始模拟器 | 增强输出 | 异常状态 |
 |-------------------|------------------|----------------|
-| ![Original Anomaly](./assets/original_anomaly_trajectory.gif) | ![Augmented Anomaly](./assets/augmented_anomaly_trajectory.gif) | ✓ Wrong-way vehicle clearly visible and detectable |
+| ![原始异常](./assets/original_anomaly_trajectory.gif) | ![增强后异常](./assets/augmented_anomaly_trajectory.gif) | ✓ 逆行车辆清晰可见且可被检测 |
 
-### Ground Truth Preservation Features
+### 真值保留特性
 
-Cosmos Transfer 2.5 ensures that simulator-provided annotations remain valid:
+Cosmos Transfer 2.5 确保模拟器提供的标注仍然有效：
 
-- **Vehicle Trajectories**: Frame-by-frame positions are preserved exactly as in the simulator
-- **Bounding Boxes**: Object detection annotations remain accurate after augmentation
-- **Semantic Labels**: Vehicle classifications and road markings maintain their original labels
-- **Temporal Consistency**: The anomaly timing and duration remain unchanged
+- **车辆轨迹**：逐帧位置与模拟器中完全一致
+- **Bounding Boxes**：增强后目标检测标注仍保持准确
+- **语义标签**：车辆分类和道路标线保持原始标签
+- **时间一致性**：异常出现的时机和持续时间不变
 
-### Quality Assurance Results
+### 质量保证结果
 
-Our validation shows the following:
+我们的验证显示如下：
 
-- **100% anomaly preservation** across all 18 augmentation types
-- **Pixel-accurate bounding-box alignment** with original simulator data
-- **Consistent detection rates** when using the same anomaly detection models
-- **Enhanced visual clarity** that render anomalies even more apparent to human reviewers
+- 在全部 18 种增强类型中，**100% 保留异常**
+- 与原始模拟器数据相比，**bounding-box 对齐达到像素级精度**
+- 使用相同异常检测模型时，**检测率保持一致**
+- **增强后的视觉清晰度**使人工审查者更容易发现异常
 
-Because of this preservation of ground truth integrity, models trained on Cosmos Transfer 2.5-augmented data learn from photorealistic imagery while maintaining the exact safety-critical behaviors defined in the simulator.
+由于真值完整性得到保留，基于 Cosmos Transfer 2.5 增强数据训练的模型，能够在保持模拟器中定义的安全关键行为完全不变的前提下，从照片级真实图像中学习。
 
-## Scaling Data Diversity
+## 扩展数据多样性
 
-### From Single Scenario to Comprehensive Dataset
+### 从单一场景到完整数据集
 
-Cosmos Transfer 2.5 transforms the economics of synthetic data generation. Starting from a single simulator scenario, we generated 18 distinct augmentation variations, significantly expanding the training data diversity without additional manual effort in the simulator.
+Cosmos Transfer 2.5 改变了合成数据生成的成本结构。我们从单个模拟器场景出发，生成了 18 种不同的增强变体，在无需额外模拟器人工操作的情况下显著扩展了训练数据多样性。
 
-### Augmentation Matrix Results
+### 增强矩阵结果
 
-From our original wrong-way driving scenario, we generated a complete matrix of augmentations using a single control configuration.
+基于原始的逆行驾驶场景，我们使用单一控制配置生成了完整的增强矩阵。
 
-#### Complete Augmentation Grid
+#### 完整增强网格
 
 <div style="max-width: 95%; margin: 0 auto;">
 <img src="./assets/augmentation_matrix_grid.gif" alt="Augmentation Matrix" style="width: 100%; height: auto; display: block;">
 </div>
 
-The matrix showcases all 18 variations organized as follows:
+该矩阵展示了如下组织的全部 18 种变化：
 
-- **9 Environment Lighting conditions**
-- **5 Weather conditions**
-- **4 Road Surface conditions**
+- **9 种环境光照条件**
+- **5 种天气条件**
+- **4 种路面状况**
 
-This comprehensive grid demonstrates the full range of photorealistic augmentations possible from a single simulator scenario using one control type. Each variation maintains the critical wrong-way driving behavior while transforming the visual appearance. Similar grids could be generated using different control configurations (depth, edge, or segmentation) based on specific use case requirements.
+这个完整网格展示了使用一种控制类型、从单个模拟器场景能够实现的全部照片级真实增强范围。每种变化都在改变视觉外观的同时保留了关键的逆行行为。根据具体用例需求，也可以基于不同控制配置（depth、edge 或 segmentation）生成类似网格。
 
-### Cost-Benefit Analysis
+### 成本收益分析
 
-The following comparison demonstrates the significant advantages of using Cosmos Transfer 2.5 over traditional simulator approaches for generating diverse training scenarios.
+下表展示了与传统模拟器方法相比，使用 Cosmos Transfer 2.5 生成多样化训练场景的显著优势。
 
-| Aspect | Traditional Simulator | Cosmos Transfer 2.5 |
+| 方面 | 传统模拟器 | Cosmos Transfer 2.5 |
 |--------|----------------------|---------------------|
-| **Setup Time** | 18 scenarios × manual setup = Weeks of engineering effort | 1 base scenario + 18 prompts = Hours to generate full dataset |
-| **Processing** | 18 scenarios × rendering time = Significant computational cost | Parallel processing = All variations generated simultaneously |
-| **Flexibility** | Limited flexibility for additional variations | Infinite flexibility = Easy to add new augmentation types |
+| **设置时间** | 18 个场景 × 手动设置 = 数周工程投入 | 1 个基础场景 + 18 个提示 = 数小时生成完整数据集 |
+| **处理方式** | 18 个场景 × 渲染时间 = 大量计算成本 | 并行处理 = 同时生成全部变体 |
+| **灵活性** | 额外变体的灵活性有限 | 无限灵活性 = 易于添加新的增强类型 |
 
-### Data Quality Validation
+### 数据质量验证
 
-Each augmented output maintains the following:
+每个增强输出都保持了以下特性：
 
-- The original anomaly behavior (i.e. the wrong-way vehicle trajectory)
-- Consistent ground-truth annotations from the simulator
-- A photorealistic appearance suitable for real-world deployment
-- Diverse environmental conditions for robust model training
+- 原始异常行为（即逆行车辆轨迹）
+- 来自模拟器的一致 ground-truth 标注
+- 适合真实世界部署的照片级真实外观
+- 有助于稳健模型训练的多样环境条件
 
-This scalable approach allows teams to create comprehensive training datasets that prepare AI systems for the full spectrum of real-world conditions they may encounter.
+这种可扩展方法使团队能够创建全面的训练数据集，从而让 AI 系统为其可能遇到的全部真实世界条件做好准备。
 
-## Conclusion
+## 结论
 
-This tutorial demonstrates how Cosmos Transfer 2.5 revolutionizes synthetic data generation for Physical AI applications. By transforming basic simulator outputs into photorealistic, diverse datasets, it enables the development of robust world models for autonomous vehicles and robotics.
+本教程展示了 Cosmos Transfer 2.5 如何革新物理 AI 应用中的合成数据生成。通过将基础模拟器输出转换为照片级真实且多样的数据集，它使构建面向自动驾驶车辆和机器人的稳健世界模型成为可能。
 
-The wrong-way driving scenario has demonstrated the following:
+这个逆行驾驶场景展示了以下成果：
 
-- **18x Data Multiplication**: From a single simulator scenario to 18 photorealistic variations, spanning different lighting, weather, and road conditions
-- **Preserved Ground Truth**: 100% retention of anomaly behaviors and simulator annotations across all augmentations
-- **Production-Ready Quality**: Photorealistic outputs suitable for training safety-critical AI systems
-- **Flexible Control Options**: Depth, segmentation, and edge controls for different use cases
+- **18 倍数据扩增**：从单个模拟器场景扩展到 18 种照片级真实变体，覆盖不同光照、天气和路面条件
+- **保留真值**：在所有增强中对异常行为和模拟器标注实现 100% 保留
+- **可用于生产的质量**：输出具备可训练安全关键 AI 系统的照片级真实质量
+- **灵活的控制选项**：提供 depth、segmentation 和 edge 控制，以适配不同用例
 
-### Impact on Physical AI Development
+### 对物理 AI 开发的影响
 
-Cosmos Transfer 2.5 addresses critical challenges in Physical AI:
+Cosmos Transfer 2.5 解决了物理 AI 中的关键挑战：
 
-1. **Cost Efficiency**: Eliminates weeks of manual simulator engineering per scenario
-2. **Safety**: Enables training on dangerous scenarios without real-world risks
-3. **Scalability**: Democratizes access to diverse, high-quality training data
-4. **Reliability**: Maintains ground truth integrity for safety-critical applications
+1. **成本效率**：消除每个场景数周的模拟器手工工程投入
+2. **安全性**：无需真实世界风险即可在危险场景上进行训练
+3. **可扩展性**：让更多人能够获得多样化、高质量训练数据
+4. **可靠性**：为安全关键应用保持真值完整性
 
-By leveraging advanced generative AI with physical scene understanding from Cosmos Reason 1, this pipeline empowers businesses and researchers to build more robust Physical AI systems. The combination of photorealistic quality and preserved ground truth makes it particularly valuable for autonomous vehicle development, where both visual fidelity and behavioral accuracy are paramount.
+通过结合先进的生成式 AI 与来自 Cosmos Reason 1 的物理场景理解，该流水线使企业和研究人员能够构建更稳健的物理 AI 系统。照片级真实质量与真值保留的结合，使其对自动驾驶开发尤其有价值，因为该领域同时高度依赖视觉保真度和行为准确性。
 
-For implementation details and additional use cases, please refer to the [setup guide](setup.md) and explore more examples in the Cosmos ecosystem.
+有关实现细节和更多用例，请参阅[设置指南](setup.md)，并探索 Cosmos 生态中的更多示例。
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** October 09, 2025
+**发布日期：** 2025 年 10 月 09 日
 
-### Citation
+### 引用
 
-If you use this recipe or reference this work, please cite it as:
+如果你使用了此配方或引用了这项工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_cosmos_transfer_25_2025,
@@ -376,6 +376,6 @@ If you use this recipe or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用：**
 
-> Ryan Ji, & Jingyi Jin (2025). Cosmos Transfer 2.5 Sim2Real for Simulator Videos. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.html>
+> Ryan Ji 与 Jingyi Jin（2025）。Cosmos Transfer 2.5 用于模拟器视频的 Sim2Real。载于 *NVIDIA Cosmos Cookbook*。可访问：<https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.html>

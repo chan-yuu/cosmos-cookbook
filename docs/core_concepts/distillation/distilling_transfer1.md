@@ -1,99 +1,99 @@
-# Distilling Cosmos Transfer 1 Models
+# 蒸馏 Cosmos Transfer 1 模型
 
-> **Authors:** [Grace Lam](https://www.linkedin.com/in/grace-lam/)
-> **Organization:** NVIDIA
+> **作者：** [Grace Lam](https://www.linkedin.com/in/grace-lam/)
+> **机构：** NVIDIA
 
-## Instructions from the Cosmos Transfer 1 Repo
+## 来自 Cosmos Transfer 1 仓库的说明
 
-- [Distill Cosmos Transfer 1-7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/distillation_cosmos_transfer1_7b.md) **[with multi-GPU support]**
+- [蒸馏 Cosmos Transfer 1-7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/distillation_cosmos_transfer1_7b.md) **[支持多 GPU]**
 
-## Case Study: Distilling Cosmos Transfer 1 Edge
+## 案例研究：蒸馏 Cosmos Transfer 1 Edge
 
-This tutorial presents a case study on single-step distillation of the 36-step Cosmos Transfer 1-7B Edge model. While the original model required 72 total inferences (36 steps x 2) due to classifier-free guidance (CFG), the distilled model requires only a single inference without CFG. This achieves a 72x speedup while maintaining output quality.
+本教程展示了一个关于单步蒸馏 36-step Cosmos Transfer 1-7B Edge 模型的案例。原始模型由于使用 classifier-free guidance（CFG），总共需要 72 次推理（36 steps x 2）；而蒸馏后的模型无需 CFG，只需单次推理即可完成。这在保持输出质量的同时实现了 72 倍加速。
 
-### Overview
+### 概览
 
-Our recipe is a two-stage distillation pipeline.
+我们的 recipe 是一个两阶段蒸馏流水线。
 
-#### Stage 1: Knowledge Distillation (KD)
+#### 第 1 阶段：Knowledge Distillation（KD）
 
-- We generated a synthetic dataset of 10,000 noise-video pairs using the teacher model for Knowledge Distillation.
-- Having a strong warmup phase proved critical for subsequent DMD2 success, as this synthetic data approach significantly outperformed an alternative L2 regression warmup using real data.
-- We trained the KD phase using a learning rate of 1e-5 and global batch size of 64 for 10,000 iterations.
+- 我们使用 teacher model 生成了一个包含 10,000 组 noise-video 对的合成数据集，用于 Knowledge Distillation。
+- 强有力的 warmup 阶段被证明对后续 DMD2 的成功至关重要，因为这种合成数据方案明显优于另一种使用真实数据进行 L2 回归 warmup 的替代方法。
+- 我们以 1e-5 的学习率、64 的 global batch size 训练 KD 阶段，共 10,000 次迭代。
 
-#### Stage 2: Improved Distribution Matching Distillation (DMD2)
+#### 第 2 阶段：Improved Distribution Matching Distillation（DMD2）
 
-- We applied [DMD2](https://arxiv.org/abs/2405.14867), a state-of-the-art distribution-based distillation approach that blends adversarial distillation with variational score distillation.
-- The primary challenge was memory constraints from concurrent network copies (student model, teacher model, fake score network, and discriminator). We addressed this through FSDP, CP8, gradient checkpointing, and gradient accumulation to achieve an effective batch size of 64 on 16 nodes.
-- We trained the DMD2 phase using a learning rate of 5e-7, guidance scale of 5, GAN loss weight of 1e-3, student update frequency of 5, and global batch size of 64 for 24,000 iterations.
+- 我们使用了 [DMD2](https://arxiv.org/abs/2405.14867)，这是一种当前先进的基于分布的蒸馏方法，结合了对抗蒸馏与 variational score distillation。
+- 主要挑战在于同时维护多份网络副本带来的内存约束（student model、teacher model、fake score network 和 discriminator）。我们通过 FSDP、CP8、gradient checkpointing 和 gradient accumulation 解决了这一问题，从而在 16 个节点上实现了等效 batch size 为 64 的训练。
+- 我们以 5e-7 的学习率、5 的 guidance scale、1e-3 的 GAN loss 权重、5 的 student update frequency，以及 64 的 global batch size 训练 DMD2 阶段，共 24,000 次迭代。
 
-### Knowledge Distillation (KD)
+### Knowledge Distillation（KD）
 
-#### Dataset
+#### 数据集
 
-KD minimizes the regression loss between the Student model's single-step generation and the Teacher model's multi-step generation (36 steps for Cosmos Transfer 1). Consequently, KD requires a preliminary data generation phase to create a synthetic dataset of Teacher model input-output pairs. For Cosmos Transfer 1 Edge, the input comprises random noise, text prompt, and canny edge map, while the output consists of the generated video.
+KD 通过最小化 Student 模型单步生成与 Teacher 模型多步生成（对 Cosmos Transfer 1 来说为 36 步）之间的回归损失来进行训练。因此，KD 需要一个预先的数据生成阶段，以创建由 Teacher 模型输入输出对构成的合成数据集。对于 Cosmos Transfer 1 Edge，输入包括随机噪声、文本提示词和 canny edge map，输出则是生成的视频。
 
-For synthetic data generation, we randomly sampled 10,000 examples from the original training dataset used for Cosmos Transfer 1 Edge. We extracted the text prompts and canny inputs from these samples and processed them through the Teacher model (Cosmos Transfer 1 Edge) to generate corresponding output videos. The resulting KD dataset preserves the original text prompts and canny inputs while additionally storing the random noise tensors and Teacher-generated videos, creating complete input-output pairs for Student model training.
+在合成数据生成过程中，我们从用于 Cosmos Transfer 1 Edge 的原始训练数据集中随机采样了 10,000 个样本。我们提取这些样本中的文本提示词和 canny 输入，并将其送入 Teacher 模型（Cosmos Transfer 1 Edge）生成对应输出视频。最终得到的 KD 数据集保留了原始文本提示词和 canny 输入，同时额外存储随机噪声张量和 Teacher 生成的视频，从而为 Student 模型训练构建完整的输入输出对。
 
-To ensure high-quality synthetic data for distillation training, we generated Teacher outputs using optimal inference hyperparameters, including a guidance scale of 7 with negative prompting.
+为了确保蒸馏训练所需的合成数据质量足够高，我们使用最佳推理超参数生成 Teacher 输出，包括 guidance scale 为 7，并配合 negative prompting。
 
-#### Hyperparameters
+#### 超参数
 
-Our early distillation experiments revealed that batch size is a critical factor for effective knowledge transfer. Initial small-scale experiments using a batch size of 8 showed limited distillation quality, which improved substantially when scaling to batch sizes of 32 and above. Based on these findings, we adopted a batch size of 64 for all full-scale distillation experiments.
+我们早期的蒸馏实验表明，batch size 是实现有效知识迁移的关键因素。起初，batch size 为 8 的小规模实验表现出较为有限的蒸馏质量；而扩展到 32 及以上后，效果明显改善。基于这些发现，我们在所有完整规模的蒸馏实验中都采用了 64 的 batch size。
 
-For KD hyperparameter optimization, we conducted systematic learning rate sweeps and determined that a learning rate of 1e-5 yielded optimal performance across our experimental configurations.
+在 KD 超参数优化中，我们系统性地扫描了学习率，并确定 1e-5 在我们的实验配置下表现最佳。
 
-#### Visualizations
+#### 可视化
 
-Throughout the distillation process, we continuously monitored training progress by logging model output samples at regular intervals. This monitoring functionality is implemented as a training callback within the Cosmos Transfer 1 distillation codebase for systematic evaluation.
+在蒸馏过程中，我们持续记录模型输出样本，以定期监控训练进展。这一监控功能在 Cosmos Transfer 1 的蒸馏代码库中以 training callback 的形式实现，可用于系统化评估。
 
-The visualization layout displays four key components arranged vertically: Student 1-step sample, Teacher 1-step sample, canny edge input, and ground-truth reference video. Each row presents three temporal samples from the corresponding video clip – specifically the first, middle, and last frames – enabling direct visual comparison of distillation quality and temporal consistency across training iterations.
+可视化布局纵向展示四个关键组成部分：Student 1-step sample、Teacher 1-step sample、canny edge 输入，以及 ground-truth reference video。每一行展示对应视频片段的三个时间采样——即首帧、中间帧和末帧——从而能够直接比较不同训练迭代下的蒸馏质量与时间一致性。
 
-Representative visualizations from our distillation training runs are shown below.
+下面展示了蒸馏训练过程中的代表性可视化结果。
 
-After ~5k steps:
+约 5k steps 后：
 
 ![KD vis 5k](../../assets/images/distillation/kd_transfer1_step5k.jpg)
 
-After ~10k steps:
+约 10k steps 后：
 
 ![KD vis 10k](../../assets/images/distillation/kd_transfer1_step10k.jpg)
 
-### Improved Distribution Matching Distillation (DMD2)
+### Improved Distribution Matching Distillation（DMD2）
 
-#### Dataset
+#### 数据集
 
-DMD2 optimizes the Student model to match the output distribution of the Teacher model through adversarial training combined with variational score distillation. Unlike Knowledge Distillation, DMD2 requires a diverse dataset of ground-truth real videos rather than synthetic Teacher-generated outputs. We used the original training dataset used for Cosmos Transfer 1 Edge.
+DMD2 通过对抗训练结合 variational score distillation，优化 Student 模型以匹配 Teacher 模型的输出分布。与 Knowledge Distillation 不同，DMD2 需要的是多样化的真实 ground-truth 视频数据集，而不是 Teacher 生成的合成输出。我们使用了用于 Cosmos Transfer 1 Edge 的原始训练数据集。
 
-#### Hyperparameters
+#### 超参数
 
-Similar to Knowledge Distillation, batch size and learning rate proved critical, with optimal performance achieved using a batch size of 64 and learning rate of 5e-7. DMD2 introduces additional hyperparameters. We established an update frequency of 4 discriminator and fake score network updates per generator update (`student_update_freq=5`). Guidance scale optimization revealed that a value of 5 provided optimal trade-off between output saturation and detail sharpness. For loss weighting, we applied a GAN loss weight of 0.001, which effectively balanced the adversarial objective against the score distillation loss.
+与 Knowledge Distillation 类似，batch size 和学习率依然是关键因素。最佳性能出现在 batch size 为 64、学习率为 5e-7 时。DMD2 还引入了额外的超参数。我们设定每次 generator 更新前进行 4 次 discriminator 和 fake score network 更新（`student_update_freq=5`）。在 guidance scale 的优化中，我们发现取值 5 能在输出饱和度和细节锐度之间取得最佳平衡。对于损失加权，我们使用 0.001 的 GAN loss 权重，有效平衡了对抗目标与 score distillation loss。
 
-#### Visualizations
+#### 可视化
 
-Throughout the distillation process, we continuously monitored training progress by logging model output samples at regular intervals. This monitoring functionality is implemented as a training callback within the Cosmos Transfer 1 distillation codebase for systematic evaluation.
+在蒸馏过程中，我们持续记录模型输出样本，以定期监控训练进展。这一监控功能在 Cosmos Transfer 1 的蒸馏代码库中以 training callback 的形式实现，可用于系统化评估。
 
-The visualization layout displays four key components arranged vertically: Student 1-step sample, Teacher 1-step sample, canny edge input, and ground-truth reference video. Each row presents three temporal samples from the corresponding video clip – specifically the first, middle, and last frames – enabling direct visual comparison of distillation quality and temporal consistency across training iterations.
+可视化布局纵向展示四个关键组成部分：Student 1-step sample、Teacher 1-step sample、canny edge 输入，以及 ground-truth reference video。每一行展示对应视频片段的三个时间采样——即首帧、中间帧和末帧——从而能够直接比较不同训练迭代下的蒸馏质量与时间一致性。
 
-Representative visualizations from our distillation training runs are shown below.
+下面展示了蒸馏训练过程中的代表性可视化结果。
 
-After ~10k steps:
+约 10k steps 后：
 
 ![DMD2 vis 10k](../../assets/images/distillation/dmd2_transfer1_step10k.jpg)
 
-After ~20k steps:
+约 20k steps 后：
 
 ![DMD2 vis 20k](../../assets/images/distillation/dmd2_transfer1_step20k.jpg)
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** October 9, 2025
+**发布日期：** 2025 年 10 月 9 日
 
-### Citation
+### 引用
 
-If you use this content or reference this work, please cite it as:
+如果你使用了本内容或引用了本工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_distilling_transfer1_2025,
@@ -106,6 +106,7 @@ If you use this content or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用格式：**
 
-> Grace Lam (2025). Distilling Cosmos Transfer 1 Models. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_transfer1.html>
+> Grace Lam（2025）。蒸馏 Cosmos Transfer 1 模型。收录于 *NVIDIA Cosmos Cookbook*。访问地址：<https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_transfer1.html>
+

@@ -1,84 +1,84 @@
-# Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking
+# 用于多视角仓库检测与跟踪的 Cosmos Transfer 1 Sim2Real
 
-> **Authors:** [Alice Li](https://www.linkedin.com/in/alice-li-17439713b/) • [Thomas Tang](https://www.linkedin.com/in/zhengthomastang/) • [Yuxing Wang](https://www.linkedin.com/in/yuxing-wang-55394620b/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) > **Organization:** NVIDIA
+> **Authors:** [Alice Li](https://www.linkedin.com/in/alice-li-17439713b/) • [Thomas Tang](https://www.linkedin.com/in/zhengthomastang/) • [Yuxing Wang](https://www.linkedin.com/in/yuxing-wang-55394620b/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
+> **Organization:** NVIDIA
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
 | [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Sim to Real data augmentation |
 
-This use case demonstrates how to apply Cosmos Transfer 1 for data augmentation over Omniverse (OV) generated synthetic data to close the sim-to-real domain gap, specifically targeting multi-view warehouse detection and tracking scenarios.
+本用例演示了如何将 Cosmos Transfer 1 用于对 Omniverse (OV) 生成的合成数据进行数据增强，以缩小 sim-to-real 域差距，重点面向多视角仓库检测与跟踪场景。
 
-- [Setup and System Requirement](setup.md)
+- [安装与系统要求](setup.md)
 
-## Use Case Description
+## 用例说明
 
-NVIDIA Omniverse is a powerful platform for Synthetic Data Generation (SDG) that enables precise control over scene generation and simulation. While digital simulations provide accurate derived information such as depth and segmentation with scene control, generating variations for robust model training can be computationally expensive and time-consuming.
+NVIDIA Omniverse 是一个强大的合成数据生成（SDG）平台，可对场景生成和仿真进行精确控制。数字仿真虽然能够结合场景控制生成深度图、分割图等精确派生信息，但要为稳健模型训练生成多样化变体，往往计算成本高且耗时。
 
-This use case explores how first time outside-in multi-view world simulation can be achieved by Cosmos Transfer 1. Transforming Omniverse-generated synthetic warehouse scenes into realistic variations reduces the sim-to-real domain gap without the computational cost of re-rendering entire scenes.
+本用例探讨了如何利用 Cosmos Transfer 1 实现首次 outside-in 多视角世界仿真。将 Omniverse 生成的合成仓库场景转换为逼真的多样化版本，可以在不重新渲染整个场景的情况下缩小 sim-to-real 域差距。
 
-## Outside-In Multi-View Processing Approach
+## Outside-In 多视角处理方法
 
-Monitoring of warehouse spaces typically involves multi-camera views to provide comprehensive coverage. Since Cosmos Transfer 1 does not natively support multi-view processing, we adopt an approach to ensure visual consistency across all camera viewpoints:
+对仓库空间的监控通常涉及多摄像头视角，以提供全面覆盖。由于 Cosmos Transfer 1 原生并不支持多视角处理，我们采用如下方法来确保所有摄像头视角之间的视觉一致性：
 
-1. **Multi-view Outside-In Data Generation**: Multi-view synthetic videos and corresponding multi-modal
-   ground truth data (e.g., depth, segmentation masks) are prepared by [IsaacSim.Replicator.Agent](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html).
-2. **Processing**: For each video, identical text prompts and parameter settings are provided to the Cosmos Transfer 1 model, ensuring uniformity across different camera views. Modalities are carefully chosen and analyzed to enhance object feature consistency across different camera views. Detailed, data-driven text prompts are employed to minimize divergence in object features between views. In the following case, only depth and edge maps (0.5 depth + 0.5 edge) are used as input controls to the Cosmos Transfer 1 model.
+1. **多视角 Outside-In 数据生成**：通过 [IsaacSim.Replicator.Agent](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html) 准备多视角合成视频及其对应的多模态真值数据（例如深度图、分割掩码）。
+2. **处理**：对于每个视频，都向 Cosmos Transfer 1 模型提供相同的文本提示词和参数设置，以确保不同摄像头视角之间的一致性。我们会仔细选择并分析模态，以增强不同摄像头视角之间目标特征的一致性。同时采用详细、数据驱动的文本提示词，以尽量减少视角间目标特征的偏差。在以下案例中，仅使用 depth 和 edge map（0.5 depth + 0.5 edge）作为 Cosmos Transfer 1 模型的输入控制。
 
-This approach guarantees that all camera views receive consistent environmental transformations while maintaining spatial and temporal coherence across the multi-view setup.
+这种方法可确保所有摄像头视角在整个多视角设置中获得一致的环境变换，同时保持空间和时间上的连贯性。
 
 ![Data augmentation pipeline](assets/warehouse_mv_pipeline.png)
 
-## Demonstration Overview
+## 演示概览
 
-This demonstration shows how **Cosmos Transfer 1** enables sim-to-real domain adaptation through procedural scene randomization including image noise, lighting variations, texture changes, and object placement diversity. The parameter-consistent framework ensures consistent transformations across camera views to improve downstream 3D detection and tracking performance in warehouse environments.
+本演示展示了 **Cosmos Transfer 1** 如何通过程序化场景随机化（包括图像噪声、光照变化、纹理变化和物体摆放多样性）实现 sim-to-real 域适配。该参数一致框架确保不同摄像头视角之间的变换保持一致，从而提升仓库环境中下游 3D 检测与跟踪性能。
 
-## Dataset and Setup
+## 数据集与设置
 
-### Sample Input Warehouse Data
+### 仓库输入数据示例
 
-A sample of training data for the detection and tracking algorithms is stored locally in the `assets/SURF_Booth_030825/` directory. This multi-camera warehouse data entry provides synchronized rendered RGB and depth information from multiple camera viewpoints for warehouse scene.
+检测和跟踪算法的部分训练数据样本存储在本地 `assets/SURF_Booth_030825/` 目录中。该多摄像头仓库数据条目为仓库场景提供了来自多个摄像头视角的同步渲染 RGB 和深度信息。
 
-The dataset is located in the following directory:
+数据集位于以下目录：
 
 ```
 scripts/examples/transfer1/inference-warehouse-mv/assets/SURF_Booth_030825/
 ```
 
-### Data Structure
+### 数据结构
 
-The dataset provides a 6-camera warehouse setup with synchronized data organized as follows:
+数据集提供了一个 6 摄像头仓库设置，同步数据组织如下：
 
-- **`Camera_00/` through `Camera_05/`**: Individual camera directories, each containing the following:
-  - **`rgb.mp4`**: RGB video data for the camera view
-  - **`depth.mp4`**: Corresponding depth video data for the camera view
+- **`Camera_00/` 到 `Camera_05/`**：各自独立的摄像头目录，每个目录包含以下内容：
+  - **`rgb.mp4`**：该摄像头视角的 RGB 视频数据
+  - **`depth.mp4`**：该摄像头视角对应的深度视频数据
 
-### Additional Physical AI Smart Spaces Datasets
+### 更多 Physical AI Smart Spaces 数据集
 
-For additional multi-camera warehouse datasets, see the [NVIDIA PhysicalAI-SmartSpaces dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-SmartSpaces) on Hugging Face, which includes over 250 hours of synchronized multi-camera video with 2D/3D annotations, depth maps, and calibration data.
+如需更多多摄像头仓库数据集，请参阅 Hugging Face 上的 [NVIDIA PhysicalAI-SmartSpaces dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-SmartSpaces)，其中包含超过 250 小时的同步多摄像头视频，以及 2D/3D 标注、深度图和标定数据。
 
-### Warehouse Outside-In Multi-View Input
+### 仓库 Outside-In 多视角输入
 
-The RGB video for each camera is processed sequentially through multiple Cosmos Transfer 1 inference runs. We present the concatenated multi-view videos below to demonstrate the combined perspectives.
+每个摄像头的 RGB 视频都会通过多次 Cosmos Transfer 1 推理顺序处理。下面展示拼接后的多视角视频，以说明组合后的多个视角。
 
-**Multi-View RGB Input:**
+**多视角 RGB 输入：**
 
 <video width="720" controls>
   <source src="assets/combined_grid_rgb.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-**Combined Multi-View Depth Control:**
+**组合后的多视角 Depth 控制：**
 
 <video width="720" controls>
   <source src="assets/combined_grid_depth.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-## Cosmos Transfer 1 Pipeline Components
+## Cosmos Transfer 1 流程组件
 
-### Sim2Real Conversion with Ambient Variation
+### 通过环境变化实现 Sim2Real 转换
 
-We can leverage the Cosmos Transfer 1 model to convert the appearance of synthetic computer graphics to realistic warehouse conditions. By prompting the model appropriately, we can introduce varied ambient conditions such as different lighting scenarios, while preserving the structural layout and object relationships.
+我们可以利用 Cosmos Transfer 1 模型将合成计算机图形的外观转换为真实的仓库环境。通过恰当地编写提示词，我们可以在保留结构布局和对象关系的同时，引入不同光照场景等多样化环境条件。
 
 ```json
 {
@@ -94,20 +94,20 @@ We can leverage the Cosmos Transfer 1 model to convert the appearance of synthet
 }
 ```
 
-**Combined Multi-View Transfer 1 Output:**
+**组合后的多视角 Transfer 1 输出：**
 
 <video width="720" controls>
   <source src="assets/combined_grid_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-## Control Parameters in Cosmos Transfer 1
+## Cosmos Transfer 1 中的控制参数
 
-By updating text prompts with varied environmental descriptions, Cosmos Transfer 1 increases data diversity in addition to reducing the sim-to-reality gap. For example, providing descriptions of the warehouse scene under foggy or low-light conditions enables the generation of data with more challenging scenarios.
+通过使用不同环境描述更新文本提示词，Cosmos Transfer 1 除了能缩小 sim-to-reality 差距外，还能提升数据多样性。例如，提供雾天或低照度仓库场景描述，可以生成更具挑战性的场景数据。
 
-### Foggy and Dark Conditions
+### 雾天和昏暗条件
 
-Example control and text prompts:
+控制与文本提示词示例如下：
 
 ```json
 {
@@ -122,21 +122,21 @@ Example control and text prompts:
 
 ![Data augmentation pipeline](assets/foggy_dark_warehouse-min.gif)
 
-### Further Scaling Up
+### 进一步扩展规模
 
-With a diverse set of text prompts for world simulation, we can significantly scale up the variety of generated scenes.
+通过为世界仿真准备多样化的文本提示词，我们可以显著扩大生成场景的种类。
 
-Below is a demonstration showing how Cosmos Transfer 1 augments a single view using multiple text prompts, demonstrating the impact of prompt diversity.
+下面的演示展示了 Cosmos Transfer 1 如何使用多个文本提示词增强单一视角，从而体现提示词多样性的影响。
 
 ![Data augmentation pipeline](assets/multi_world_simulation-min.gif)
 
-Diversity can be further enhanced by dividing each camera view video into 10 segments and assigning a unique text prompt to each segment.
+还可以通过将每个摄像头视角视频划分为 10 个片段，并为每个片段分配独特的文本提示词，进一步提升多样性。
 
 ![Text Prompt Simulation](assets/viz_grid_text_prompts.jpg)
 
-### Recommended Control Configuration
+### 推荐的控制配置
 
-Similar to the weather augmentation approach, experiments show that controlling only for _edge and depth_ produces the best results for warehouse sim-to-real conversion. This configuration maintains structural consistency while allowing realistic appearance changes.
+与天气增强方法类似，实验表明，仅控制 _edge 和 depth_ 能够为仓库 sim-to-real 转换带来最佳效果。该配置在允许外观发生真实变化的同时，保持结构一致性。
 
 ```json
 {
@@ -152,15 +152,15 @@ Similar to the weather augmentation approach, experiments show that controlling 
 }
 ```
 
-## 2D Detection Results on Augmented Dataset
+## 增强数据集上的 2D 检测结果
 
-To evaluate the effectiveness of Cosmos Transfer 1 for data augmentation, experiments were conducted using carefully selected multi-view scenes from the AI City Challenge dataset. _Eleven distinct scenes_ were picked from the [AI City v0.1](https://www.aicitychallenge.org/) dataset, representing diverse warehouse and indoor environments.
+为评估 Cosmos Transfer 1 在数据增强方面的有效性，我们使用 AI City Challenge 数据集中精心挑选的多视角场景进行了实验。从 [AI City v0.1](https://www.aicitychallenge.org/) 数据集中选取了 _11 个不同场景_，代表多样化的仓库和室内环境。
 
-Each of these 11 baseline scenes was processed through the Cosmos Transfer 1 augmentation pipeline using the multi-view parameter-consistent approach described earlier. This process generated ambient variations, lighting changes, and environmental conditions (including dust and reduced visibility scenarios), while maintaining structural consistency and multi-view coherence across all camera viewpoints.
+这 11 个基线场景中的每一个都经过前文所述的多视角参数一致增强流程，由 Cosmos Transfer 1 进行处理。该过程在保持结构一致性和多视角连贯性的同时，生成了环境变化、光照变化以及包括粉尘和低能见度在内的环境条件变化。
 
-The resulting augmented dataset, containing both original and Cosmos Transfer-enhanced versions of each scene, was then used to train RT-DETR and EfficientViT-L2 detectors. The performance comparison demonstrates significant improvements in computer vision (CV) model accuracy and real-world generalization capabilities.
+随后，利用得到的增强数据集（同时包含每个场景的原始版本和经 Cosmos Transfer 增强的版本）训练 RT-DETR 和 EfficientViT-L2 检测器。性能对比显示，计算机视觉（CV）模型的准确性和真实世界泛化能力均有显著提升。
 
-### Detection Performance Results
+### 检测性能结果
 
 | Dataset Configuration                         | Pretrained Checkpoint | Building K Person AP50 | Building K Nova Carter AP50 | Building K mAP50 |
 | --------------------------------------------- | --------------------- | ---------------------- | --------------------------- | ---------------- |
@@ -168,26 +168,26 @@ The resulting augmented dataset, containing both original and Cosmos Transfer-en
 | **1-min Cosmos AICity v0.1**                  | NVImageNetV2 backbone | 0.827 (+6.17%)         | 0.545 (+12.35%)             | 0.686 (+8.60%)   |
 | **1-min IsaacSim + 1-min Cosmos AICity v0.1** | NVImageNetV2 backbone | 0.838 (+7.40%)         | 0.645 (+25.94%)             | 0.742 (+15.50%)  |
 
-## Conclusion
+## 结论
 
-This use case demonstrates how users can leverage Cosmos Transfer 1 as an AI model and framework for data augmentation to bridge the sim-to-real domain gap in multi-view warehouse scenarios. These are the key insights:
+本用例展示了用户如何将 Cosmos Transfer 1 作为 AI 模型和框架，用于多视角仓库场景中的数据增强，以弥合 sim-to-real 域差距。以下是关键要点：
 
-1. **Cost-effective Data Augmentation**: Cosmos Transfer 1 provides an efficient alternative to expensive synthetic data re-generation, enabling rapid creation of environmental variations.
-2. **Multi-View Consistency**: The parameter-consistent approach ensures consistent transformations across all camera views while maintaining spatial and temporal coherence.
-3. **Significant Performance Gains**: Both RT-DETR and EfficientViT-L2 detectors show substantial improvements (8-11% mAP increase) when trained on Cosmos Transfer 1 augmented datasets.
-4. **Optimal Control Configuration**: Using only edge and depth controls produce the best results for warehouse sim-to-real conversion.
+1. **高性价比的数据增强**：Cosmos Transfer 1 为昂贵的合成数据重新生成提供了高效替代方案，可快速创建环境变化版本。
+2. **多视角一致性**：参数一致的方法可在保持空间和时间连贯性的同时，确保所有摄像头视角之间的变换保持一致。
+3. **显著的性能提升**：当使用 Cosmos Transfer 1 增强数据集进行训练时，RT-DETR 和 EfficientViT-L2 检测器都表现出明显提升（mAP 提高 8-11%）。
+4. **最佳控制配置**：仅使用 edge 和 depth 控制即可获得仓库 sim-to-real 转换的最佳结果。
 
-By applying this framework, we can generate realistic warehouse scenes that maintain multi-view consistency, leading to substantial improvements in downstream detection and tracking algorithm accuracy, while reducing the need for expensive real-world data collection or costly synthetic data re-rendering.
+通过应用该框架，我们可以生成保持多视角一致性的逼真仓库场景，在减少昂贵真实世界数据采集或高成本合成数据重渲染需求的同时，显著提升下游检测与跟踪算法的准确性。
 
 ---
 
-## Document Information
+## 文档信息
 
 **Publication Date:** October 09, 2025
 
-### Citation
+### 引用
 
-If you use this recipe or reference this work, please cite it as:
+如果你使用了此配方或引用了这项工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_cosmos_transfer_1_2025,
