@@ -1,42 +1,42 @@
-# Isaac GR00T-Dreams for Synthetic Trajectory Data Generation
+# Isaac GR00T-Dreams：用于合成轨迹数据生成
 
-> **Authors:** NVIDIA Isaac Team
+> **作者：** NVIDIA Isaac Team
 >
-> **Organization:** NVIDIA
+> **机构：** NVIDIA
 
-## Overview
+## 概述
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) | Post-training | Synthetic trajectory data generation for humanoid robots |
+| [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) | 后训练 | 面向人形机器人的合成轨迹数据生成 |
 
-Isaac GR00T-Dreams leverages **Cosmos Predict 2** to generate synthetic trajectory data for teaching humanoid robots new actions in novel environments. By using world foundation models, a small team can create training data that would otherwise require thousands of demonstrators.
+Isaac GR00T-Dreams 利用 **Cosmos Predict 2** 生成合成轨迹数据，用于在新环境中教会人形机器人新的动作。借助 world foundation models，一个小团队就可以创建训练数据，而这些数据原本可能需要数千名示范者才能收集。
 
-## Key Features
+## 关键特性
 
-- **Scalable Generation**: Produce large-scale synthetic trajectories from minimal human demonstrations
-- **Environment Generalization**: Adapt to new environments without extensive retraining
-- **Diverse Behaviors**: Cover wide-ranging scenarios and edge cases
-- **Cost-Effective**: Dramatically reduce manual data collection effort
+- **可扩展生成**：从极少量人类演示中生成大规模合成轨迹
+- **环境泛化**：无需大量重新训练即可适应新环境
+- **行为多样性**：覆盖广泛场景和边缘情况
+- **成本高效**：大幅减少人工数据采集工作量
 
-## How It Works
+## 工作原理
 
-1. **Start with Demonstrations**: Use a small set of human demonstration videos
-2. **Generate Variations**: Apply Cosmos Predict 2 to create synthetic trajectories with environmental variations
-3. **Scale Training Data**: Produce thousands of variations from each demonstration
-4. **Train Policies**: Use synthetic data to train robust robot control policies
+1. **从演示开始**：使用一小组人类演示视频
+2. **生成变体**：应用 Cosmos Predict 2 创建带环境变化的合成轨迹
+3. **扩展训练数据**：从每个演示生成成千上万种变体
+4. **训练策略**：使用合成数据训练鲁棒的机器人控制策略
 
-## Applications
+## 应用
 
-- Humanoid locomotion (walking, running, navigation)
-- Object manipulation and interaction
-- Multi-terrain adaptation
-- Rare scenario and edge case coverage
+- 人形机器人运动（行走、奔跑、导航）
+- 物体操作与交互
+- 多地形适应
+- 稀有场景和边缘情况覆盖
 
-## Resources
+## 资源
 
-- **[GR00T-Dreams GitHub](https://github.com/nvidia/gr00t-dreams)** - Source code and documentation
-- **[Technical Blog](https://developer.nvidia.com/blog/enhance-robot-learning-with-synthetic-trajectory-data-generated-by-world-foundation-models/)** - In-depth overview and results
-- **[NVIDIA Isaac Platform](https://developer.nvidia.com/isaac)** - Robotics development platform
-- **[Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2)** - World foundation model
-- **[Isaac GR00T](https://developer.nvidia.com/isaac/gr00t)** - Humanoid robot foundation model
+- **[GR00T-Dreams GitHub](https://github.com/nvidia/gr00t-dreams)** - 源代码与文档
+- **[Technical Blog](https://developer.nvidia.com/blog/enhance-robot-learning-with-synthetic-trajectory-data-generated-by-world-foundation-models/)** - 深入介绍与结果
+- **[NVIDIA Isaac Platform](https://developer.nvidia.com/isaac)** - 机器人开发平台
+- **[Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2)** - world foundation model
+- **[Isaac GR00T](https://developer.nvidia.com/isaac/gr00t)** - 人形机器人 foundation model

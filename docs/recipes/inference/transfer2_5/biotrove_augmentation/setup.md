@@ -1,73 +1,73 @@
-# Setup and System Requirements
+# 设置与系统要求
 
-This guide describes how to set up your environment to run the **Cosmos Transfer 2.5 + FiftyOne** workflow to augment the **BioTrove moth dataset** and explore results in the FiftyOne App.
+本指南介绍如何设置环境，以运行 **Cosmos Transfer 2.5 + FiftyOne** 工作流，对 **BioTrove moth dataset** 进行增强，并在 FiftyOne App 中探索结果。
 
-The setup has three main parts:
+设置主要分为三部分：
 
-1. System and software requirements
-2. Installing Cosmos Transfer 2.5 and its dependencies
-3. Installing and configuring FiftyOne and the dataset
+1. 系统与软件要求
+2. 安装 Cosmos Transfer 2.5 及其依赖项
+3. 安装并配置 FiftyOne 和数据集
 
 ---
 
-## System Requirements
+## 系统要求
 
-### Minimum Hardware Requirements
+### 最低硬件要求
 
 - **GPU**:
-  - 1 or more NVIDIA GPUs
-  - **Minimum 80 GB GPU memory (VRAM)** (e.g., A100 80GB, H100 80GB)
-  - Ampere architecture or newer (e.g., RTX 30 Series, A100, H100 or later recommended)
-- **Storage**:
-  - **Minimum 100 GB free disk space** for:
-    - Cosmos Transfer 2.5 repository and model weights
-    - FiftyOne datasets and derived videos/images (edge maps, outputs, last frames)
+  - 1 张或多张 NVIDIA GPU
+  - **至少 80 GB GPU memory (VRAM)**（例如 A100 80GB、H100 80GB）
+  - Ampere 架构或更新版本（推荐 RTX 30 Series、A100、H100 或更高版本）
+- **存储**:
+  - **至少 100 GB 可用磁盘空间**，用于：
+    - Cosmos Transfer 2.5 仓库和模型权重
+    - FiftyOne 数据集及派生视频/图像（边缘图、输出、最后一帧）
 
-### Supported Platform
+### 支持的平台
 
-- **Operating System**: Linux x86-64
-  - Recommended: **Ubuntu ≥ 22.04** (glibc ≥ 2.35)
+- **操作系统**: Linux x86-64
+  - 推荐：**Ubuntu ≥ 22.04**（glibc ≥ 2.35）
 - **NVIDIA Driver**:
-  - **≥ 570.124.06**, compatible with CUDA **12.8.1** (or CUDA 12+)
+  - **≥ 570.124.06**，兼容 CUDA **12.8.1**（或 CUDA 12+）
 - **Python**:
-  - **Python 3.10** (aligns with Cosmos Transfer 2.5 requirements)
+  - **Python 3.10**（与 Cosmos Transfer 2.5 要求一致）
 
 ---
 
-## Software Requirements
+## 软件要求
 
-You will need the following software components:
+你需要以下软件组件：
 
-- **CUDA Toolkit** compatible with your driver (CUDA 12+)
-- **PyTorch ≥ 2.5** with CUDA support
+- **CUDA Toolkit**，需与你的驱动兼容（CUDA 12+）
+- **PyTorch ≥ 2.5**，且带有 CUDA 支持
 - **TorchVision**
 - **Git**
-- **FFmpeg** (CLI) – for converting images to videos and handling video I/O
-- **Python packages**:
+- **FFmpeg**（CLI）— 用于将图像转换为视频以及处理视频 I/O
+- **Python 包**:
   - `fiftyone`
-  - `opencv-python` (for Canny edges and video manipulation)
-  - Cosmos Transfer 2.5 Python package (installed from the repo)
-  - Additional Cosmos dependencies (typically installed via its setup guide), such as:
+  - `opencv-python`（用于 Canny 边缘和视频处理）
+  - Cosmos Transfer 2.5 Python 包（从仓库安装）
+  - 其他 Cosmos 依赖项（通常通过其设置指南安装），例如：
     - `json5`
-    - `gradio` (optional UI)
-    - `easyio` (for multi-storage backends)
+    - `gradio`（可选 UI）
+    - `easyio`（用于多存储后端）
 
-> For the most accurate list of Cosmos Transfer 2.5 dependencies, always refer to the official [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md).
+> 如需获取最准确的 Cosmos Transfer 2.5 依赖项列表，请始终参考官方 [**Cosmos Transfer 2.5 设置指南**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md)。
 
 ---
 
-## Installation
+## 安装
 
-### 1. Create and Activate a Python Environment
+### 1. 创建并激活 Python 环境
 
-You can use either `conda` or `venv`. Example with `conda`:
+你可以使用 `conda` 或 `venv`。以下是使用 `conda` 的示例：
 
 ```bash
 conda create -n cosmos-transfer2_5-biotrove python=3.10 -y
 conda activate cosmos-transfer2_5-biotrove
 ```
 
-Or with `venv`:
+或者使用 `venv`：
 
 ```bash
 python3.10 -m venv cosmos-transfer2_5-biotrove
@@ -76,34 +76,34 @@ source cosmos-transfer2_5-biotrove/bin/activate
 
 ---
 
-### 2. Install FFmpeg
+### 2. 安装 FFmpeg
 
-On Ubuntu:
+在 Ubuntu 上：
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y ffmpeg
 ```
 
-You should be able to run:
+你应该能够运行：
 
 ```bash
 ffmpeg -version
 ```
 
-without errors.
+且不会报错。
 
 ---
 
-### 3. Install FiftyOne and Supporting Python Packages
+### 3. 安装 FiftyOne 和配套 Python 包
 
-Install FiftyOne and core Python dependencies:
+安装 FiftyOne 和核心 Python 依赖项：
 
 ```bash
 pip install fiftyone opencv-python
 ```
 
-Optional, but recommended for working with notebooks and visualization:
+可选但推荐，用于配合 notebook 和可视化：
 
 ```bash
 pip install jupyterlab umap-learn
@@ -111,21 +111,21 @@ pip install jupyterlab umap-learn
 
 ---
 
-### 4. Clone and Install Cosmos Transfer 2.5
+### 4. 克隆并安装 Cosmos Transfer 2.5
 
-Clone the Cosmos Transfer 2.5 repository and install it in editable mode and follow the [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md) for environment configuration and model weight downloads.
+克隆 Cosmos Transfer 2.5 仓库，并以可编辑模式安装；同时按照 [**Cosmos Transfer 2.5 设置指南**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md) 完成环境配置和模型权重下载。
 
 ---
 
-### 5. Configure Environment Variables and Paths
+### 5. 配置环境变量与路径
 
-Set `COSMOS_DIR`:
+设置 `COSMOS_DIR`：
 
 ```bash
 export COSMOS_DIR=/path/to/cosmos-transfer2.5
 ```
 
-Optional:
+可选：
 
 ```bash
 export LIST_FILE=/path/to/video_list.txt
@@ -134,9 +134,9 @@ export MAX_VIDS=100
 
 ---
 
-## Dataset Setup (BioTrove Moth Dataset)
+## 数据集设置（BioTrove Moth Dataset）
 
-This recipe uses a subset of the BioTrove dataset from the Hugging Face Hub:
+此配方使用来自 Hugging Face Hub 的 BioTrove 数据集子集：
 
 ```python
 dataset_src = fouh.load_from_hub(
@@ -149,16 +149,16 @@ dataset_src = fouh.load_from_hub(
 
 ---
 
-## Verification
+## 验证
 
-### Verify Cosmos Transfer 2.5
+### 验证 Cosmos Transfer 2.5
 
 ```bash
 cd $COSMOS_DIR
 python examples/inference.py --help
 ```
 
-### Verify FiftyOne + FFmpeg
+### 验证 FiftyOne + FFmpeg
 
 ```python
 import fiftyone as fo
@@ -172,7 +172,7 @@ dataset_src = fouh.load_from_hub(
 )
 ```
 
-Minimal FFmpeg test:
+最小 FFmpeg 测试：
 
 ```bash
 ffmpeg -loop 1 -i some_image.jpg -t 1 -c:v libx264 -pix_fmt yuv420p test.mp4
@@ -180,6 +180,6 @@ ffmpeg -loop 1 -i some_image.jpg -t 1 -c:v libx264 -pix_fmt yuv420p test.mp4
 
 ---
 
-## Next Steps
+## 后续步骤
 
-You can go to the [inference tutorial](inference.md) to complete the Cosmos Transfer 2.5 + FiftyOne workflow. And visit this [tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it directly in your environment.
+你可以前往[推理教程](inference.md)完成 Cosmos Transfer 2.5 + FiftyOne 工作流。也可以访问这个[教程](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html)，直接在你的环境中运行它。

@@ -1,4 +1,4 @@
 #
 
-- [Setup](setup.md)
-- [Post Training](post_training.md)
+- [设置](setup.md)
+- [后训练](post_training.md)

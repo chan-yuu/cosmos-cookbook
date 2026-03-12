@@ -1,3 +1,3 @@
 #
 
-- [Post-Training](post_training.md)
+- [后训练](post_training.md)
