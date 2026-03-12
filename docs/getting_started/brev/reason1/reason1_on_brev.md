@@ -1,145 +1,145 @@
-# Get Started with Cosmos Reason1 on Brev: Inference and Post-Training
+# 在 Brev 上开始使用 Cosmos Reason1：推理与后训练
 >
-> **Author:** [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/)
-> **Organization:** NVIDIA
+> **作者：** [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/)
+> **组织：** NVIDIA
 
-This guide walks you through setting up NVIDIA Cosmos Reason 1 on a [Brev](https://brev.dev) H100 GPU instance for both inference and post-training workflows. Brev provides on-demand cloud GPUs with pre-configured environments, making it easy to get started with Cosmos models.
+本指南将带你在 [Brev](https://brev.dev) 的 H100 GPU 实例上部署 NVIDIA Cosmos Reason 1，用于推理和后训练工作流。Brev 提供按需的云端 GPU 和预配置环境，让你能够轻松开始使用 Cosmos 模型。
 
-## Overview
+## 概览
 
-[NVIDIA Brev](https://developer.nvidia.com/brev) is a cloud GPU platform that provides instant access to high-performance GPUs like the H100. This guide will help you do the following:
+[NVIDIA Brev](https://developer.nvidia.com/brev) 是一个云 GPU 平台，可即时访问 H100 等高性能 GPU。本指南将帮助你完成以下内容：
 
-1. Set up a Brev instance with an H100 GPU.
-2. Configure the environment for Cosmos Reason 1.
-3. Run inference on the Reason 1 model.
-4. Perform post-training (SFT) on custom datasets.
+1. 创建一台配备 H100 GPU 的 Brev 实例。
+2. 为 Cosmos Reason 1 配置环境。
+3. 运行 Reason 1 模型推理。
+4. 在自定义数据集上执行后训练（SFT）。
 
-## Prerequisites
+## 前置条件
 
-- [Sign up](https://login.brev.nvidia.com/signin) for a Brev account.
-- Install the Brev CLI as described in the [Brev CLI documentation](https://docs.nvidia.com/brev/latest/brev-cli.html).
-- Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/latest/quick-start.html) to get a feel for the platform.
-- A Hugging Face account with access to [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B).
+- [注册](https://login.brev.nvidia.com/signin) Brev 账户。
+- 按照 [Brev CLI 文档](https://docs.nvidia.com/brev/latest/brev-cli.html) 安装 Brev CLI。
+- 参考 [Brev Quickstart](https://docs.nvidia.com/brev/latest/quick-start.html) 熟悉平台。
+- 拥有一个 Hugging Face 账户，并已获得 [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) 的访问权限。
 
-## The cheat code: Launchables
+## 快速捷径：Launchables
 
-[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
+[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) 是一种便捷方式，可将硬件和软件环境打包为易于分享的链接。一旦你把 Cosmos 环境调试好，Launchable 就是节省时间并与他人共享配置的最方便方式。
 
-> **Note**: Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below as Brev changes over time.
+> **注意**：Cosmos 和 Brev 都在不断演进。随着 Brev 的变化，你在下面的步骤中可能会看到一些细微的 UI 或其他差异。
 
-## Step 1: Create a Brev Launchable
+## 第 1 步：创建一个 Brev Launchable
 
-1. Log in to your [Brev account](https://login.brev.nvidia.com/signin).
+1. 登录你的 [Brev 账户](https://login.brev.nvidia.com/signin)。
 
-2. Find the **Launchable** section of the Brev website.
+2. 在 Brev 网站中找到 **Launchable** 部分。
 ![Launchables Menu](./images/brev-01-launchable-menu.png)
 
-3. Click the **Create Launchable** button.
+3. 点击 **Create Launchable** 按钮。
 ![Create Launchable Button](./images/brev-02-create-launchable-button.png)
 
-4. Enter the Cosmos Reason 1 [GitHub URL](https://github.com/nvidia-cosmos/cosmos-reason1) ![https://github.com/nvidia-cosmos/cosmos-reason1](./images/brev-03-chose-repo.png)
+4. 输入 Cosmos Reason 1 的 [GitHub URL](https://github.com/nvidia-cosmos/cosmos-reason1) ![https://github.com/nvidia-cosmos/cosmos-reason1](./images/brev-03-chose-repo.png)
 
-5. Add a setup script for Cosmos Reason 1. Refer to the [sample setup script](./setup_script.sh) for an example.
+5. 为 Cosmos Reason 1 添加一个设置脚本。示例可参考 [sample setup script](./setup_script.sh)。
 ![Setup Script](./images/brev-06-startup-script.png)
 
-6. If you don't need Jupyter, remove it. You can open other ports on Brev if you plan to set up a custom server.
+6. 如果你不需要 Jupyter，可以将其移除。如果你计划搭建自定义服务器，也可以在 Brev 上开放其他端口。
 ![Jupyter](./images/brev-05-chosejupyter.png)
 
-7. Choose an H100 GPU instance with 80GB VRAM.
+7. 选择一台具有 80GB VRAM 的 H100 GPU 实例。
 ![H100 Instance](./images/brev04-choose-compute.png)
 
-8. Name your Launchable and configure access (this usually takes 2-3 minutes). ![create](./images/brev-07-create-launchable.png)
+8. 为你的 Launchable 命名并配置访问权限（通常需要 2-3 分钟）。 ![create](./images/brev-07-create-launchable.png)
 
-## Step 2: Deploy and Connect to Your Instance
+## 第 2 步：部署并连接到你的实例
 
-1. From the list of Launchables, click the **Deploy Now** button.
+1. 在 Launchables 列表中，点击 **Deploy Now** 按钮。
 ![Deploy Now](./images/brev-08-deploy-0.png)
 
-2. Now click the **Deploy Launchable** button from the details page.
+2. 然后在详情页中点击 **Deploy Launchable** 按钮。
 ![Deploy Launchable](./images/brev-08-deploy-1.png)
 
-3. Click the **Go to Instance Page** button.
+3. 点击 **Go to Instance Page** 按钮。
 ![Go to Instance Page](./images/brev-08-deploy-2.png)
 
-4. Once your instance is ready, Brev will provide SSH connection details.
+4. 当实例准备就绪后，Brev 会提供 SSH 连接信息。
 ![instance](./images/brev-09-access-or-stop.png)
 
-### Option 1: Open Jupyter Notebook
+### 选项 1：打开 Jupyter Notebook
 
 ![Notebook](./images/brev-10-notebook.png)
 
-### Option 2: Copy the SSH command from your Brev dashboard
+### 选项 2：从你的 Brev 控制台复制 SSH 命令
 
-1. Use the following terminal command to log in to your Brev account:
+1. 使用以下终端命令登录你的 Brev 账户：
 
    ```bash
    brev login --token <YOUR_TOKEN>
    ```
 
-2. Open a Brev terminal locally:
+2. 在本地打开一个 Brev 终端：
 
    ```bash
    brev shell sample-reason1-fa3124
    ```
 
-   You can also open the instance in a code editor (the following example uses Cursor):
+   你也可以在代码编辑器中打开该实例（下面的示例使用 Cursor）：
 
    ```bash
    brev open sample-reason1-fa3124 cursor
    ```
 
-## Step 3: Authenticate the Hugging Face CLI
+## 第 3 步：验证 Hugging Face CLI
 
-A Hugging Face token is required to download the Cosmos Reason1 model:
+下载 Cosmos Reason1 模型需要 Hugging Face token：
 
 ```bash
 # Authenticate with Hugging Face
 ~/.local/bin/hf auth login
 ```
 
-When prompted, enter your Hugging Face token. You can create a token at [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+出现提示后，输入你的 Hugging Face token。你可以在 [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) 创建 token。
 
-> **Important**: Make sure you have access to the [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) model. Request access if needed.
+> **重要**：请确保你已获得 [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) 模型的访问权限。如有需要，请先申请访问。
 
-## Step 4: Run Inference and Post-Training
+## 第 4 步：运行推理和后训练
 
-Now you're ready to run inference with Cosmos Reason 1!
+现在你已经可以开始使用 Cosmos Reason 1 进行推理了！
 
-Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/nvidia-cosmos/cosmos-reason1) to run the inference and post-training examples.
+按照 [Cosmos Reason GitHub 仓库](https://github.com/nvidia-cosmos/cosmos-reason1) 中提供的步骤运行推理和后训练示例。
 
-## Troubleshooting
+## 故障排查
 
-### Model Download Issues
+### 模型下载问题
 
-If the model fails to download, do the following:
+如果模型下载失败，请执行以下检查：
 
-1. Verify your Hugging Face authentication: `~/.local/bin/hf whoami`
-2. Ensure you have access to the Cosmos-Reason1-7B model
-3. Check your Internet connection.
-4. Try downloading manually: `huggingface-cli download nvidia/Cosmos-Reason1-7B`
+1. 验证你的 Hugging Face 登录状态：`~/.local/bin/hf whoami`
+2. 确认你拥有 Cosmos-Reason1-7B 模型的访问权限
+3. 检查你的网络连接。
+4. 尝试手动下载：`huggingface-cli download nvidia/Cosmos-Reason1-7B`
 
-### SSH Connection Issues
+### SSH 连接问题
 
-If you lose your SSH connection, do the following:
+如果 SSH 连接断开，请执行以下检查：
 
-1. Check if your Brev instance is running. Brev instances may pause after inactivity.
-2. Check your Brev dashboard for instance status.
-3. Restart the instance if needed.
-4. Reconnect using the SSH command.
+1. 检查你的 Brev 实例是否仍在运行。Brev 实例可能会在空闲后暂停。
+2. 在 Brev 控制台中查看实例状态。
+3. 如有需要，重启实例。
+4. 使用 SSH 命令重新连接。
 
-## Resource Management
+## 资源管理
 
-### Stopping Your Instance
+### 停止实例
 
-To avoid unnecessary charges, follow these steps:
+为避免产生不必要的费用，请按以下步骤操作：
 
-1. Go to your Brev dashboard.
-2. Select your instance.
-3. Click **Stop** or **Delete** when done.
+1. 打开你的 Brev 控制台。
+2. 选择你的实例。
+3. 使用完成后点击 **Stop** 或 **Delete**。
 
-### Saving Your Work
+### 保存你的工作
 
-Before stopping your instance, use the following command to save your work:
+在停止实例之前，使用以下命令保存你的工作：
 
 ```bash
 # Save model checkpoints to cloud storage (e.g., S3, GCS)
@@ -147,16 +147,16 @@ Before stopping your instance, use the following command to save your work:
 scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outputs ./local-outputs
 ```
 
-## Additional Resources
+## 其他资源
 
-- [Cosmos Reason 1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
-- [Cosmos Reason 1 Model on Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason1-7B)
-- [Cosmos Reason 1 Paper](https://arxiv.org/abs/2503.15558)
-- [Brev Documentation](https://docs.nvidia.com/brev/latest/about-brev.html)
+- [Cosmos Reason 1 GitHub 仓库](https://github.com/nvidia-cosmos/cosmos-reason1)
+- [Hugging Face 上的 Cosmos Reason 1 模型](https://huggingface.co/nvidia/Cosmos-Reason1-7B)
+- [Cosmos Reason 1 论文](https://arxiv.org/abs/2503.15558)
+- [Brev 文档](https://docs.nvidia.com/brev/latest/about-brev.html)
 - [Cosmos Cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
 
-## Support
+## 支持
 
-For issues related to Cosmos Reason 1 or Brev, you can use the following resources:
+如果你遇到与 Cosmos Reason 1 或 Brev 相关的问题，可使用以下资源：
 
-- **Cosmos Reason 1**: Open an issue on the [GitHub repository](https://github.com/nvidia-cosmos/cosmos-reason1/issues)
+- **Cosmos Reason 1**：在 [GitHub 仓库](https://github.com/nvidia-cosmos/cosmos-reason1/issues) 中提交 issue

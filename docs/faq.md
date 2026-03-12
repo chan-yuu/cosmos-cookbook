@@ -1,341 +1,341 @@
-# Frequently Asked Questions
+# 常见问题解答
 
-This document contains comprehensive FAQ information compiled from multiple sources.
+本文档汇总了来自多个来源的完整 FAQ 信息。
 
-## General Questions
+## 常规问题
 
-### What is NVIDIA Cosmos?
+### 什么是 NVIDIA Cosmos？
 
-**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a world foundation model (WFM) development platform to advance physical AI. At its core are Cosmos WFMs, openly available pretrained multimodal models that developers can use out-of-the-box for generating world states as videos and physical AI reasoning, or post-train to develop specialized physical AI models. NVIDIA Cosmos also includes advanced tokenizers, guardrails, accelerated data-processing pipeline, and post-training scripts.
+**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** 是一个用于推进 Physical AI 的世界基础模型（WFM）开发平台。其核心是 Cosmos WFM——公开提供的预训练多模态模型，开发者可以开箱即用地用它们生成以视频形式呈现的世界状态并进行 Physical AI 推理，或通过后训练开发专用的 Physical AI 模型。NVIDIA Cosmos 还包括先进的 tokenizer、guardrails、加速数据处理流水线以及后训练脚本。
 
-### What are the main components of Cosmos?
+### Cosmos 的主要组成部分是什么？
 
-#### Cosmos World Foundation Models (WFMs)
+#### Cosmos 世界基础模型（WFM）
 
-Cosmos world foundation models (WFMs) are pretrained generative AI models for virtual world generation to advance physical AI. The WFM family includes:
+Cosmos 世界基础模型（WFM）是用于虚拟世界生成、以推动 Physical AI 发展的预训练生成式 AI 模型。WFM 家族包括：
 
-- **Cosmos Predict** for generating future world states as videos
-- **Cosmos Transfer** for conditioned synthetic data
-- **Cosmos Reason** for physical AI reasoning
+- 用于生成未来世界状态视频的 **Cosmos Predict**
+- 用于条件式合成数据生成的 **Cosmos Transfer**
+- 用于 Physical AI 推理的 **Cosmos Reason**
 
-These models are fully customizable to develop specialized physical AI models.
+这些模型都可完全定制，用于开发专门的 Physical AI 模型。
 
 #### Cosmos Curator
 
-GPU-accelerated video preprocessing and curation toolkit for preparing high-quality datasets.
+一个 GPU 加速的视频预处理与整理工具包，用于准备高质量数据集。
 
 #### Cosmos Tokenizer
 
-To efficiently convert visual data into tokens.
+用于高效地将视觉数据转换为 token。
 
-### Who is Cosmos designed for?
+### Cosmos 是为哪些人设计的？
 
-Cosmos is designed for developers and ISVs working in the following domains:
+Cosmos 面向以下领域的开发者和 ISV：
 
-- Robotics
-- Autonomous vehicles
-- Simulation
-- Computer vision applications
+- 机器人
+- 自动驾驶汽车
+- 仿真
+- 计算机视觉应用
 
-### What are the technical capabilities of the Cosmos platform?
+### Cosmos 平台有哪些技术能力？
 
-The Cosmos platform provides the following capabilities:
+Cosmos 平台提供以下能力：
 
-- Pre-trained world foundation models (WFMs) for immediate deployment
-- GPU-accelerated data processing and curation tools
-- Post-training frameworks for domain-specific adaptation
-- CUDA-optimized inference and training pipelines
-- Synthetic data generation for physical AI model training
+- 可立即部署的预训练世界基础模型（WFM）
+- GPU 加速的数据处理与整理工具
+- 面向特定领域适配的后训练框架
+- CUDA 优化的推理与训练流水线
+- 用于 Physical AI 模型训练的合成数据生成
 
-## Models
+## 模型
 
-### What are the main use cases for Cosmos?
+### Cosmos 的主要使用场景是什么？
 
-**Data Curation:** Cosmos platform includes Cosmos Curator for video data and video data search to accelerate data curation for developers working with vast amounts of real or synthetic data to train physical AI models.
+**数据整理：** Cosmos 平台包含用于视频数据及视频数据搜索的 Cosmos Curator，可帮助处理海量真实或合成数据的开发者加速数据整理，以训练 Physical AI 模型。
 
-**Accelerate synthetic data generation (SDG):** Cosmos WFMs are purpose-built to accelerate SDG in many ways.
+**加速合成数据生成（SDG）：** Cosmos WFM 专为从多个维度加速 SDG 而设计。
 
-- With **Cosmos Predict**, developers can generate synthetic data from a text prompt or a pair of images. Outputs include predictive next frames or interpolated frames—ideal for edge cases or exploring multiple scenarios from a single input.
-- **Omniverse** creates realistic 3D scenes that can be used as an input also referred to as 'ground truth' for **Cosmos Transfer**, which amplifies them across diverse environments and lighting. This process generates photorealistic, scalable, augmented data for robot and autonomous vehicle training as well as computer vision applications.
-- **Cosmos Reason** acts as a critic for synthetic data. It scores video inputs based on how well they match a text prompt and can generate captions to help curate training data.
-- Any combination of these models can accelerate the synthetic data generation processes. Combined with [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim), [AV Simulation](https://www.nvidia.com/en-us/use-cases/autonomous-vehicle-simulation/), [Isaac GR00T](https://developer.nvidia.com/isaac/gr00t), these models can unlock a variety of SDGs.
+- 借助 **Cosmos Predict**，开发者可以从文本提示词或一对图像生成合成数据。输出包括预测的下一帧或插值帧——非常适合边缘场景，或从单个输入探索多个场景。
+- **Omniverse** 可创建逼真的 3D 场景，作为 **Cosmos Transfer** 的输入（也称为 “ground truth”），后者会在不同环境和光照条件下对其进行扩增。该过程可生成逼真、可扩展、增强后的数据，用于机器人和自动驾驶训练以及计算机视觉应用。
+- **Cosmos Reason** 可作为合成数据的评论器（critic）。它会根据视频输入与文本提示词的匹配程度进行打分，并生成描述以帮助整理训练数据。
+- 这些模型的任意组合都可以加速合成数据生成流程。结合 [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim)、[AV Simulation](https://www.nvidia.com/en-us/use-cases/autonomous-vehicle-simulation/)、[Isaac GR00T](https://developer.nvidia.com/isaac/gr00t)，这些模型可以解锁多种 SDG 工作流。
 
-**Post-training:** Cosmos WFMs are fully customizable to develop downstream vision, robotics or autonomous vehicle foundation models tailored for customer data. Post-training can be done to change output type, output quantity, output quality, output style or output point of view.
+**后训练：** Cosmos WFM 完全可定制，可开发针对客户数据量身定制的下游视觉、机器人或自动驾驶基础模型。后训练可用于改变输出类型、输出数量、输出质量、输出风格或输出视角。
 
-### Where can I find datasets for training Physical AI models?
+### 在哪里可以找到用于训练 Physical AI 模型的数据集？
 
-NVIDIA provides curated, open, commercial-grade datasets for Physical AI development on the [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face. This collection includes datasets for:
+NVIDIA 在 Hugging Face 的 [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) 中提供经过整理的、开放的、商业级 Physical AI 开发数据集。该集合包括以下数据集：
 
-- **Autonomous vehicles**: Driving scenes, synthetic data, and teleoperation datasets
-- **Robotics**: GR00T, manipulation, grasping, and navigation datasets
-- **Smart spaces and warehouses**: Multi-camera tracking, detection, and spatial intelligence datasets
-- **Domain-specific training and evaluation**: Specialized datasets for various Physical AI applications
+- **自动驾驶汽车**：驾驶场景、合成数据和遥操作数据集
+- **机器人**：GR00T、操作、抓取和导航数据集
+- **智能空间和仓储**：多摄像头跟踪、检测和空间智能数据集
+- **领域特定训练与评估**：适用于各种 Physical AI 应用的专用数据集
 
-These datasets are designed to work seamlessly with Cosmos models and can serve as starting points for domain-specific post-training workflows.
+这些数据集专为与 Cosmos 模型无缝协同工作而设计，也可作为面向特定领域后训练工作流的起点。
 
-### How do Cosmos models differ from other video foundation models?
+### Cosmos 模型与其他视频基础模型有何不同？
 
-Cosmos world foundation models are designed specifically for physical AI applications. The models are openly available and customizable, with Cosmos Predict and Cosmos Reason supporting post-training for autonomous vehicle, robotics, and vision-action generation models.
+Cosmos 世界基础模型专为 Physical AI 应用而设计。这些模型公开可用并且可定制，其中 Cosmos Predict 和 Cosmos Reason 支持针对自动驾驶、机器人以及视觉动作生成模型进行后训练。
 
-### What is Policy Initialization?
+### 什么是 Policy Initialization？
 
-Policy Initialization is the process of developing a policy model from the world foundation model (WFM) by modifying its output head. A Policy model maps observed states (e.g. video) to actions. It can be initialized by post-training a Cosmos world foundation model with a new output head tailored for action selection (from video head → action head).
+Policy Initialization 是通过修改世界基础模型（WFM）的输出头，从中开发策略模型（policy model）的过程。策略模型将观测状态（例如视频）映射为动作。它可以通过为 Cosmos 世界基础模型添加适用于动作选择的新输出头并进行后训练来初始化（从 video head → action head）。
 
-### What is Policy Evaluation?
+### 什么是 Policy Evaluation？
 
-Policy Evaluation is the process of assessing a trained policy model. It can be done by conditioning with/seeding specific inputs (e.g. actions or instructions) and analyzing model output. This step ensures that the model correctly maps states to actions and performs as expected in real-world or simulated environments.
+Policy Evaluation 是评估已训练策略模型的过程。它可以通过对特定输入（例如动作或指令）进行条件控制/播种（seeding），并分析模型输出完成。该步骤可确保模型能够正确地将状态映射为动作，并在真实世界或仿真环境中按预期表现。
 
-### Can Cosmos be used for creative content generation?
+### Cosmos 能否用于创意内容生成？
 
-Cosmos models can generate video content under the NVIDIA Open Model License, but the platform is primarily designed for physical AI applications rather than creative content generation.
+Cosmos 模型可以在 NVIDIA Open Model License 下生成视频内容，但该平台主要面向 Physical AI 应用，而非创意内容生成。
 
-### What is multiverse simulation?
+### 什么是 multiverse simulation？
 
-Multiverse simulation involves generating multiple future outcomes from a given state. Cosmos, integrated with NVIDIA Omniverse, enables simulation of multiple scenarios for tasks such as predictive maintenance and autonomous decision-making.
+Multiverse simulation 指从给定状态生成多个未来结果。Cosmos 与 NVIDIA Omniverse 集成后，可以为预测性维护和自主决策等任务模拟多种场景。
 
-### Is Cosmos Reason a VLM, VLA, or MLLM?
+### Cosmos Reason 是 VLM、VLA，还是 MLLM？
 
-Cosmos Reason 1 is a physical reasoning engine designed to analyze real-world scenarios through natural language explanations. It functions as a Vision Language Model (VLM) or a Multi-Modal Large Language Model (MLLM) with chain-of-thought reasoning built-in. Unlike Vision-Language-Action (VLA) models, which map sensory inputs to executable actions, Cosmos Reason 1 employs hierarchical ontologies for space, time, and physics to generate text-based reasoning traces about safety, causality, and object interactions.
+Cosmos Reason 1 是一个物理推理引擎，旨在通过自然语言解释来分析真实世界场景。它可以作为 Vision Language Model（VLM）或 Multi-Modal Large Language Model（MLLM）运行，并内置 chain-of-thought 推理。与将感知输入映射为可执行动作的 Vision-Language-Action（VLA）模型不同，Cosmos Reason 1 使用面向空间、时间和物理的分层本体，生成关于安全性、因果关系和物体交互的文本推理轨迹。
 
-### What does Cosmos Reason output?
+### Cosmos Reason 输出什么？
 
-While VLAs output motor commands, Cosmos Reason 1 produces insights in text like "The slope exceeds the vehicle's tilt tolerance" that require translation layers for robotic execution. The models can do high-level planning and explainable safety checks but cannot directly control actuators or navigate dynamic environments.
+当 VLA 输出电机控制命令时，Cosmos Reason 1 输出的是诸如 “坡度超过车辆倾斜容差” 这样的文本洞见，这些内容还需要通过转换层才能用于机器人执行。该模型可以进行高层规划和可解释的安全检查，但不能直接控制执行器或在动态环境中导航。
 
-## Technical Details
+## 技术细节
 
-### What is 3D consistency, and how is it tested?
+### 什么是 3D consistency，如何测试？
 
-3D consistency measures how well models maintain spatial alignment in 3D scenes. Cosmos testing methodology:
+3D consistency 衡量模型在 3D 场景中维持空间对齐的能力。Cosmos 的测试方法如下：
 
-**Test Setup**: Static scenes from 500 curated videos using the following metrics:
+**测试设置**：从 500 个整理后的视频中选取静态场景，并使用以下指标：
 
-- Geometric consistency (e.g. Sampson error, pose estimation)
-- View synthesis consistency (PSNR, SSIM, LPIPS)
+- 几何一致性（例如 Sampson error、姿态估计）
+- 视图合成一致性（PSNR、SSIM、LPIPS）
 
-**Key Metrics**:
+**关键指标**：
 
-- **Sampson error**: Lower values indicate better geometric accuracy
-- **Pose estimation success rate**: Higher percentages reflect better camera alignment
-- **PSNR and SSIM**: Higher scores indicate higher quality in synthesized views
-- **LPIPS**: Lower values indicate better perceptual similarity
+- **Sampson error**：值越低表示几何精度越高
+- **姿态估计成功率**：百分比越高表示相机对齐效果越好
+- **PSNR 和 SSIM**：分数越高表示合成视图质量越高
+- **LPIPS**：值越低表示感知相似度越好
 
-### What is physics alignment, and how is it evaluated?
+### 什么是 physics alignment，如何评估？
 
-Physics alignment tests models' ability to simulate physical dynamics like gravity and collisions.
+Physics alignment 用于测试模型模拟重力、碰撞等物理动态的能力。
 
-**Evaluation Method**: Controlled scenarios in virtual environments, assessed with multiple metrics
+**评估方法**：在虚拟环境中的受控场景下，使用多个指标进行评估
 
-**Key Metrics**:
+**关键指标**：
 
-- **PSNR**: Higher values show less noise and better pixel accuracy
-- **SSIM**: Higher values reflect better visual fidelity
-- **DreamSim**: Evaluates semantic consistency of objects and motion
-- **IoU**: Measures overlap between predicted and actual object regions for alignment with physical expectations
+- **PSNR**：值越高表示噪声越少、像素精度越高
+- **SSIM**：值越高表示视觉保真度越好
+- **DreamSim**：评估对象和运动的语义一致性
+- **IoU**：衡量预测对象区域与真实对象区域的重叠程度，以评估其是否符合物理预期
 
-### What precision strategy do the Cosmos world foundation models use?
+### Cosmos 世界基础模型使用什么精度策略？
 
-**Training Strategy**: Mixed-precision approach
+**训练策略**：混合精度方法
 
-- Maintains copies of weights in FP32 and BF16
-- Gradients computed in BF16 only
-- Final storage and inference in BF16
+- 同时维护 FP32 和 BF16 的权重副本
+- 梯度仅以 BF16 计算
+- 最终存储和推理使用 BF16
 
-**Current Limitations**:
+**当前限制**：
 
-- The repositories do not currently support FP8
-- FP8 and FP4 training capabilities are work in progress
+- 这些仓库当前尚不支持 FP8
+- FP8 和 FP4 训练能力仍在开发中
 
-### Infrastructure Requirements for Post-Training
+### 后训练的基础设施要求
 
-#### Minimum Setup
+#### 最低配置
 
-**For Cosmos Reason 1-7B**:
+**对于 Cosmos Reason 1-7B：**
 
-- **SFT Training**: Minimum 2x 80GB GPUs
-- **RL Training**: Minimum 4x 80GB GPUs
+- **SFT 训练**：至少需要 2x 80GB GPU
+- **RL 训练**：至少需要 4x 80GB GPU
 
-**General Requirements**:
+**通用要求**：
 
-- NVIDIA GPU with sufficient memory
-- CUDA toolkit compatibility
-- High-speed interconnects for distributed training
+- 具备足够显存的 NVIDIA GPU
+- CUDA toolkit 兼容性
+- 用于分布式训练的高速互连
 
-#### Distributed Training Requirements
+#### 分布式训练要求
 
-**Networking**:
+**网络：**
 
-- **Recommended**: InfiniBand or RoCE for efficient communication
-- **Supported**: AWS EFA
-- **Essential**: High-bandwidth, low-latency connections for multi-GPU setups
+- **推荐**：使用 InfiniBand 或 RoCE 以实现高效通信
+- **支持**：AWS EFA
+- **必要条件**：多 GPU 配置需要高带宽、低延迟连接
 
-### Optimization Strategies
+### 优化策略
 
-**Pipeline Optimization**:
+**流水线优化：**
 
-- Ray-based pipeline allows specification of GPU types.
-- Dynamic hardware detection supported.
-- Mixed GPU types can be leveraged for different pipeline stages.
-- Telemetry ensures efficient resource utilization.
+- 基于 Ray 的流水线允许指定 GPU 类型。
+- 支持动态硬件检测。
+- 可在不同流水线阶段利用混合 GPU 类型。
+- 遥测可确保高效利用资源。
 
-**Memory Management**:
+**内存管理：**
 
-- Requirements vary by model size and dataset characteristics.
-- Prompt length and chain-of-thought length affect memory needs.
-- Horizontal scaling supported for large deployments.
+- 内存需求因模型大小和数据集特征而异。
+- 提示词长度和 chain-of-thought 长度会影响内存需求。
+- 支持面向大规模部署的水平扩展。
 
-### Performance Characteristics
+### 性能特征
 
-#### Compression and Quality
+#### 压缩与质量
 
-**Video Compression Impact**:
+**视频压缩的影响：**
 
-- Higher compression rates can affect generation quality.
-- Temporal compression with reduced tokens may lower quality
-- Optimal settings depend on specific application requirements.
-- Testing recommended to find best trade-offs.
+- 更高的压缩率可能影响生成质量。
+- 使用更少 token 的时序压缩可能降低质量。
+- 最佳设置取决于具体应用需求。
+- 建议通过测试寻找最佳权衡。
 
-#### Processing Performance
+#### 处理性能
 
-**Cosmos Curator Performance**:
+**Cosmos Curator 性能：**
 
-- GPU-accelerated processing compared to CPU-based pipelines.
-- Optimized for large-scale video processing workloads.
+- 相比基于 CPU 的流水线，提供 GPU 加速处理。
+- 针对大规模视频处理工作负载进行了优化。
 
-**Tokenizer Performance**:
+**Tokenizer 性能：**
 
-- Optimized compression and processing for video data
-- Supports both training and inference workloads.
+- 针对视频数据进行了优化压缩与处理
+- 同时支持训练和推理工作负载。
 
-### Model Architecture Details
+### 模型架构细节
 
-#### Training Configuration
+#### 训练配置
 
-**Layer Management**:
+**层管理：**
 
-- No layers are frozen during SFT and RL training.
-- Full model fine-tuning approach.
-- No specific attention mechanism modifications required.
+- 在 SFT 和 RL 训练过程中不会冻结任何层。
+- 采用全模型微调方法。
+- 无需特定的注意力机制修改。
 
-**Memory Recommendations**:
+**内存建议：**
 
-- Model size determines base memory requirements.
-- Dataset characteristics (video length, resolution) affect memory needs.
-- Multi-GPU training recommended for larger models.
+- 模型大小决定基础内存需求。
+- 数据集特征（视频长度、分辨率）会影响内存需求。
+- 对于更大的模型，建议使用多 GPU 训练。
 
-#### Input Specifications
+#### 输入规格
 
-**Video Input Guidelines**:
+**视频输入指南：**
 
-- **Recommended FPS**: 4 frames per second
-- **Token Budget**: Centered at 8k tokens, randomized within the [6k, 10k] range
-- **Total Pixels**: Approximately 8k × 28 × 28 × 2
-- **Generalization**: Model can handle inputs outside training bounds with potential quality degradation
+- **推荐 FPS**：每秒 4 帧
+- **Token 预算**：以 8k token 为中心，在 [6k, 10k] 范围内随机化
+- **总像素**：约为 8k × 28 × 28 × 2
+- **泛化能力**：模型可处理超出训练边界的输入，但质量可能下降
 
-### Scalability Considerations
+### 可扩展性考虑
 
-#### Database Scaling
+#### 数据库扩展
 
-**Vector Database Performance**:
+**向量数据库性能：**
 
-- Horizontal scaling for large datasets
-- Optimized indexing for bulk data ingestion
-- Resource-efficient scaling (spin down after ingestion)
-- Fast search times maintained at scale
+- 支持面向大数据集的水平扩展
+- 针对批量数据摄取进行了索引优化
+- 资源高效扩展（摄取后可关闭实例）
+- 在规模增大时仍可保持快速搜索速度
 
-#### GPU Resource Management
+#### GPU 资源管理
 
-**Dynamic Allocation**:
+**动态分配：**
 
-- Ray-based pipeline supports multiple GPU types.
-- Dynamic hardware detection and optimization
-- Efficient resource utilization through telemetry
-- Mixed hardware configurations supported.
+- 基于 Ray 的流水线支持多种 GPU 类型。
+- 支持动态硬件检测和优化
+- 通过遥测高效利用资源
+- 支持混合硬件配置。
 
-## Licensing & Availability
+## 许可与可用性
 
-### What is the licensing model for Cosmos models?
+### Cosmos 模型采用什么许可模式？
 
-Cosmos world foundation models are available under the **NVIDIA Open Model License Agreement**, which permits the following:
+Cosmos 世界基础模型依据 **NVIDIA Open Model License Agreement** 提供，该协议允许：
 
-- Commercial use without payment requirements
-- No company size restrictions
-- Synthetic data generation
-- Post-training and derivative model development
-- Model distribution and modification
+- 商业使用且无需付费
+- 无公司规模限制
+- 合成数据生成
+- 后训练和衍生模型开发
+- 模型分发与修改
 
-### Enterprise Options
+### 企业选项
 
-#### Open Source vs Enterprise
+#### 开源与企业版
 
-- **Model weights and scripts**: Open source and free
-- **Basic development tools**: Available under permissive licenses
-- **Enterprise features**: Available through NVIDIA AI Enterprise (NVAIE)
+- **模型权重和脚本**：开源且免费
+- **基础开发工具**：采用宽松许可证提供
+- **企业特性**：通过 NVIDIA AI Enterprise（NVAIE）提供
 
-#### NVIDIA AI Enterprise Features
+#### NVIDIA AI Enterprise 功能
 
-- Optimized NIMs for enhanced inference performance
-- Advanced NeMo features and maintenance
-- Professional support and updates
-- Production deployment tools
+- 针对更优推理性能优化的 NIMs
+- 更高级的 NeMo 功能与维护
+- 专业支持和更新
+- 生产部署工具
 
-#### License Compatibility
+#### 许可证兼容性
 
-Existing NVIDIA Omniverse Enterprise (NVOVE) licenses can be used for Cosmos entitlements.
+现有的 NVIDIA Omniverse Enterprise（NVOVE）许可证可用于 Cosmos 权益。
 
-### Getting Support
+### 获取支持
 
-#### Community Resources
+#### 社区资源
 
-- **GitHub Issues**: Report bugs and request features in relevant repositories
-- **Documentation**: Comprehensive guides in each repository
-- **Examples**: Reference implementations and tutorials
-- **Community Forums**: Engage with other developers
-- **Physical AI Datasets**: Access curated datasets for autonomous vehicles, robotics, smart spaces, and warehouse environments on the [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face
+- **GitHub Issues**：在相关仓库中报告 bug 并请求功能
+- **文档**：每个仓库中的完整指南
+- **示例**：参考实现和教程
+- **社区论坛**：与其他开发者互动
+- **Physical AI 数据集**：可在 Hugging Face 上的 [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) 获取面向自动驾驶、机器人、智能空间和仓储环境的精选数据集
 
-#### Official Channels
+#### 官方渠道
 
-- **NVIDIA Developer Portal**: Latest updates and announcements
-- **build.nvidia.com**: Try models and access NIMs
-- **NVIDIA AI Catalog**: Enhanced text prompt tools and specialized models
+- **NVIDIA Developer Portal**：最新更新和公告
+- **build.nvidia.com**：试用模型并访问 NIMs
+- **NVIDIA AI Catalog**：增强型文本提示工具和专用模型
 
-#### Enterprise Support
+#### 企业支持
 
-For enterprise deployments:
+对于企业部署：
 
-- NVIDIA AI Enterprise subscriptions include professional support
-- Dedicated technical assistance for production deployments
-- Regular updates and optimizations
-- Custom integration guidance
+- NVIDIA AI Enterprise 订阅包含专业支持
+- 为生产部署提供专门的技术协助
+- 提供定期更新和优化
+- 提供自定义集成指导
 
-### Legal and Compliance
+### 法律与合规
 
-#### License Terms
+#### 许可条款
 
-The [NVIDIA Open Model License Agreement](https://developer.download.nvidia.com/licenses/nvidia-open-model-license-agreement-june-2024.pdf) covers:
+[NVIDIA Open Model License Agreement](https://developer.download.nvidia.com/licenses/nvidia-open-model-license-agreement-june-2024.pdf) 涵盖：
 
-- Commercial usage rights
-- Distribution permissions
-- Modification allowances
-- Attribution requirements
+- 商业使用权
+- 分发权限
+- 修改许可
+- 署名要求
 
-### General Questions
+### 常规问题
 
-#### Q: Do I need to pay to use Cosmos models?
+#### 问：我需要付费才能使用 Cosmos 模型吗？
 
-**A**: No, the core models are freely available under the NVIDIA Open Model License.
+**答**：不需要，核心模型根据 NVIDIA Open Model License 免费提供。
 
-#### Q: Can I use Cosmos for commercial applications?
+#### 问：我可以将 Cosmos 用于商业应用吗？
 
-**A**: Yes, commercial use is permitted without restrictions.
+**答**：可以，商业使用不受限制。
 
-#### Q: What if I need enterprise-grade support?
+#### 问：如果我需要企业级支持怎么办？
 
-**A**: NVIDIA AI Enterprise provides optimized tools and professional support.
+**答**：NVIDIA AI Enterprise 提供优化工具和专业支持。
 
-#### Q: Are there any usage restrictions?
+#### 问：是否有任何使用限制？
 
-**A**: Use must comply with the NVIDIA Open Model License Agreement and applicable laws.
+**答**：使用必须符合 NVIDIA Open Model License Agreement 和适用法律。
 
-#### Q: Can I modify and redistribute the models?
+#### 问：我可以修改并重新分发这些模型吗？
 
-**A**: Yes, modification and redistribution are permitted under the license terms.
+**答**：可以，许可条款允许修改和再分发。

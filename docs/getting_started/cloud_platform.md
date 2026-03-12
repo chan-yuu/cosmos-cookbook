@@ -1,6 +1,6 @@
-# Cloud Deployments
+# 云端部署
 
-Get started by deploying on a cloud instance. Ready-to-launch on the cloud of your choice &#8209; Brev, AWS, Crusoe, Oracle and more.
+从云实例部署开始。可在你选择的云平台上一键启动 &#8209; Brev、AWS、Crusoe、Oracle 等。
 
 <style>
 .platform-board {
@@ -130,7 +130,7 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
 <section class="platform-section" id="brev">
   <div class="platform-header">
     <h2><img class="platform-logo platform-logo-small" src="../assets/images/clouds/brev.png" alt="Brev logo"> Brev Launchable</h2>
-    <p>Ready-to-launch on Brev workspaces.</p>
+    <p>可在 Brev 工作区中一键启动。</p>
   </div>
   <div class="platform-track">
     <a class="platform-card" href="./brev/reason2/reason2_on_brev.html">
@@ -139,7 +139,7 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
           <source src="./brev/reason2/images/nvidia-cosmos-reason2.mp4" type="video/mp4">
         </video>
       </div>
-      <div class="platform-title">Reason 2 on Brev</div>
+      <div class="platform-title">Brev 上的 Reason 2</div>
     </a>
     <a class="platform-card" href="./brev/reason1/reason1_on_brev.html">
       <div class="platform-media" aria-hidden="true">
@@ -147,7 +147,7 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
           <source src="./brev/reason1/images/nvidia-cosmos-reason1.mp4" type="video/mp4">
         </video>
       </div>
-      <div class="platform-title">Reason 1 on Brev</div>
+      <div class="platform-title">Brev 上的 Reason 1</div>
     </a>
     <a class="platform-card" href="./brev/transfer2_5/transfer_and_predict_on_brev.html">
       <div class="platform-media" aria-hidden="true">
@@ -155,7 +155,7 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
           <source src="./brev/transfer2_5/images/nvidia-cosmos-transfer-new.mp4" type="video/mp4">
         </video>
       </div>
-      <div class="platform-title">Transfer & Predict 2.5 on Brev</div>
+      <div class="platform-title">Brev 上的 Transfer & Predict 2.5</div>
     </a>
   </div>
 </section>
@@ -163,14 +163,14 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
 <section class="platform-section" id="nebius">
   <div class="platform-header">
     <h2><img class="platform-logo platform-logo-small" src="../assets/images/clouds/nebius.png" alt="Nebius logo"> Nebius</h2>
-    <p>Ready-to-launch on Nebius AI Cloud.</p>
+    <p>可在 Nebius AI Cloud 中一键启动。</p>
   </div>
   <div class="platform-track">
     <a class="platform-card" href="./nebius/reason2/reason2_on_nebius.html">
       <div class="platform-media" aria-hidden="true">
         <img src="./nebius/reason2/images/nebius-04-container-over-vm-config.png" alt="Nebius container configuration">
       </div>
-      <div class="platform-title">Reason 2 on Nebius</div>
+      <div class="platform-title">Nebius 上的 Reason 2</div>
     </a>
   </div>
 </section>

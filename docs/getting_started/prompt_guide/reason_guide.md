@@ -1,61 +1,57 @@
-# Prompt Guide Cosmos Reason 2
+# Cosmos Reason 2 提示指南
 
-> **Authors:** [Tsung-Yi Lin](https://www.linkedin.com/in/tsung-yi-lin-48a4b541/) • [Xuan Li](https://www.linkedin.com/in/xuanli1030/) • [Diego Garzon](https://www.linkedin.com/in/dgarzon-engineering-art/)
-> **Organization:** NVIDIA
+> **作者：** [Tsung-Yi Lin](https://www.linkedin.com/in/tsung-yi-lin-48a4b541/) • [Xuan Li](https://www.linkedin.com/in/xuanli1030/) • [Diego Garzon](https://www.linkedin.com/in/dgarzon-engineering-art/)
+> **组织：** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
+| **模型** | **工作负载** | **用例** |
 |-----------|--------------|--------------|
 | [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Prompt Guide|
 
-## Overview
+## 概览
 
-Cosmos Reason 2 is an open, customizable, reasoning vision language model designed to operate across vision, robotics, autonomous driving, and physical-world understanding tasks. While many workflows in the Cosmos Cookbook focus on *what* to run, such as recipes and end-to-end pipelines, this document focuses on *how* to interact with the model effectively through prompting. It serves as a conceptual reference for prompting Cosmos Reason 2, consolidating best practices, common patterns, and illustrative examples that explain how system prompts, user instructions, sampling parameters, and multimodal message structure influence model behavior. Rather than prescribing a fixed workflow, this guide helps users build a correct mental model of how Cosmos Reason 2 interprets inputs and produces structured outputs across different task types. It is intended for developers, researchers, and practitioners who are designing new recipes, evaluating model outputs, or integrating Cosmos Reason 2 into real-world systems, and it is not a benchmark, API reference, or end-to-end workflow. By centralizing these prompting conventions in one place, this document provides a shared vocabulary that allows the rest of the Cosmos Cookbook to remain consistent, easier to extend, and easier to maintain as new domains and workflows are added.
+Cosmos Reason 2 是一个开放、可定制的推理型视觉语言模型，面向视觉、机器人、自动驾驶以及物理世界理解任务。Cosmos Cookbook 中的许多工作流关注的是要运行什么内容，例如 recipes 和端到端流水线，而本文档关注的是如何通过提示工程更有效地与模型交互。它作为 Cosmos Reason 2 提示编写的概念性参考，汇总了最佳实践、常见模式和说明性示例，用于解释系统提示、用户指令、采样参数以及多模态消息结构如何影响模型行为。与其规定固定工作流，本指南更侧重于帮助用户建立正确的心智模型，理解 Cosmos Reason 2 如何解释输入，并在不同任务类型中生成结构化输出。它面向正在设计新 recipes、评估模型输出或将 Cosmos Reason 2 集成到真实系统中的开发者、研究人员和实践者，而不是基准测试、API 参考或端到端工作流。通过将这些提示约定集中在同一处，本文档提供了一套共享术语，使 Cosmos Cookbook 的其余部分在扩展到新领域和新工作流时仍能保持一致、易于扩展且易于维护。
 
-## Key Takeaways
+## 核心要点
 
-- **Prompting is foundational**: Prompt structure, sampling parameters, and multimodal message ordering have a direct impact on Cosmos Reason 2 behavior across all tasks.
-- **Minimal system prompts work best**: Cosmos Reason 2 generally performs well with lightweight system prompts, relying primarily on clear user instructions and structured output requests.
-- **Media-first message ordering matters**: When using images or video, media inputs should appear before user text to align with the model’s training conventions.
-- **Sampling controls trade-offs**: Adjusting parameters such as temperature, top-p, and presence penalty allows users to balance determinism, exploration, and verbosity depending on the task.
-- **Structured outputs are prompt-driven**: Temporal localization, JSON outputs, trajectories, and reasoning-style responses are best achieved by explicitly requesting structure in the prompt.
-- **Concepts over copy-paste**: The examples in this guide are illustrative; they are intended to teach prompting patterns rather than serve as fixed or deterministic templates.
+- **提示编写是基础**：提示结构、采样参数以及多模态消息顺序会直接影响 Cosmos Reason 2 在各类任务中的行为。
+- **简洁的系统提示效果最佳**：Cosmos Reason 2 通常使用轻量级系统提示即可表现良好，更主要依赖清晰的用户指令和结构化输出请求。
+- **媒体优先的消息排序很重要**：使用图像或视频时，媒体输入应先于用户文本出现，以符合模型训练时的约定。
+- **采样控制体现权衡**：通过调整 temperature、top-p 和 presence penalty 等参数，用户可以根据任务需要在确定性、探索性和输出冗长度之间取得平衡。
+- **结构化输出由提示驱动**：时间定位、JSON 输出、轨迹以及推理式响应，最好通过在提示中显式请求结构来实现。
+- **理解概念胜于复制粘贴**：本指南中的示例用于说明提示模式，而不是作为固定或确定性的模板。
 
-## How to Use This Guide
+## 如何使用本指南
 
-This document is organized to support both first-time users of Cosmos Reason 2 and experienced practitioners looking for specific prompting patterns.
+本文档的组织方式既适合第一次使用 Cosmos Reason 2 的用户，也适合寻找特定提示模式的资深实践者。
 
-If you are new to Cosmos Reason 2, we recommend reading the sections in the following order:
+如果你刚开始接触 Cosmos Reason 2，建议按以下顺序阅读：
 
-1. **Message Structure and Media Ordering** – Understand how system prompts, user prompts, and multimodal inputs are interpreted by the model.
-2. **Sampling Parameters** – Learn how to tune determinism, exploration, and verbosity based on task requirements.
-3. **Structured Output Patterns** – See how to request captions, timestamps, JSON outputs, and action predictions.
-4. **Task-Specific Examples** – Explore how these prompting patterns apply to embodied reasoning, autonomous driving, grounding, safety, and evaluation tasks.
+1. **消息结构与媒体排序** – 了解系统提示、用户提示和多模态输入如何被模型解释。
+2. **采样参数** – 学习如何根据任务要求调整确定性、探索性和输出冗长度。
+3. **结构化输出模式** – 了解如何请求字幕、时间戳、JSON 输出和动作预测。
+4. **任务特定示例** – 了解这些提示模式如何应用于具身推理、自动驾驶、grounding、安全和评估任务。
 
-## Sampling Parameters ([Following Qwen3 recommended params](https://github.com/QwenLM/Qwen3-VL?tab=readme-ov-file#evaluation-reproduction))
+## 采样参数（[遵循 Qwen3 推荐参数](https://github.com/QwenLM/Qwen3-VL?tab=readme-ov-file#evaluation-reproduction)）
 
-| **Parameter** | **Default** | **With reasoning** | **Practical effect** |
+| **参数** | **默认值** | **启用推理时** | **实际效果** |
 |--------------|------------:|-------------------:|----------------------|
-| top_p | 0.8 | 0.95 | Smaller vs larger nucleus (tighter vs broader token pool) |
-| top_k | 20 | 20 | Same cap on candidate tokens |
-| repetition_penalty | 1.0 | 1.0 | Same (neutral repetition handling) |
-| presence_penalty | 1.5 | 0.0 | Strong novelty push vs none |
-| temperature | 0.7 | 0.6 | Slightly more varied vs more deterministic |
+| top_p | 0.8 | 0.95 | 更小 vs 更大的 nucleus（更紧凑 vs 更宽的 token 池） |
+| top_k | 20 | 20 | 候选 token 上限保持不变 |
+| repetition_penalty | 1.0 | 1.0 | 相同（中性的重复处理） |
+| presence_penalty | 1.5 | 0.0 | 强化新颖性 vs 不施加新颖性约束 |
+| temperature | 0.7 | 0.6 | 略更丰富 vs 更具确定性 |
 
 ## System Prompt
 
-In Cosmos Reason 2, we are more aligned with Qwen's use of system
-prompt. In the examples given, we simply use 'You are a helpful
-assistant.' You may note this is different from Reason 1, where the
-system prompt was heavily used.
+在 Cosmos Reason 2 中，我们更贴近 Qwen 对 system prompt 的使用方式。在给出的示例中，我们只使用 `'You are a helpful assistant.'`。你可能会注意到，这与 Reason 1 不同，后者对 system prompt 的依赖更重。
 
 ```text
 You are a helpful assistant.
 ```
 
-## Turn on/off reasoning
+## 开启/关闭推理
 
-**This is important.** If you want to use reasoning, you must append the
-following instructions after any **user prompt** you've written**:**
+**这一点很重要。** 如果你想使用推理功能，必须在你写好的任何 **user prompt** 之后附加以下指令**：**
 
 ```text
 Answer the question using the following format:
@@ -67,11 +63,9 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-## Media/Text Order
+## 媒体/文本顺序
 
-In the payload, make sure you follow the training we took, and ensure
-that Media (video_url or image_url) is listed before the user text
-prompt:
+在 payload 中，请确保遵循我们的训练方式，让媒体（video_url 或 image_url）出现在用户文本提示之前：
 
 ```text
 messages=[
@@ -91,9 +85,9 @@ messages=[
     ]
 ```
 
-## Caption and Temporal Localization
+## 字幕与时间定位
 
-### Media Input
+### 媒体输入
 
 1280x720 @ 30.00 fps
 
@@ -102,15 +96,15 @@ messages=[
   Your browser does not support the video tag.
 </video>
 
-### Caption
+### 字幕
 
-#### User Prompt
+#### 用户提示
 
 ```text
 Caption the video in detail.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 <think>
@@ -129,9 +123,9 @@ Inside yet again, this time focusing more closely on the occupants' expressions 
 Finally, the perspective broadens outwards once more, offering aerial views that reveal expansive landscapes surrounding the track. We observe additional elements like grassy areas, water bodies, and distant structures, providing context about the location's layout and setting. Throughout all sequences, there’s a consistent theme of speed, precision, teamwork, and excitement inherent in modern motorsports competitions.
 ```
 
-### Temporal localization
+### 时间定位
 
-#### User Prompt
+#### 用户提示
 
 ```text
 Describe the video. Add timestamps in mm:ss format.
@@ -145,7 +139,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag and include the timestamps.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 <think>
@@ -197,9 +191,9 @@ Panoramic Circuit Tour (00:35-00:44)
 Final aerial sweeps offer sweeping vistas of the expansive racetrack nestled amidst rolling hills, dotted with water bodies and sparse vegetation. Distant structures and faint smoke trails suggest ongoing activity beyond the immediate frame, concluding the immersive experience of speed, skill, and adrenaline-fueled motorsports.
 ```
 
-### Temporal localization Json File
+### 时间定位 Json 文件
 
-#### User Prompt
+#### 用户提示
 
 ```text
 Describe the video. Add timestamps in mm:ss format. Provide the result in json format with 'mm:ss.ff' format for time depiction for each event. Use keywords 'start', 'end' and 'caption' in the json output.
@@ -212,7 +206,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag and include the timestamps.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```json
 [
@@ -290,9 +284,9 @@ Write your final answer immediately after the </think> tag and include the times
 
 ```
 
-## Embodied Reasoning
+## 具身推理
 
-### Media Input
+### 媒体输入
 
 644x476 @ 4.00 fps
 
@@ -301,9 +295,9 @@ Write your final answer immediately after the </think> tag and include the times
   Your browser does not support the video tag.
 </video>
 
-### Robotics Next Action Prediction
+### 机器人下一步动作预测
 
-#### User Prompt
+#### 用户提示
 
 ```text
 What can be the next immediate action?
@@ -318,7 +312,7 @@ Write your final answer immediately after the </think> tag.
 
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 <think\>Okay, let's see. The video is a lab or workshop with two robot arms. The camera is top-down, showing the table with a cardboard box in the center, open and filled with air column wraps. Robot Arm 1 ison the left, not moving. Robot Arm 2 is on the right, holding a white object and moving it upwards and away from the table.
@@ -328,9 +322,9 @@ The task is to predict the next immediate action. Since Robot Arm 2 is lifting t
 Robot Arm 2 places the white object into the cardboard box.
 ```
 
-### Goal Verification
+### 目标验证
 
-#### User Prompt
+#### 用户提示
 
 ```text
 Has the robot successfully completed the intended packaging subtask? Explain why not.
@@ -341,7 +335,7 @@ Answer the question using the following format:
 Write your final answer immediately after the </think> tag.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 <think>Okay, let's see. The user is asking if the robot has successfully completed the intended packaging subtask. The video shows that Robot Arm 2 is picking up a samrt charger. The task is about packaging, so maybe the next step is placing the cable into the box with the air column wraps. But the current action is just lifting the cable. The video does not show placing it into the box yet. So, even though the arm has the cable, the subtask of packaging isn't fully done until it's placed inside. Therefore, the answer would be no because the cable is still being lifted and not yet placed.
@@ -350,9 +344,9 @@ no
 No, the robot has not yet completed the intended packaging subtask. While Robot Arm 2 successfully grasps and lifts the smart charger, the action shown does not include placing it into the cardboard box or securing it with the air column wraps. Packaging typically involves both retrieving the item and properly positioning it within protective materials, which has not been executed in the observed sequence.
 ```
 
-### AV Next Action Prediction
+### 自动驾驶下一步动作预测
 
-#### Media Input
+#### 媒体输入
 
 1280x720 @ 30.00 fps
 
@@ -361,7 +355,7 @@ No, the robot has not yet completed the intended packaging subtask. While Robot 
   Your browser does not support the video tag.
 </video>
 
-#### User Prompt
+#### 用户提示
 
 ```text
 What's the next immediate action for the Ego vehicle?
@@ -375,7 +369,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 <think>
@@ -389,9 +383,9 @@ Since they just started moving, maintaining low speed makes sense until they pas
 Proceed through the intersection cautiously while continuing to monitor for pedestrians, cyclists, and potential hazards (e.g., construction zones, uneven pavement) beyond the initial view. Maintain reduced speed due to ongoing street work and prepare to yield if unexpected obstacles arise.
 ```
 
-## Video Critic
+## 视频评审
 
-### Media Input
+### 媒体输入
 
 1280x704 @ 16.00 fps
 
@@ -400,7 +394,7 @@ Proceed through the intersection cautiously while continuing to monitor for pede
   Your browser does not support the video tag.
 </video>
 
-#### User Prompt
+#### 用户提示
 
 ```text
 Approve or reject this generated video for inclusion in a dataset for physical world model ai training. It must perfectly adhere to physics, object permanence, and have no anomalies. Any issue or concern causes rejection.
@@ -413,7 +407,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag. Answer with Approve or Reject only.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 <think>
@@ -433,17 +427,17 @@ Reject
 
 ## 2D Grounding
 
-### Media Input
+### 媒体输入
 
 <img src="assets/load.png" alt="Load" width="720" />
 
-#### User Prompt
+#### 用户提示
 
 ```text
 Locate the bounding box of the load and determine if its size and weight of load within the forklift's limits. Estimate weights. Return all as json. Include json location, estimated weight of the load, and if it's in the limit. Return a json.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```json
 {
@@ -458,30 +452,30 @@ Locate the bounding box of the load and determine if its size and weight of load
 
 ```
 
-### Visualization
+### 可视化
 
 <img src="assets/load_bbox.png" alt="Load" width="720" />
 
 ### Action CoT
 
-Note about trajectory coordinates
-We now support point coordinates on images and videos. The pixel coordinate is normalized to 0-1000. The origin is left top corner. X is to the right (horizontal axis), and Y is to the bottom (vertical axis).  It doesn't matter what the aspect ratio is, each axis has independent 0-1000 normalization. E.g 1920x1080:
+关于轨迹坐标的说明
+我们现在支持图像和视频上的点坐标。像素坐标被归一化到 0-1000。原点位于左上角。X 向右（水平轴），Y 向下（垂直轴）。无论宽高比如何，每个轴都独立进行 0-1000 归一化。例如 1920x1080：
 
-  1. Width 1000px / 2 = 500px is  500
-  2. Height 600px / 2 = 300px is also 500
+  1. 宽度 1000px / 2 = 500px，对应数值 500
+  2. 高度 600px / 2 = 300px，也对应数值 500
 
 <figure>
   <img src="assets/trajectory.png" alt="Trajectory verification visualization" width="720">
   <figcaption>
-    An example where the normalized values are converted to pixel values to verify trajectory.
+    一个将归一化数值转换为像素值以验证轨迹的示例。
   </figcaption>
 </figure>
 
-#### Media Input
+#### 媒体输入
 
 <img src="assets/trajectory_clean.png" alt="Load" width="720" />
 
-#### User Prompt
+#### 用户提示
 
 ```text
 You are given the task "Move the tape into the basket". Specify the 2D trajectory your end effector should follow in pixel space. Return the trajectory coordinates in JSON format like this: {"point_2d": [x, y], "label": "gripper trajectory"}.
@@ -495,7 +489,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 <think> I will move my left gripper from its current position at [195, 630] to the blue painter’s tape located at [487, 721] so I can grasp it securely. After picking up the tape, I’ll lift it and carry it over to the gray woven basket positioned at [460, 410]. Then I’ll carefully lower the tape into the open space inside the basket at [469, 400], making sure it’s fully placed within the container. This sequence gives me precise control while avoiding any collisions with the table or other objects. </think>
@@ -512,9 +506,9 @@ Write your final answer immediately after the </think> tag.
 
 ```
 
-## Safety
+## 安全
 
-### Media Input
+### 媒体输入
 
 1842x1080 @ 19.99 fps
 
@@ -523,7 +517,7 @@ Write your final answer immediately after the </think> tag.
   Your browser does not support the video tag.
 </video>
 
-#### User Prompt
+#### 用户提示
 
 ```text
 were all the workers working safety equipment
@@ -536,7 +530,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 
@@ -553,9 +547,9 @@ Worker 2 enters later carrying a single box. He drops it but then picks it up ag
 No, not all workers were shown wearing safety equipment. While Worker 0 (the first person) is clearly depicted wearing a yellow hard hat and a reflective vest, Worker 2 (the second person entering later) is only noted to be wearing casual attire ("shirt and jeans") without explicit mention of safety gear like a helmet or vest. This indicates at least one worker did not visibly adhere to full safety protocols in the observed scene.
 ```
 
-## Security
+## 安保
 
-### Media Input
+### 媒体输入
 
 1842x1080 @ 19.99 fps
 
@@ -564,7 +558,7 @@ No, not all workers were shown wearing safety equipment. While Worker 0 (the fir
   Your browser does not support the video tag.
 </video>
 
-#### User Prompt
+#### 用户提示
 
 ```text
 Is the person allowed to pick up the packages?
@@ -577,7 +571,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-#### Model Answer
+#### 模型回答
 
 ```text
 
@@ -605,9 +599,9 @@ While the act itself involves physical effort (lifting both boxes), this does no
 Conclusion: Without clear indicators of ownership transfer (e.g., labels, instructions, or verbal/written approval), it is reasonable to infer the individual acted unlawfully or improperly by removing the packages. Legal permissibility hinges on context not fully revealed in the clip.
 ```
 
-## 3 OpenAI API Samples for NIM Docs
+## NIM 文档中的 3 个 OpenAI API 示例
 
-### Temporal Localization
+### 时间定位
 
 ```python
 client = openai.OpenAI(api_key=token, base_url=url)
@@ -669,7 +663,7 @@ print(response.choices[0].message.content)
 
 ```
 
-### 2D Trajectory Creation
+### 2D 轨迹创建
 
 ```python
 client = openai.OpenAI(api_key=token, base_url=url)

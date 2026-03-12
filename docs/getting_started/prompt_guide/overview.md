@@ -1,25 +1,25 @@
-# Overview
+# 概览
 
-Effective prompting is foundational to getting the best results from Cosmos models. This section provides comprehensive guides on how to interact with Cosmos models through well-structured prompts.
+高质量提示词是从 Cosmos 模型中获得最佳效果的基础。本节提供了如何通过结构良好的提示与 Cosmos 模型交互的综合指南。
 
-## Available Guides
+## 可用指南
 
 ### [Cosmos Reason 2 Prompt Guide](reason_guide.md)
 
-A comprehensive guide to prompting Cosmos Reason 2, covering:
+这是一份关于如何为 Cosmos Reason 2 编写提示的综合指南，涵盖：
 
-- Message structure and media ordering
-- Sampling parameters and their effects
-- Domain-specific prompting patterns
-- Best practices for different task types
+- 消息结构与媒体排序
+- 采样参数及其影响
+- 特定领域的提示模式
+- 不同任务类型的最佳实践
 
-This guide helps developers, researchers, and practitioners understand how system prompts, user instructions, sampling parameters, and multimodal message structure influence model behavior across vision, robotics, autonomous driving, and physical-world understanding tasks.
+本指南帮助开发者、研究人员和实践者理解系统提示、用户指令、采样参数以及多模态消息结构如何影响模型在视觉、机器人、自动驾驶和物理世界理解任务中的行为。
 
-## Key Concepts
+## 核心概念
 
-- **Prompt Structure**: How to organize system prompts, user instructions, and media inputs
-- **Sampling Parameters**: Tuning temperature, top-p, and other parameters for different tasks
-- **Structured Outputs**: Requesting specific output formats like JSON, trajectories, or reasoning chains
-- **Media Ordering**: Proper sequencing of images, videos, and text in multimodal inputs
+- **提示结构**：如何组织系统提示、用户指令和媒体输入
+- **采样参数**：如何针对不同任务调节 temperature、top-p 等参数
+- **结构化输出**：如何请求 JSON、轨迹或推理链等特定输出格式
+- **媒体排序**：在多模态输入中正确安排图像、视频和文本的顺序
 
-These guides consolidate best practices and common patterns to help you design effective workflows and integrate Cosmos models into real-world systems.
+这些指南汇总了最佳实践和常见模式，帮助你设计高效工作流，并将 Cosmos 模型集成到真实世界系统中。

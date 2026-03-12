@@ -1,54 +1,54 @@
-# Cosmos Transfer 2.5 Control Modalities: Core Concepts
+# Cosmos Transfer 2.5 控制模态：核心概念
 
-> **Authors:** [Aiden Chang](https://www.linkedin.com/in/aiden-chang/) • [Akul Santhosh](https://www.linkedin.com/in/akulsanthosh/)
-> **Organization:** NVIDIA
+> **作者：** [Aiden Chang](https://www.linkedin.com/in/aiden-chang/) • [Akul Santhosh](https://www.linkedin.com/in/akulsanthosh/)
+> **机构：** NVIDIA
 
-## Overview: The Control Challenge
+## 概览：控制的挑战
 
-This document serves as a comprehensive guide to the **core concepts** required for using the **Transfer 2.5** video generation model. Success depends on understanding the balance between the **Guidance Scale** (your text prompt) and the influence of the four primary **Control Modalities**: Edge, Depth, Segmentation, and Vis.
+本文档是一份关于使用 **Transfer 2.5** 视频生成模型所需 **核心概念** 的综合指南。要想获得理想效果，关键在于理解 **Guidance Scale**（你的文本提示词）与四种主要 **控制模态**——Edge、Depth、Segmentation 和 Vis——之间的平衡关系。
 
-**Key Takeaway:** Multi-control tuning--using a strategic combination of Edge, Vis, Depth, and Seg modalities--is required for achieving high-fidelity, structurally consistent video results.
-
----
-
-## 1. Key Concepts: Governing Strength
-
-### 1.1. Guidance Scale (Prompt Strength)
-
-This principle dictates how strictly the model adheres to your text prompt versus the visual controls.
-
-- **What it does**: Controls the influence of the text prompt.
-- **Good Starting Point**: Guidance = 3
-- **When to Increase**: Increase to **5+** if the visual output fails to incorporate the changes described in your prompt (e.g. trying to change a shirt into a specific texture).
-
-### 1.2. Control Weight Normalization (Very Important)
-
-This principle governs how the model balances the influence of multiple control modalities (e.g. Edge + Seg + Vis) against each other.
-
-- **Rule 1: Weights WILL NOT Normalize** if the total sum of all control weights is **1.0 or less**. The weights are applied as-is.
-  - *Example:* {seg: 0.2, edge: 0.2} (sum is 0.4) will be used as-is.
-- **Rule 2: Weights WILL NORMALIZE** if the total sum is **greater than 1.0**. The weights are re-scaled proportionally so the new total sum equals 1.0.
-  - *Example:* {seg: 4.0, edge: 1.0} (sum is 5.0) will be normalized and run as {seg: 0.8, edge: 0.2}.
+**核心结论：** 要获得高保真、结构一致的视频结果，必须进行多控制调优——也就是有策略地组合使用 Edge、Vis、Depth 和 Seg 等模态。
 
 ---
 
-## 2. Technical Details: The Control Modalities
+## 1. 关键概念：控制强度
 
-The system uses four primary modalities to inject structural, semantic, relative, and visual consistency into the video.
+### 1.1. Guidance Scale（提示词强度）
 
-![Overall Architecture](assets/Cosmos-Transfer2-2B-Arch.png)
+这一原则决定了模型会在多大程度上严格遵循你的文本提示词，而不是视觉控制信号。
 
-### 2.1. Edge Control (Structure Preservation)
+- **作用**：控制文本提示词的影响力。
+- **良好起点**：Guidance = 3
+- **何时提高**：如果视觉输出没有体现提示词中描述的改动（例如试图把一件衬衫改成某种特定材质），请提高到 **5+**。
 
-- **Function:** Preserves the **original structure, shape, and layout** of the video.
-- **Best For:** Changing textures, clothing, or lighting where the underlying shape must be maintained.
-- **Limitation:** Performs poorly when attempting to drastically change an object's shape (e.g. turning a shirt into a banana).
+### 1.2. 控制权重归一化（非常重要）
 
-Edge control is natively supported in the Cosmos Transfer 2.5 [repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5). Users may optionally supply their own edge-detection output by providing a `control_path` pointing to a precomputed edge-control video. If no `control_path` is provided, Cosmos Transfer 2.5 automatically generates the edge control modality on the fly.
+这一原则决定了模型如何平衡多个控制模态（例如 Edge + Seg + Vis）之间的影响力。
 
-When object and background contours are too similar, the default Canny edge detection may fail to distinguish them reliably. In these cases, pre-adjusting the brightness and contrast of the video can help produce a cleaner, more stable edge map before feeding it into the Cosmos Transfer 2.5 pipeline.
+- **规则 1：如果所有控制权重的总和小于或等于 `1.0`，则不会归一化。** 权重会按原值直接使用。
+  - *示例：* `{seg: 0.2, edge: 0.2}`（总和为 0.4）会按原值使用。
+- **规则 2：如果总和大于 `1.0`，则会进行归一化。** 权重会按比例重新缩放，使新的总和等于 `1.0`。
+  - *示例：* `{seg: 4.0, edge: 1.0}`（总和为 5.0）会被归一化，并按 `{seg: 0.8, edge: 0.2}` 运行。
 
-An example preprocessing implementation is shown below:
+---
+
+## 2. 技术细节：控制模态
+
+系统使用四种主要模态，为视频注入结构一致性、语义一致性、相对关系一致性和视觉一致性。
+
+![整体架构](assets/Cosmos-Transfer2-2B-Arch.png)
+
+### 2.1. Edge 控制（结构保持）
+
+- **功能：** 保留视频的 **原始结构、形状和布局**。
+- **最适合：** 更改纹理、服装或光照，同时需要保持底层形状不变的场景。
+- **局限性：** 当尝试大幅改变对象形状时效果较差（例如把一件衬衫变成香蕉）。
+
+Edge control 在 Cosmos Transfer 2.5 [代码仓库](https://github.com/nvidia-cosmos/cosmos-transfer2.5)中得到原生支持。用户也可以选择自行提供边缘检测输出，只需提供一个指向预计算边缘控制视频的 `control_path`。如果没有提供 `control_path`，Cosmos Transfer 2.5 会自动动态生成 edge control 模态。
+
+当目标物体与背景的轮廓过于相似时，默认的 Canny 边缘检测可能无法稳定地区分它们。在这种情况下，先对视频做亮度和对比度调整，有助于在送入 Cosmos Transfer 2.5 流水线前生成更干净、更稳定的边缘图。
+
+下面给出一个预处理实现示例：
 
 ```python
 import cv2, os
@@ -85,153 +85,153 @@ if __name__ == "__main__":
     generate_edges(in_path, out_path)
 ```
 
-### 2.2. Segmentation (Seg) Control (Structural Change & Semantic Replacement)
+### 2.2. Segmentation（Seg）控制（结构变化与语义替换）
 
-- **Function:** Facilitates **large, structural changes** and semantic replacement. Used to completely transform or replace objects, people, or backgrounds.
-- **Best For:** Generating realistic *new* objects/scenes where the prompt requires a large change.
-- **Limitation:** High weights can lead to **"hallucinations"** (unrealistic or physically incorrect objects).
-- **Recommended Usage:** **Always** use Seg with a **mask** of the parts you want to change, and **always** use it as part of a **multi-control** configuration (e.g. with Edge).
+- **功能：** 支持 **大幅结构变化** 与语义替换，可用于彻底变换或替换物体、人物或背景。
+- **最适合：** 当提示词要求大变化时，生成逼真的 *新* 物体或场景。
+- **局限性：** 权重过高可能导致 **“幻觉”**（不真实或物理上不正确的对象）。
+- **推荐用法：** 使用 Seg 时，**始终** 配合你想改动区域的 **mask**，并且 **始终** 将其作为 **多控制** 配置的一部分使用（例如与 Edge 搭配）。
 
-There are two ways to generate segmentation masks:
+生成 segmentation mask 有两种方式：
 
-1. **Specify objects manually**: You can provide the list of objects you want to segment and run the SAM2 endpoint in the Cosmos Transfer 2.5 repository.
-The implementation is available in the [SAM2 pipeline code](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/cosmos_transfer2/_src/transfer2/auxiliary/sam2/sam2_pipeline.py).
-2. **Automatic object detection (recommended for scale)**: For larger datasets, you can use models like [RAM++](https://github.com/xinyu1205/recognize-anything) to automatically detect objects. The detected object labels are then passed into the Cosmos Transfer 2.5 pipeline to generate segmentation masks using the same SAM2 workflow described above.
+1. **手动指定对象：** 你可以提供想要分割的对象列表，并在 Cosmos Transfer 2.5 仓库中运行 SAM2 endpoint。
+实现可见于 [SAM2 pipeline code](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/cosmos_transfer2/_src/transfer2/auxiliary/sam2/sam2_pipeline.py)。
+2. **自动目标检测（推荐用于大规模处理）：** 对于更大的数据集，你可以使用 [RAM++](https://github.com/xinyu1205/recognize-anything) 之类的模型自动检测对象。检测得到的对象标签随后会传入 Cosmos Transfer 2.5 流水线，并使用与上文相同的 SAM2 工作流生成 segmentation mask。
 
-### 2.3. Vis Control (Lighting & Background Feel)
+### 2.3. Vis 控制（光照与背景氛围）
 
-- **Function:** Preserves the original video's **background, lighting, and overall appearance**. By default, it applies a subtle smoothing/blur effect, but the underlying visual characteristics remain unchanged.
-- **Best For:** Acting as a *supplement* to Edge or Seg, typically with a **lower weight**, to fine-tune visual consistency.
-- **Intuition:**
-  - **Increase Vis weight** to keep more of the original video's look.
-  - **Decrease Vis weight** to allow more changes from the original (though a weight that is too low can *increase* background hallucinations).
-- **Limitation:** If the weight is too high, it will just return your original video. Masking Vis control is known to cause hallucinations.
+- **功能：** 保留原始视频的 **背景、光照和整体外观**。默认情况下，它会施加轻微的平滑/模糊效果，但底层视觉特征保持不变。
+- **最适合：** 作为 Edge 或 Seg 的 *补充*，通常配合 **较低权重** 使用，以微调视觉一致性。
+- **直觉理解：**
+  - **提高 Vis 权重** 可以保留更多原始视频的外观。
+  - **降低 Vis 权重** 则允许相对于原视频进行更多改动（但权重过低可能会 *增加* 背景幻觉）。
+- **局限性：** 如果权重过高，输出将基本退化为原始视频。已知对 Vis control 进行 mask 会引发幻觉。
 
-Vis control is natively built on the Cosmos Transfer 2.5 [repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5). There is no need to specify a `control_path`.
+Vis control 在 Cosmos Transfer 2.5 [代码仓库](https://github.com/nvidia-cosmos/cosmos-transfer2.5)中原生内置，无需指定 `control_path`。
 
-### 2.4. Depth Control
+### 2.4. Depth 控制
 
-- **Function:** Maintains **3D realism** and **spatial consistency** by respecting distance and perspective.
-- **Potential Use:** Helps when placing new objects into a scene or maintaining camera movement integrity.
-<!-- - *Documentation in progress.* -->
+- **功能：** 通过遵循距离与透视关系来维持 **3D 真实感** 和 **空间一致性**。
+- **潜在用途：** 在向场景中放置新物体或保持相机运动连贯性时会有帮助。
+<!-- - *文档撰写中。* -->
 
-### 2.5 Examples
+### 2.5 示例
 
-The figures below illustrate the different control modalities generated from the original video:
+下图展示了由原始视频生成的不同控制模态：
 
-| **Control Type** | **Description** | **Example** |
+| **控制类型** | **说明** | **示例** |
 |-----------------|-----------------|-------------|
-| **Original Video** | Source video input | <video src="assets/wave.mp4" controls width="300"></video> |
-| **Edge** | Geometric boundaries of objects and infrastructure | <video src="assets/edge.mp4" controls width="300"></video> |
-| **Segmentation** | Semantic segmentation of the scene | <video src="assets/seg.mp4" controls width="300"></video> |
-| **Vis** | Blurred representation preserving background and lighting | <video src="assets/vis.mp4" controls width="300"></video> |
+| **原始视频** | 源视频输入 | <video src="assets/wave.mp4" controls width="300"></video> |
+| **Edge** | 物体与基础设施的几何边界 | <video src="assets/edge.mp4" controls width="300"></video> |
+| **Segmentation** | 场景的语义分割 | <video src="assets/seg.mp4" controls width="300"></video> |
+| **Vis** | 保留背景与光照的模糊表示 | <video src="assets/vis.mp4" controls width="300"></video> |
 
 ---
 
-## 2.5. Binary Masking: Localizing Control
+## 2.5. 二值 Mask：局部化控制
 
-Masking is the technique used to apply a control modality to specific areas of the video frame.
+Masking 是一种将控制模态应用到视频帧特定区域的技术。
 
-- **Mechanism:** A binary mask (a black and white image/video) is used. The control modality is applied **only to the white pixels** in the mask.
-  - **White Pixels:** The area of **change/control application**.
-  - **Black Pixels:** The area that should **remain unchanged** or where the control is suppressed.
-- **Seg Masking (Standard):** This is an **effective** and standard use of masking. You supply a mask to the Seg control input to tell it exactly where to perform the semantic replacement.
-- **Vis Masking (Avoid):** Masking Vis control is known to cause visual **hallucinations** and is generally discouraged. Use Vis globally with a low weight instead.
+- **机制：** 使用二值 mask（黑白图像/视频）。控制模态 **只会应用到 mask 中的白色像素**。
+  - **白色像素：** **变化/施加控制** 的区域。
+  - **黑色像素：** 应当 **保持不变** 或需要抑制控制的区域。
+- **Seg Masking（标准做法）：** 这是 masking 的一种 **有效** 且标准的使用方式。你向 Seg control 输入一个 mask，告诉它具体应在何处执行语义替换。
+- **Vis Masking（避免使用）：** 已知对 Vis control 做 masking 会导致视觉 **幻觉**，通常不推荐。应以较低权重全局使用 Vis。
 
 <video width="720" controls>
   <source src="assets/mask.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  您的浏览器不支持 video 标签。
 </video>
 
 ---
 
-## 3. Building Intuition: Multi-Control Tuning
+## 3. 建立直觉：多控制调优
 
-To achieve complex goals like background replacement, you must strategically combine modalities.
+为了实现背景替换等复杂目标，你必须有策略地组合多种模态。
 
-| If Your Goal Is... | Increase This Setting | Decrease This Setting |
+| 如果你的目标是…… | 提高这个设置 | 降低这个设置 |
 | :---- | :---- | :---- |
-| **Reduce hallucinations / weird objects** | | Seg weight or Guidance |
-| **Preserve original background/lighting** | Vis weight | |
-| **Keep the original video structure** | Edge weight | |
-| **Make more realistic drastic changes** | Seg weight | Vis weight |
-| **Keep object boundaries consistent** | Edge weight | Vis weight |
+| **减少幻觉 / 奇怪物体** | | Seg 权重或 Guidance |
+| **保留原始背景/光照** | Vis 权重 | |
+| **保持原始视频结构** | Edge 权重 | |
+| **实现更逼真的大幅变化** | Seg 权重 | Vis 权重 |
+| **保持物体边界一致** | Edge 权重 | Vis 权重 |
 
-### The Background Replacement Walkthrough
+### 背景替换演练
 
-The following steps illustrate how each control can build upon the last to achieve a high-fidelity result, starting from a base video. The objective is to change the original video background to an outside street type environment. This is not meant to be a recipe to perform a background change; instead, it is a walkthrough of how each control modality affects the result. Specific guidelines on how to generate these results can be found [here](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
+下面的步骤展示了如何在一个基础视频上逐步叠加各类控制，从而实现高保真结果。目标是把原始视频的背景替换成户外街道环境。这并不是一套执行背景替换的固定配方；相反，它是一个帮助你理解每种控制模态如何影响结果的演练。有关如何生成这些结果的具体指南，请参见[这里](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md)。
 
-#### Step 1: Edge Only (Base Structure)
+#### 第 1 步：仅使用 Edge（基础结构）
 
-The first step is often applying **Edge control** to keep the core structure (e.g. the human's gesture).
+第一步通常是应用 **Edge control**，以保持核心结构（例如人物的动作姿态）。
 
-- **Action:** Apply Edge control using a **filtered edge map** (edges of only the human).
-- **Result Intuition:** The human's motion is preserved, but the background still looks unrealistic and distorted. This shows that Edge only controls shape, **not visual fidelity**.
+- **操作：** 使用 **过滤后的 edge map**（仅保留人物的边缘）应用 Edge control。
+- **结果直觉：** 人物运动得以保留，但背景依然显得不真实且有扭曲。这表明 Edge 只能控制形状，**不能保证视觉保真度**。
 
 <video width="500" controls>
-<strong>Mask Video</strong>
+<strong>Mask 视频</strong>
   <source src="assets/only_edge.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  您的浏览器不支持 video 标签。
 </video>
 
-#### Step 2: Edge + Vis (Adding Lighting Consistency)
+#### 第 2 步：Edge + Vis（增加光照一致性）
 
-To fix the unrealistic look and preserve camera effects, **Vis control** is added.
+为了修复不真实的观感并保留相机效应，需要加入 **Vis control**。
 
-- **Action:** Add **Vis control** with a medium weight (e.g. 0.6).
-- **Result Intuition:** The fisheye distortion is more accurate, and the background is less blurry. This confirms the role of **Vis** in preserving overall **visual feel** and camera properties. However, overall realism is still lacking.
+- **操作：** 加入 **Vis control**，并设置中等权重（例如 0.6）。
+- **结果直觉：** 鱼眼畸变更准确，背景也更不模糊。这印证了 **Vis** 在保留整体 **视觉氛围** 与相机属性方面的作用。不过整体真实感仍然不足。
 
 <video width="500" controls>
-<strong>Mask Video</strong>
+<strong>Mask 视频</strong>
   <source src="assets/edge_with_vis.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  您的浏览器不支持 video 标签。
 </video>
 
-#### Step 3: Edge + Vis + Seg (Injecting Realism)
+#### 第 3 步：Edge + Vis + Seg（注入真实感）
 
-To generate a *completely new and realistic* background, **Segmentation control** is used.
+为了生成一个 *全新且逼真* 的背景，需要使用 **Segmentation control**。
 
-- **Action:** Add **Seg control** with a moderate weight (e.g. 0.4), using a **mask** (white on the background) to direct the semantic replacement only to the background area.
-- **Result Intuition:** The final output is visually sharp and consistent. **Seg** provides the **semantic information** necessary to generate a plausible, new environment, while **Edge** and **Vis** ensure the subject and lighting remain consistent.
+- **操作：** 加入 **Seg control**，设置中等权重（例如 0.4），并使用 **mask**（背景区域为白色）只对背景区域执行语义替换。
+- **结果直觉：** 最终输出在视觉上清晰且一致。**Seg** 提供了生成合理新环境所必需的 **语义信息**，而 **Edge** 与 **Vis** 则确保主体和光照保持一致。
 
 <video width="500" controls>
-<strong>Mask Video</strong>
+<strong>Mask 视频</strong>
   <source src="assets/street_background.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  您的浏览器不支持 video 标签。
 </video>
 
-Full recipes can be found at [Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
+完整 recipe 可见：[使用 Cosmos Transfer 2.5 进行真实世界视频编辑指南](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md)。
 
 ---
 
-## Best Practices
+## 最佳实践
 
-**Do:**
+**建议这样做：**
 
-- ✅ **Use Multi-Control**: Combine modalities (especially Seg + Edge) for complex tasks.
-- ✅ **Use a Mask with Seg**: Provide a mask when using Seg control to isolate the area of change.
-- ✅ **Start with Lower Weights for Vis**: Use Vis as a supplement with a lower weight (e.g. 0.4-0.6) to maintain visual feel.
+- ✅ **使用多控制**：对复杂任务组合使用多种模态（尤其是 Seg + Edge）。
+- ✅ **在 Seg 中使用 Mask**：使用 Seg control 时提供 mask，以隔离需要修改的区域。
+- ✅ **Vis 从较低权重开始**：将 Vis 作为补充，以较低权重（例如 0.4-0.6）来维持视觉氛围。
 
-**Don't:**
+**不要这样做：**
 
-- ❌ **Use Seg Control Alone**: Do not use Segmentation control by itself; it leads to highly unrealistic results.
-- ❌ **Use Seg + Vis (without Edge)**: This combination is not recommended as it can lead to unpredictable outcomes.
-- ❌ **Mask Vis Control**: Avoid masking Vis control as it is known to cause hallucinations.
-- ❌ **Use Vis with a High Weight**: A very high Vis weight will just return your original video—use [lower weights] instead.
+- ❌ **单独使用 Seg Control**：不要只使用 Segmentation control；这会导致非常不真实的结果。
+- ❌ **使用 Seg + Vis（不含 Edge）**：不推荐这种组合，因为它可能导致不可预测的结果。
+- ❌ **对 Vis Control 做 Mask**：避免对 Vis control 做 masking，因为已知会引发幻觉。
+- ❌ **给 Vis 设置过高权重**：非常高的 Vis 权重只会返回你的原始视频——应使用[较低权重]。
 
-## Use Cases
+## 用例
 
-- [Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
+- [使用 Cosmos Transfer 2.5 进行真实世界视频编辑指南](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md)。
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** November 9, 2025
+**发布日期：** 2025 年 11 月 9 日
 
-### Citation
+### 引用
 
-If you use this content or reference this work, please cite it as:
+如果你使用了本内容或引用了本工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_control_modalities_2025,
@@ -244,6 +244,7 @@ If you use this content or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用格式：**
 
-> Aiden Chang, & Akul Santhosh (2025). Cosmos Transfer 2.5 Control Modalities: Core Concepts. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/control_modalities/overview.html>
+> Aiden Chang 与 Akul Santhosh（2025）。Cosmos Transfer 2.5 控制模态：核心概念。收录于 *NVIDIA Cosmos Cookbook*。访问地址：<https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/control_modalities/overview.html>
+

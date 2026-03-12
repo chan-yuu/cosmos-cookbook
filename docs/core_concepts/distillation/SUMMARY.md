@@ -1,5 +1,5 @@
-# Distillation
+# 蒸馏
 
-- [Overview](overview.md)
-- [Case Study: Distill Cosmos Transfer 1](distilling_transfer1.md)
-- [Case Study: Distill Cosmos Predict 2.5](distilling_predict2.5.md)
+- [概览](overview.md)
+- [案例研究：蒸馏 Cosmos Transfer 1](distilling_transfer1.md)
+- [案例研究：蒸馏 Cosmos Predict 2.5](distilling_predict2.5.md)

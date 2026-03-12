@@ -1,56 +1,56 @@
-# Getting Started
+# 入门
 
-This guide covers the essential tools and dependencies needed to set up your development environment for working with Cosmos models. These tools provide the foundation for data curation, model post-training, evaluation, and deployment workflows across all Cosmos projects.
+本指南介绍为使用 Cosmos 模型而设置开发环境所需的基本工具和依赖项。这些工具为所有 Cosmos 项目的数据整理、模型后训练、评估和部署工作流奠定基础。
 
-## Repository Setup
+## 仓库设置
 
-Clone the Cosmos Cookbook repository and install it in development mode:
+克隆 Cosmos Cookbook 仓库：
 
 ```shell
 git clone git@github.com:nvidia-cosmos/cosmos-cookbook.git
 cd cosmos-cookbook
 ```
 
-### Cookbook Structure
+### Cookbook 结构
 
-The Cosmos Cookbook is organized into two main directories:
+Cosmos Cookbook 主要分为两个目录：
 
-- **`docs/`** - Contains the source documentation in markdown files. This includes all the technical guides, workflows, examples, and tutorials that make up the cookbook content.
+- **`docs/`** - 包含 Markdown 格式的源文档。其中包括构成 cookbook 内容的所有技术指南、工作流、示例和教程。
 
-- **`scripts/`** - Contains all the executable scripts referenced throughout the cookbook. This includes scripts for data processing, evaluation pipelines, configuration files for post-training tasks, and other automation tools used across the various workflows.
+- **`scripts/`** - 包含 cookbook 中引用的所有可执行脚本。其中包括数据处理脚本、评估流水线、后训练任务的配置文件，以及各种工作流中使用的其他自动化工具。
 
-This structure separates the documentation from the practical implementation, making it easy to navigate between reading about workflows and executing the corresponding scripts.
+这种结构将文档与实际实现分离，方便你在阅读工作流说明和执行相应脚本之间切换。
 
-**Note:** These installation steps will be updated as we prepare the external repository for public release.
+**注意：** 随着我们为公开发布外部仓库做准备，这些安装步骤还会继续更新。
 
-## Prerequisites
+## 前置条件
 
-Before getting started, ensure you have the following requirements.
+在开始之前，请确保满足以下要求。
 
-### Hardware
+### 硬件
 
-For running cookbook recipes and workflows, you will need the following: 1 GPU minimum for inference and 4 GPUs minimum for training(recommended 8 GPUs), using Ampere architecture or newer (A100, H100).
+运行 cookbook 配方和工作流时，至少需要 1 张 GPU 用于推理，至少需要 4 张 GPU 用于训练（推荐 8 张 GPU），并且应使用 Ampere 架构或更新架构（A100、H100）。
 
-For specific GPU and memory requirements for each Cosmos model (Predict1, Predict2, Transfer1, etc.), refer to the [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
+关于各个 Cosmos 模型（Predict1、Predict2、Transfer1 等）的具体 GPU 和内存要求，请参考 [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) 文档。
 
-> **Note**: A GPU is not required to render the local documentation.
+> **注意**：渲染本地文档不需要 GPU。
 
-### Software
+### 软件
 
-- **Operating System**: Ubuntu 24.04, 22.04, or 20.04
-- **Python**: Version 3.10+
-- **NVIDIA Container Toolkit**: 1.16.2 or later
-- **CUDA**: 12.4 or later
+- **操作系统**：Ubuntu 24.04、22.04 或 20.04
+- **Python**：3.10+
+- **NVIDIA Container Toolkit**：1.16.2 或更高版本
+- **CUDA**：12.4 或更高版本
 - **Docker Engine**
-- **Network**: Internet connection for downloading models and dependencies
+- **网络**：用于下载模型和依赖项的互联网连接
 
-## Generic Tool Installation
+## 通用工具安装
 
-The following system dependencies are required to run the Cosmos Cookbook:
+运行 Cosmos Cookbook 需要以下系统依赖：
 
 ### pkgx
 
-[pkgx](https://docs.pkgx.sh/) is a modern package manager that simplifies CLI tool installation and management. It provides isolated environments and automatic dependency resolution.
+[pkgx](https://docs.pkgx.sh/) 是一个现代化的软件包管理器，可简化 CLI 工具的安装和管理。它提供隔离环境和自动依赖解析能力。
 
 ```shell
 brew install pkgx || curl https://pkgx.sh | sh
@@ -58,7 +58,7 @@ brew install pkgx || curl https://pkgx.sh | sh
 
 ### uv
 
-[uv](https://docs.astral.sh/uv/) is a fast Python package installer and resolver, designed as a drop-in replacement for pip. It's essential for managing Python dependencies in Cosmos projects.
+[uv](https://docs.astral.sh/uv/) 是一个高速的 Python 包安装器和依赖解析器，可作为 pip 的即插即用替代方案。它对于管理 Cosmos 项目中的 Python 依赖至关重要。
 
 ```shell
 pkgm install uv
@@ -66,19 +66,19 @@ pkgm install uv
 
 #### Hugging Face CLI
 
-The [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli) is essential for downloading pre-trained model checkpoints and datasets from the Hugging Face Hub.
+[Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli) 是从 Hugging Face Hub 下载预训练模型 checkpoint 和数据集的重要工具。
 
 ```shell
 pkgm install huggingface-cli
 huggingface-cli login
 ```
 
-> **Note**: You'll need a Hugging Face account and access token for authentication.
+> **注意**：你需要一个 Hugging Face 账户和访问令牌进行认证。
 
-## Cloud Deployments Quick Start
+## 云端部署快速开始
 
-These Cloud Deployments guides help you deploy and run Cosmos models without local infrastructure setup.
+这些云端部署指南可帮助你在无需搭建本地基础设施的情况下部署并运行 Cosmos 模型。
 
-- **[Get started with Cosmos Reason1 on Brev](brev/reason1/reason1_on_brev.md)** - Deploy Cosmos Reason1 for physical AI reasoning on Brev's cloud GPU platform. This guide covers provisioning, setup, and first inference.
+- **[在 Brev 上开始使用 Cosmos Reason1](brev/reason1/reason1_on_brev.md)** - 在 Brev 的云 GPU 平台上部署用于物理 AI 推理的 Cosmos Reason1。本指南涵盖资源开通、环境设置和首次推理。
 
-- **[Get started with Transfer2.5 and Predict2.5 on Brev](brev/transfer2_5/transfer_and_predict_on_brev.md)** - Set up Transfer2.5 (video generation) and Predict2.5 (world prediction) on Brev cloud infrastructure with example workflows.
+- **[在 Brev 上开始使用 Transfer2.5 和 Predict2.5](brev/transfer2_5/transfer_and_predict_on_brev.md)** - 在 Brev 云基础设施上设置 Transfer2.5（视频生成）和 Predict2.5（世界预测），并提供示例工作流。

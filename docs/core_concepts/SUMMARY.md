@@ -1,7 +1,7 @@
-# Core Concepts
+# 核心概念
 
-- [Control Modalities](control_modalities/)
-- [Data Curation](data_curation/)
-- [Post-Training](post_training/)
-- [Evaluation](evaluation/)
-- [Distillation](distillation/)
+- [控制模态](control_modalities/)
+- [数据整理](data_curation/)
+- [后训练](post_training/)
+- [评估](evaluation/)
+- [蒸馏](distillation/)

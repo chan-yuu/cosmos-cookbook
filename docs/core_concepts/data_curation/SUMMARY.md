@@ -1,4 +1,4 @@
-# Data curation
+# 数据整理
 
-- [Overview](overview.md)
-- [Core Curation](core_curation.md)
+- [概览](overview.md)
+- [核心整理](core_curation.md)

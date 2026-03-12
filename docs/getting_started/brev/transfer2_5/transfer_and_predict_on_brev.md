@@ -1,73 +1,74 @@
-# Get Started with Transfer2.5 and Predict2.5 on Brev
+# 在 Brev 上开始使用 Transfer2.5 和 Predict2.5
 
-> **Authors:** [Carlos Casanova](https://www.linkedin.com/in/carloscasanova/)
-> **Organization:** NVIDIA
+> **作者：** [Carlos Casanova](https://www.linkedin.com/in/carloscasanova/)
+> **组织：** NVIDIA
 
-## Explore Brev
+## 探索 Brev
 
-NVIDIA Brev is an excellent platform for experimenting with Cosmos. Follow these steps to get started:
+NVIDIA Brev 是一个非常适合实验 Cosmos 的平台。按照以下步骤即可开始：
 
-1. Create an account at [https://brev.nvidia.com](https://brev.nvidia.com).
-2. Install the CLI as shown in [https://docs.nvidia.com/brev/latest/brev-cli.html](https://docs.nvidia.com/brev/latest/brev-cli.html).
-3. Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/latest/quick-start.html) to get a feel for the platform. The Brev documentation is also linked from the Brev page.
+1. 在 [https://brev.nvidia.com](https://brev.nvidia.com) 创建账户。
+2. 按照 [https://docs.nvidia.com/brev/latest/brev-cli.html](https://docs.nvidia.com/brev/latest/brev-cli.html) 安装 CLI。
+3. 参考 [Brev Quickstart](https://docs.nvidia.com/brev/latest/quick-start.html) 熟悉平台。Brev 页面中也链接了 Brev 文档。
 
-While lower spec GPUs can work for some workflows, GPUs with 80GB of VRAM are recommended for Cosmos. Also note that the Transfer 2.5 AV Multiview model requires instances with 8 or more GPUs.
+虽然某些工作流在更低规格的 GPU 上也能运行，但对于 Cosmos，推荐使用具备 80GB VRAM 的 GPU。另外，Transfer 2.5 AV Multiview 模型需要 8 张或更多 GPU 的实例。
 
-## The cheat code: Launchables
+## 快速捷径：Launchables
 
-[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
+[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) 是一种便捷方式，可将硬件和软件环境打包为易于分享的链接。一旦你把 Cosmos 环境调试好，Launchable 就是节省时间并与他人共享配置的最方便方式。
 
-In this section, we'll walk through building a Launchable for Transfer2.5. Setting up Predict2.5 is nearly identical to the below steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. You can also set up both models at once.
+本节将带你为 Transfer2.5 构建一个 Launchable。Predict2.5 的设置过程与下面步骤几乎完全相同。请参考 [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md)，并相应调整设置脚本。你也可以同时配置这两个模型。
 
-> **Note**: Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below as Brev changes over time.
+> **注意**：Cosmos 和 Brev 都在不断演进。随着 Brev 的变化，你在下面的步骤中可能会看到一些细微的 UI 或其他差异。
 
-1. Find the **Launchable** section of the Brev website.
+1. 在 Brev 网站中找到 **Launchable** 部分。
 
    ![Launchables Menu](images/brev01-launchable-menu.png)
 
-2. Click the **Create Launchable** button.
+2. 点击 **Create Launchable** 按钮。
 
    ![Create Launchable Button](images/brev02-create-launchable-button.png)
 
-3. Enter the Cosmos Transfer URL: [https://github.com/nvidia-cosmos/cosmos-transfer2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
+3. 输入 Cosmos Transfer URL： [https://github.com/nvidia-cosmos/cosmos-transfer2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
    ![Cosmos Transfer URL](images/brev03-create-launchable-step1.png)
 
-4. Add a setup script. Brev will run it after cloning the repo. This script should follow the setup instructions from the [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md). In this example, we use the [sample script](#sample-setup-script) from later in this guide, which builds the Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container.
+4. 添加一个设置脚本。Brev 会在克隆仓库后运行它。该脚本应遵循 [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md) 中的设置说明。在本示例中，我们使用本指南后面提供的 [sample script](#sample-setup-script)，它会构建 Transfer2.5 Docker 镜像，并在你的 Brev 环境主目录中创建另一个脚本来启动容器。
 
    ![Add setup script](images/brev04-create-launchable-step2.png)
 
-5. If you don't need Jupyter, remove it. You can open other ports on Brev if you plan to set up a custom server.
+5. 如果你不需要 Jupyter，可以将其移除。如果你计划搭建自定义服务器，也可以在 Brev 上开放其他端口。
 
    ![Add ports](images/brev05-create-launchable-step3.png)
 
-   > Setting up Predict2.5 is nearly identical to the above steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
+   > Predict2.5 的设置与上述步骤几乎完全相同。请参考 [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md)，并相应调整设置脚本。想一次性把两个都配好？完全可以，尽管去做吧。
 
-6. Choose the desired level of compute. The screenshot below shows filtering on 8+ GPUs to run the Transfer 2.5 AV Multiview model.
+6. 选择所需的算力级别。下图演示了如何筛选 8 张及以上 GPU，以运行 Transfer 2.5 AV Multiview 模型。
 
    ![Choose compute](images/brev06-create-launchable-step4.png)
 
-7. Name your Launchable and configure access.
+7. 为你的 Launchable 命名并配置访问权限。
 
    ![Name and configure access](images/brev07-create-launchable-step5.png)
 
-   You're ready to deploy! Notice the **View All Options** link, which allows you to change the compute.
+   现在你已经可以部署了！注意 **View All Options** 链接，它允许你更改算力配置。
 
    ![Ready to deploy](images/brev08-launchable-ready-to-deploy.png)
 
-8. After deploying, visit the instance page to find helpful examples of how to connect to the instance. Note the **Delete** button, which allows you to delete your instance when you're done. This can also be done with the `brev delete` CLI command. Instances that support pause and resume can be stopped from this page.
+8. 部署完成后，访问实例页面以查看一些有用的连接示例。注意 **Delete** 按钮，它允许你在使用完后删除实例。你也可以通过 `brev delete` CLI 命令完成此操作。支持暂停和恢复的实例也可以在此页面停止。
 
    ![Instance page](images/brev09-instance-page.png)
 
-9. Connect to the instance. This example runs the generated `run_transfer2.5_docker.sh` script to start the container. Once the prompt appears, run `hf auth login` to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
+9. 连接到实例。本示例运行生成的 `run_transfer2.5_docker.sh` 脚本来启动容器。出现提示符后，运行 `hf auth login` 以启用 checkpoint 下载。没有这些 checkpoint，Transfer2.5 将无法工作。
 
    ![Docker prompt](images/brev10-docker-prompt.png)
 
-   > The Docker entrypoint pulls dependencies, and since share the Python virtual environment (venv) folder is shared with the container, subsequent runs will already have the deps installed.
+   > Docker entrypoint 会拉取依赖项，并且由于 Python 虚拟环境（venv）文件夹与容器共享，后续运行时这些依赖通常已经安装完成。
 
-### Sample setup script
+<a id="sample-setup-script"></a>
+### 示例设置脚本
 
-The sample setup script below builds a Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container. Once inside the container, run the `hf auth login` command to enable checkpoint downloads. Refer to the [Transfer2.5 Downloading Checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) section for more info.
+下面的示例设置脚本会构建一个 Transfer2.5 Docker 镜像，并在你的 Brev 环境主目录中创建另一个脚本用于启动容器。进入容器后，请运行 `hf auth login` 命令以启用 checkpoint 下载。更多信息请参阅 [Transfer2.5 Downloading Checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) 章节。
 
 ```bash
 #!/bin/bash
@@ -119,18 +120,18 @@ chmod +x $HOME/run_transfer2.5_docker.sh
 '
 ```
 
-## Notes and Tips
+## 说明与提示
 
-- We recommend using GPUs with 80GB+ of VRAM.
-- We recommend using instances with a 2 or more terabytes of storage. With less than 2 terabytes, you might run out of space.
-- Don't forget to shutdown (i.e. delete) your instances when you're done.
-- As of November 2025, most instances suitable for Transfer 2.5 and Predict 2.5 do not support the pause and resume (start/stop) feature.
-- Note the Brev deployment time estimate when evaluating instance types (e.g. "Ready in 7minutes").
-- Deployment can fail on occasion, and the driver version might not be what you expect when trying a new provider. For these reasons, set aside 3x your estimated ready time and you will be happy 😀
-- Your favorite cloud provider might not always be available.
-- You can change the compute for a Launchable. Here are some reasons you might want to do this:
+- 我们建议使用具有 80GB 及以上 VRAM 的 GPU。
+- 我们建议使用存储容量为 2TB 或以上的实例。低于 2TB 时，你可能会遇到空间不足的问题。
+- 使用完成后，别忘了关闭（即删除）你的实例。
+- 截至 2025 年 11 月，大多数适合运行 Transfer 2.5 和 Predict 2.5 的实例并不支持暂停与恢复（启动/停止）功能。
+- 在评估实例类型时，请注意 Brev 给出的部署时间预估（例如 "Ready in 7minutes"）。
+- 部署有时会失败，而且在尝试新的提供商时，驱动版本可能也不符合预期。因此，建议预留 3 倍于预估就绪时间的缓冲，你会轻松很多 😀
+- 你喜欢的云服务提供商并不总是随时可用。
+- 你可以更改 Launchable 的算力配置。以下是一些这样做的原因：
   <ul>
-    <li>☁️ The preferred cloud provider is not available.</li>
-    <li>💰 You want to save money with a different configuration.</li>
-    <li>🏎️ You want to try higher specs.</li>
+    <li>☁️ 首选的云服务提供商当前不可用。</li>
+    <li>💰 你想通过不同的配置节省成本。</li>
+    <li>🏎️ 你想尝试更高规格。</li>
   </ul>

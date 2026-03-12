@@ -3,178 +3,179 @@
 <div style="width: 100%; max-width: 969px; margin: 2rem 0; display: block;">
   <video autoplay loop muted playsinline style="width: 100%; max-width: 969px; height: auto; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: block;">
     <source src="assets/images/homepage_video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+    您的浏览器不支持 video 标签。
   </video>
 </div>
 
-## Overview
+## 概览
 
-**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a platform of state-of-the-art generative world foundation models (WFMs), guardrails, and an accelerated data processing and curation pipeline. This cookbook serves as a practical guide to the Cosmos open models--offering step-by-step workflows, technical recipes, and concrete examples for building, adapting, and deploying WFMs. It helps developers reproduce successful Cosmos model deployments and customize them for their specific domains.
+**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** 是一个由最先进的生成式世界基础模型（WFM）、护栏（guardrails）以及加速数据处理与整理流水线组成的平台。本 cookbook 作为 Cosmos 开放模型的实用指南，提供了用于构建、适配和部署 WFM 的分步工作流、技术配方和具体示例，帮助开发者复现成功的 Cosmos 模型部署，并根据各自领域进行定制。
 
-The Cosmos ecosystem supports the complete Physical AI development lifecycle--from inference using pre-trained models to custom post-training for domain adaptation. Inside, you'll find the following:
+Cosmos 生态系统支持完整的 Physical AI 开发生命周期——从使用预训练模型进行推理，到面向领域适配的自定义后训练。你将在这里看到以下内容：
 
-- Quick-start inference examples to get up and running fast.
-- Advanced post-training workflows for domain-specific fine-tuning.
-- Proven recipes for scalable, production-ready deployments.
+- 快速上手的推理示例，帮助你迅速开始。
+- 面向特定领域微调的高级后训练工作流。
+- 经过验证、可扩展、可用于生产环境部署的配方。
 
-## Latest Updates
+## 最新更新
 
-| **Date** | **Recipe** | **Model** |
+| **日期** | **配方** | **模型** |
 |----------|------------|-----------|
-| Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](recipes/end2end/gr00t-dreams/post-training.md) | Cosmos Predict 2.5, Reason 2 |
-| Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md)<br><small>Upgraded to Predict 2.5</small> | Cosmos Predict 2.5 |
-| Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](recipes/post_training/reason2/av_3d_grounding/post_training.md) | Cosmos Reason 1 & 2 |
-| Feb 4 | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) | Cosmos Reason 2 |
-| Jan 30 | [Prompt Guide](getting_started/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
-| Jan 29 | [Video Search and Summarization with Cosmos Reason](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
-| Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
-| Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
-| Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](recipes/post_training/reason2/intelligent-transportation/post_training.md) | Cosmos Reason 2 |
+| Mar 3 | [GR00T-Dreams: 面向机器人学习的合成轨迹生成](recipes/end2end/gr00t-dreams/post-training.md) | Cosmos Predict 2.5, Reason 2 |
+| Feb 18 | [Cosmos Policy：面向视觉运动控制与规划的视频模型微调](recipes/post_training/predict2/cosmos_policy/post_training.md)<br><small>已升级至 Predict 2.5</small> | Cosmos Predict 2.5 |
+| Feb 18 | [使用 Cosmos Reason 1 & 2 进行 3D AV Grounding 后训练](recipes/post_training/reason2/av_3d_grounding/post_training.md) | Cosmos Reason 1 & 2 |
+| Feb 4 | [经典仓储环境中的工人安全](recipes/inference/reason2/worker_safety/inference.md) | Cosmos Reason 2 |
+| Jan 30 | [提示词指南](getting_started/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
+| Jan 29 | [使用 Cosmos Reason 进行视频搜索与摘要](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
+| Jan 28 | [Cosmos Policy：面向视觉运动控制与规划的视频模型微调](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
+| Jan 27 | [使用 Cosmos Reason 2 进行物理合理性预测](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
+| Jan 26 | [使用 Cosmos Reason 2 进行智能交通后训练](recipes/post_training/reason2/intelligent-transportation/post_training.md) | Cosmos Reason 2 |
 
-## Upcoming Activities
+## 即将举行的活动
 
 ### NVIDIA GTC 2026
 
-Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the [Cosmos sessions](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
+欢迎注册将于 **2026 年 3 月 16–19 日** 举办的 [NVIDIA GTC](https://www.nvidia.com/gtc/)，并将 [Cosmos 相关会议](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) 加入你的日历。不要错过 CEO Jensen Huang 将于 3 月 16 日（周一）太平洋时间上午 11:00 在 SAP Center 带来的必看主题演讲。
 
 ### NVIDIA Cosmos Cookoff
 
-Introducing the **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
+隆重推出 **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** —— 一个为期四周的线上 Physical AI 挑战赛，面向机器人、AV 和 Vision AI 开发者，于 **1 月 29 日至 2 月 26 日** 举行。
 
-Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
+使用 NVIDIA Cosmos Reason 和 Cosmos Cookbook 中的配方进行构建——从第一视角机器人推理到物理合理性检查，再到具备交通感知能力的模型——即有机会赢得 **5,000 美元**、**NVIDIA DGX Spark** 等奖项！
 
-**[Register Now →](https://luma.com/nvidia-cosmos-cookoff)**
+**[立即注册 →](https://luma.com/nvidia-cosmos-cookoff)**
 
-Sponsored by Nebius and Milestone.
+由 Nebius 和 Milestone 赞助。
 
-## Open Source Community Platform
+## 开源社区平台
 
-The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
+Cosmos Cookbook 是一个开源资源平台，NVIDIA 与更广泛的 Physical AI 社区可在此共享实用工作流、成熟技术以及特定领域的适配经验。
 
-**📂 Repository:** [https://github.com/nvidia-cosmos/cosmos-cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
+**📂 仓库：** [https://github.com/nvidia-cosmos/cosmos-cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
 
-We welcome contributions—from new examples and workflow improvements to bug fixes and documentation updates. Together, we can evolve best practices and accelerate the adoption of Cosmos models across domains.
+我们欢迎各种贡献——从新的示例和工作流改进，到 bug 修复和文档更新。大家可以共同演进最佳实践，加速 Cosmos 模型在各个领域中的采用。
 
-**📊 Physical AI Datasets:** Access curated datasets for autonomous vehicles, intelligent transportation systems, robotics, smart spaces, and warehouse environments on the [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face.
+**📊 Physical AI 数据集：** 可在 Hugging Face 上的 [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) 获取面向自动驾驶、智能交通系统、机器人、智能空间和仓储环境的精选数据集。
 
-## Case Study Recipes
+<a id="case-study-recipes"></a>
+## 案例配方
 
-The Cosmos Cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
+Cosmos Cookbook 包含全面的用例，展示 Cosmos 平台在现实世界中的实际应用。
 
 ### [**Cosmos Predict**](https://github.com/nvidia-cosmos/cosmos-predict2.5)
 
-#### Future state prediction and generation
+#### 未来状态预测与生成
 
-| **Workflow** | **Description** | **Link** |
+| **工作流** | **说明** | **链接** |
 |--------------|-----------------|----------|
-| **Inference** | Text2Image synthetic data generation for intelligent transportation systems | [ITS Synthetic Data Generation](recipes/inference/predict2/inference-its/inference.md) |
-| **Training** | Fine-tuning Cosmos Predict 2 for robotic manipulation through latent frame injection for visuomotor control | [Cosmos Policy](recipes/post_training/predict2/cosmos_policy/post_training.md) |
-| **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
-| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
-| **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
+| **推理** | 面向智能交通系统的 Text2Image 合成数据生成 | [ITS 合成数据生成](recipes/inference/predict2/inference-its/inference.md) |
+| **训练** | 通过潜空间帧注入为机器人操作进行 Cosmos Predict 2 微调，以实现视觉运动控制 | [Cosmos Policy](recipes/post_training/predict2/cosmos_policy/post_training.md) |
+| **训练** | 提升真实感和提示词对齐度的交通异常生成 | [交通异常生成](recipes/post_training/predict2/its-accident/post_training.md) |
+| **训练** | 面向人形机器人学习的合成轨迹数据生成 | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
+| **训练** | 用于体育视频生成的 LoRA 后训练，提升球员动态和规则一致性 | [体育视频生成](recipes/post_training/predict2_5/sports/post_training.md) |
 
-> **Advanced Topics:** Refer to [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
+> **高级主题：** 参考 [蒸馏 Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md)，了解如何使用 DMD2 将模型蒸馏为一个 4-step student。
 
 ### [**Cosmos Transfer**](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
-#### Multi-control video generation and augmentation
+#### 多控制视频生成与增强
 
-| **Workflow** | **Description** | **Link** |
+| **工作流** | **说明** | **链接** |
 |--------------|-----------------|----------|
-| **Guide** | Master precise control over video generation using Edge, Depth, Segmentation, and Vis modalities for structural preservation and semantic replacement | [Control Modalities Guide](core_concepts/control_modalities/overview.md) |
-| **Inference** | Style-guided video generation using image references with edge/depth/segmentation control | [Style-Guided Generation](recipes/inference/transfer2_5/inference-image-prompt/inference.md) |
-| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
-| **Inference** | Multi-control video editing for background replacement, lighting, and object transformation | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
-| **Inference** | Domain transfer pipeline for scarce biological datasets using edge-based control and FiftyOne | [BioTrove Moths Augmentation](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) |
-| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
-| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
-| **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
-| **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
-| **Training** | ControlNet post-training for spatially-conditioned multiview AV video generation with world scenario maps | [Multiview AV Generation](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) |
+| **指南** | 掌握使用 Edge、Depth、Segmentation 和 Vis 模态对视频生成进行精确控制的方法，以实现结构保留和语义替换 | [控制模态指南](core_concepts/control_modalities/overview.md) |
+| **推理** | 使用图像参考并结合 edge/depth/segmentation 控制的风格引导视频生成 | [风格引导生成](recipes/inference/transfer2_5/inference-image-prompt/inference.md) |
+| **推理** | 面向交通异常场景的 CARLA simulator-to-real 增强 | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
+| **推理** | 用于背景替换、光照调整和对象变换的多控制视频编辑 | [真实世界视频编辑](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
+| **推理** | 面向稀缺生物数据集、使用基于 edge 控制与 FiftyOne 的领域迁移流水线 | [BioTrove 飞蛾增强](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) |
+| **推理** | 使用多模态控制的仿真数据天气增强流水线 | [天气增强](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
+| **推理** | 面向多视角仓储环境的 CG-to-real 转换 | [仓储仿真](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
+| **推理** | 面向机器人导航任务的 Sim2Real 数据增强 | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
+| **推理** | 面向人形机器人的合成操作动作生成 | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
+| **训练** | 使用世界场景地图进行空间条件多视角 AV 视频生成的 ControlNet 后训练 | [多视角 AV 生成](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) |
 
 ### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
 
-#### Vision-language reasoning and quality control
+#### 视觉语言推理与质量控制
 
-| **Workflow** | **Description**                                                           | **Link**                                                                                                |
+| **工作流** | **说明**                                                           | **链接**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Guide** | Comprehensive prompting guide for Cosmos Reason 2 covering message structure, sampling parameters, and domain-specific patterns | [Cosmos Reason 2 Prompt Guide](getting_started/prompt_guide/reason_guide.md)                   |
-| **Inference** | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts | [Video Search and Summarization](recipes/inference/reason2/vss/inference.md)                   |
-| **Inference** | Zero-shot safety compliance and hazard detection in industrial warehouse environments | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) |
-| **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md) |
-| **Training** | 3D vehicle grounding in autonomous driving with Cosmos Reason 1 & 2 | [3D AV Grounding (Reason 1 & 2)](recipes/post_training/reason2/av_3d_grounding/post_training.md) |
-| **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
-| **Training** | Post-training Cosmos Reason 2 for intelligent transportation scene understanding with WTS data | [Intelligent Transportation (Reason 2)](recipes/post_training/reason2/intelligent-transportation/post_training.md) |
-| **Training** | Physical plausibility prediction for video quality assessment with Cosmos Reason 2 | [Physical Plausibility (Reason 2)](recipes/post_training/reason2/physical-plausibility-check/post_training.md) |
-| **Training** | Physical plausibility check for video quality assessment                  | [Physical Plausibility (Reason 1)](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
-| **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
-| **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation (Reason 1)](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
-| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA (Reason 1)](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)  |
-| **Training** | Temporal localization for MimicGen robot learning data generation         | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md)           |
-| **Training** | Wafer map anomaly classification with supervised fine-tuning on WM-811k  | [Wafer Map Classification](recipes/post_training/reason1/wafermap_classification/post_training.md)      |
+| **指南** | 面向 Cosmos Reason 2 的全面提示词指南，涵盖消息结构、采样参数和领域模式 | [Cosmos Reason 2 提示词指南](getting_started/prompt_guide/reason_guide.md)                   |
+| **推理** | 面向大规模视频摘要、问答和直播流告警的 GPU 加速视频分析流水线 | [视频搜索与摘要](recipes/inference/reason2/vss/inference.md)                   |
+| **推理** | 工业仓储环境中的零样本安全合规与危险检测 | [经典仓储环境中的工人安全](recipes/inference/reason2/worker_safety/inference.md) |
+| **推理** | 面向社交机器人的第一视角社交与物理推理             | [第一视角社交推理](recipes/inference/reason2/intbot_showcase/inference.md) |
+| **训练** | 使用 Cosmos Reason 1 & 2 进行自动驾驶中的 3D 车辆定位 | [3D AV Grounding（Reason 1 & 2）](recipes/post_training/reason2/av_3d_grounding/post_training.md) |
+| **训练** | 使用生产数据对 Cosmos Reason 2 进行后训练，用于 AV 视频描述与 VQA | [AV Video Caption VQA（Reason 2）](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
+| **训练** | 使用 WTS 数据对 Cosmos Reason 2 进行后训练，用于智能交通场景理解 | [智能交通（Reason 2）](recipes/post_training/reason2/intelligent-transportation/post_training.md) |
+| **训练** | 使用 Cosmos Reason 2 进行视频质量评估的物理合理性预测 | [物理合理性（Reason 2）](recipes/post_training/reason2/physical-plausibility-check/post_training.md) |
+| **训练** | 用于视频质量评估的物理合理性检查                  | [物理合理性（Reason 1）](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
+| **训练** | 面向仓储环境的 Spatial AI 理解                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
+| **训练** | 智能交通场景理解与分析               | [智能交通（Reason 1）](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
+| **训练** | 面向自动驾驶的 AV 视频描述与视觉问答 | [AV Video Caption VQA（Reason 1）](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)  |
+| **训练** | 用于 MimicGen 机器人学习数据生成的时间定位         | [时间定位](recipes/post_training/reason1/temporal_localization/post_training.md)           |
+| **训练** | 在 WM-811k 上进行监督微调的晶圆图异常分类  | [晶圆图分类](recipes/post_training/reason1/wafermap_classification/post_training.md)      |
 
 ### [**Cosmos Curator**](https://github.com/nvidia-cosmos/cosmos-curate)
 
-| **Workflow** | **Description**                                      | **Link**                                                                        |
+| **工作流** | **说明**                                      | **链接**                                                                        |
 | ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
-| **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
-| **Analysis** | Advanced video clustering using Time Series K-Means on embedding trajectories | [Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) |
+| **数据整理** | 为 Cosmos Predict 2 后训练整理视频数据 | [Predict 2 数据整理](recipes/data_curation/predict2_data/data_curation.md) |
+| **分析** | 使用 Time Series K-Means 对嵌入轨迹进行高级视频聚类 | [使用 Time Series K-Means 进行视频聚类](recipes/data_curation/embedding_analysis/embedding_analysis.md) |
 
-### **End-to-End Workflows**
+### **端到端工作流**
 
-| **Workflow** | **Description** | **Link** |
+| **工作流** | **说明** | **链接** |
 |--------------|-----------------|----------|
-| **GR00T-Dreams** | End-to-end pipeline for synthetic robot trajectory generation: post-train Cosmos Predict 2.5 on GR1 data, generate trajectories, and use Cosmos Reason 2 as a video critic for rejection sampling | [GR00T-Dreams](recipes/end2end/gr00t-dreams/post-training.md) |
-| **SDG Pipeline** | Complete synthetic data generation pipeline for traffic scenarios using CARLA, Cosmos Transfer 2.5, and Cosmos Reason 1 | [Smart City SDG](recipes/end2end/smart_city_sdg/workflow_e2e.md) |
+| **GR00T-Dreams** | 用于合成机器人轨迹生成的端到端流水线：在 GR1 数据上对 Cosmos Predict 2.5 进行后训练、生成轨迹，并使用 Cosmos Reason 2 作为视频评论器执行拒绝采样 | [GR00T-Dreams](recipes/end2end/gr00t-dreams/post-training.md) |
+| **SDG Pipeline** | 使用 CARLA、Cosmos Transfer 2.5 和 Cosmos Reason 1 构建交通场景完整合成数据生成流水线 | [智慧城市 SDG](recipes/end2end/smart_city_sdg/workflow_e2e.md) |
 
-## Cosmos Models for Physical AI
+## 面向 Physical AI 的 Cosmos 模型
 
-The Cosmos family of open models consists of five core repositories, each targeting specific capabilities in the AI development workflow:
+Cosmos 开放模型家族由五个核心仓库组成，每个仓库都面向 AI 开发工作流中的特定能力：
 
-**[Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)** - A GPU-accelerated video curation pipeline built on Ray. Supports multi-model analysis, content filtering, annotation, and deduplication for both inference and training data preparation.
+**[Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)** - 一个基于 Ray 的 GPU 加速视频整理流水线。支持多模型分析、内容过滤、标注和去重，可用于推理与训练数据准备。
 
-**[Cosmos Predict](https://github.com/nvidia-cosmos/cosmos-predict2.5)** - A diffusion transformer for future state prediction. Provides text-to-image and video-to-world generation capabilities, with specialized variants for robotics and simulation. Supports custom training for domain-specific prediction tasks.
+**[Cosmos Predict](https://github.com/nvidia-cosmos/cosmos-predict2.5)** - 一个用于未来状态预测的 diffusion transformer，提供 text-to-image 和 video-to-world 生成能力，并为机器人和仿真提供专用变体。支持针对特定领域预测任务的自定义训练。
 
-**[Cosmos Transfer](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** - A multi-control video generation system with ControlNet and MultiControlNet conditioning (including depth, segmentation, LiDAR, and HDMap). Includes 4K upscaling capabilities and supports training for custom control modalities and domain adaptation.
+**[Cosmos Transfer](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** - 一个具备 ControlNet 和 MultiControlNet 条件控制（包括 depth、segmentation、LiDAR 和 HDMap）的多控制视频生成系统。包含 4K 超分能力，并支持自定义控制模态与领域适配训练。
 
-**[Cosmos Reason](https://github.com/nvidia-cosmos/cosmos-reason1)** - A 7B vision-language model for physically grounded reasoning. Handles spatial/temporal understanding and chain-of-thought tasks, with fine-tuning support for embodied AI applications and domain-specific reasoning.
+**[Cosmos Reason](https://github.com/nvidia-cosmos/cosmos-reason1)** - 一个 7B 视觉语言模型，用于物理世界扎根推理。可处理空间/时间理解和 chain-of-thought 任务，并支持面向 embodied AI 应用和领域特定推理的微调。
 
-**[Cosmos RL](https://github.com/nvidia-cosmos/cosmos-rl)** - A distributed training framework supporting both supervised fine-tuning (SFT) and reinforcement learning approaches. Features elastic policy rollout, FP8/FP4 precision support, and optimization for large-scale VLM and LLM training.
+**[Cosmos RL](https://github.com/nvidia-cosmos/cosmos-rl)** - 一个分布式训练框架，同时支持监督微调（SFT）和强化学习方法，具备弹性策略 rollout、FP8/FP4 精度支持，以及面向大规模 VLM 和 LLM 训练的优化。
 
-All models include pre-trained checkpoints and support custom training for domain-specific adaptation. The diagram below illustrates component interactions across inference and training workflows.
+所有模型都包含预训练 checkpoint，并支持面向特定领域适配的自定义训练。下图展示了各组件在推理与训练工作流中的交互方式。
 
 ![Cosmos Overview](assets/images/cosmos_overview.png)
 
-## ML/Gen AI Concepts
+## ML/Gen AI 概念
 
-The cookbook is organized around key concepts spanning (controlled) **inference** and **training** use cases:
+本 cookbook 围绕横跨（可控）**推理**与**训练**使用场景的关键概念组织：
 
-**1. [Prompt Guide](getting_started/prompt_guide/overview.md)** - Learn effective prompting strategies for Cosmos models. This covers message structure, media ordering, sampling parameters, and domain-specific patterns to help you get the best results from Cosmos Reason and other vision-language models.
+**1. [提示词指南](getting_started/prompt_guide/overview.md)** - 学习适用于 Cosmos 模型的高效提示词策略。内容涵盖消息结构、媒体顺序、采样参数和领域模式，帮助你从 Cosmos Reason 与其他视觉语言模型中获得最佳结果。
 
-**2. [Control Modalities](core_concepts/control_modalities/overview.md)** - Master precise control over video generation with Cosmos Transfer 2.5 using Edge, Depth, Segmentation, and Vis modalities. This covers structural preservation, semantic replacement, lighting consistency, and multi-control approaches for achieving high-fidelity, controllable video transformations.
+**2. [控制模态](core_concepts/control_modalities/overview.md)** - 掌握如何在 Cosmos Transfer 2.5 中使用 Edge、Depth、Segmentation 和 Vis 模态精确控制视频生成。内容涵盖结构保留、语义替换、光照一致性，以及实现高保真、可控视频变换的多控制方法。
 
-**3. [Data Curation](core_concepts/data_curation/overview.md)** - Use Cosmos Curator to prepare your datasets with modular, scalable processing pipelines. This includes splitting, captioning, filtering, deduplication, task-specific sampling, and cloud-native or local execution.
+**3. [数据整理](core_concepts/data_curation/overview.md)** - 使用 Cosmos Curator 通过模块化、可扩展的处理流水线准备你的数据集。包括切分、字幕生成、过滤、去重、任务特定采样，以及云原生或本地执行。
 
-**4. [Model Post-Training](core_concepts/post_training/overview.md)** - Fine-tune foundation models using your curated data. This covers domain adaptation for Predict (2 and 2.5), Transfer (1 and 2.5), and Reason 1, setup for supervised fine-tuning, LoRA, or reinforcement learning, and use of Cosmos RL for large-scale distributed rollout.
+**4. [模型后训练](core_concepts/post_training/overview.md)** - 使用你整理好的数据对基础模型进行微调。内容涵盖 Predict（2 和 2.5）、Transfer（1 和 2.5）以及 Reason 1 的领域适配，监督微调、LoRA 或强化学习的配置，以及利用 Cosmos RL 进行大规模分布式 rollout。
 
-**5. [Evaluation and Quality Control](core_concepts/evaluation/overview.md)** - Ensure your post-trained models are aligned and robust through metrics, visualization, and qualitative inspection. Leverage Cosmos Reason 1 as a quality filter (e.g. for synthetic data rejection sampling).
+**5. [评估与质量控制](core_concepts/evaluation/overview.md)** - 通过指标、可视化和定性检查，确保后训练模型具备良好的对齐性和稳健性。你还可以利用 Cosmos Reason 1 作为质量过滤器（例如用于合成数据拒绝采样）。
 
-**6. [Model Distillation](core_concepts/distillation/overview.md)** - Compress large foundation models into smaller, efficient variants while preserving performance. This includes knowledge distillation techniques for Cosmos models, teacher-student training setups, and deployment optimization for edge devices and resource-constrained environments.
+**6. [模型蒸馏](core_concepts/distillation/overview.md)** - 在保留性能的同时，将大型基础模型压缩为更小、更高效的变体。内容包括适用于 Cosmos 模型的知识蒸馏技术、teacher-student 训练配置，以及面向边缘设备和资源受限环境的部署优化。
 
-## Gallery
+## 示例画廊
 
-Visual examples of Cosmos Transfer results across Physical AI domains:
+展示 Cosmos Transfer 在 Physical AI 各领域中的可视化结果示例：
 
-- **[Robotics Domain Adaptation](gallery/robotics_inference.md)** - Sim-to-real transfer for robotic manipulation with varied materials, lighting, and environments.
-- **[Autonomous Vehicle Domain Adaptation](gallery/av_inference.md)** - Multi-control video generation for driving scenes across different weather, lighting, and time-of-day conditions.
+- **[机器人领域适配](gallery/robotics_inference.md)** - 面向机器人操作的 sim-to-real 迁移，涵盖多样材质、光照和环境。
+- **[自动驾驶领域适配](gallery/av_inference.md)** - 面向驾驶场景的多控制视频生成，覆盖不同天气、光照和昼夜条件。
 
-## Quick Start Paths
+## 快速开始路径
 
-This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.
+本 cookbook 为 **推理** 和 **训练** 工作流都提供了灵活的切入点。每个部分都包含可运行脚本、技术配方和完整示例。
 
-- **Inference workflows:** [Getting Started](getting_started/setup.md) for setup and immediate model deployment
-- **Cloud deployments:** [Cloud platforms](getting_started/cloud_platform.md) for ready-to-launch cloud instances on Nebius, Brev, and more to come
-- **Physical AI datasets:** [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face for curated datasets across domains
-- **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
-- **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
-- **Case study recipes:** [Case Study Recipes](#case-study-recipes) organized by application area
+- **推理工作流：** [快速开始](getting_started/setup.md)，用于环境设置和即时模型部署
+- **云端部署：** [云平台](getting_started/cloud_platform.md)，用于在 Nebius、Brev 等平台上一键启动云实例
+- **Physical AI 数据集：** Hugging Face 上的 [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai)，提供跨领域精选数据集
+- **数据处理：** [数据处理与分析](core_concepts/data_curation/overview.md)，用于内容分析工作流
+- **训练工作流：** [模型训练与微调](core_concepts/post_training/overview.md)，用于领域适配
+- **案例配方：** [案例配方](#case-study-recipes)，按应用领域组织
