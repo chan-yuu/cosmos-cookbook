@@ -1,86 +1,86 @@
-# Additional Examples from Cosmos Model Repos
+# 来自 Cosmos 模型仓库的更多示例
 
-This page provides links to inference and post-training examples from the official Cosmos model repositories. These examples complement the end-to-end tutorials in the cookbook with comprehensive guides for model usage and customization.
+本页提供来自官方 Cosmos 模型仓库的推理与后训练示例链接。这些示例以更全面的模型使用与定制指南，补充了 cookbook 中的端到端教程。
 
 ## Cosmos Predict
 
-### Cosmos Predict 2.5 *(Latest)*
+### Cosmos Predict 2.5 *(最新)*
 
-For the latest Cosmos Predict 2.5 model documentation, visit the [Cosmos Predict 2.5 Repository](https://github.com/nvidia-cosmos/cosmos-predict2.5).
+有关最新的 Cosmos Predict 2.5 模型文档，请访问 [Cosmos Predict 2.5 Repository](https://github.com/nvidia-cosmos/cosmos-predict2.5)。
 
-#### Inference with Pre-Trained Cosmos Predict 2.5 Models
+#### 使用预训练 Cosmos Predict 2.5 模型进行推理
 
-- **[Inference Guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference.md)**: Video generation with Text2World, Image2World, and Video2World capabilities
-- **[Auto Multiview Inference Guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference_auto_multiview.md)**: Multi-camera view generation for autonomous vehicle applications
+- **[推理指南](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference.md)**：利用 Text2World、Image2World 和 Video2World 能力生成视频
+- **[自动多视角推理指南](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference_auto_multiview.md)**：面向自动驾驶应用的多摄像头视角生成
 
-#### Post-Training with Cosmos Predict 2.5 Models
+#### 使用 Cosmos Predict 2.5 模型进行后训练
 
-- **[Video2World Post-Training for DreamGen Bench](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/post-training_video2world_gr00t.md)**: Humanoid robot trajectory generation using the DreamGen benchmark
+- **[面向 DreamGen Bench 的 Video2World 后训练](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/post-training_video2world_gr00t.md)**：使用 DreamGen benchmark 生成人形机器人轨迹
 
 ### Cosmos Predict 2
 
-#### Inference with Pre-Trained Cosmos Predict 2 Models
+#### 使用预训练 Cosmos Predict 2 模型进行推理
 
-- **[Text2Image Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2image.md)**: Generating high-quality images from text prompts
-- **[Video2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_video2world.md)**: Generating videos from images/videos with text prompts (single/batch processing, multi-frame conditioning, multi-GPU inference, prompt refiner, rejection sampling)
-- **[Text2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2world.md)**: Generating videos directly from text prompts (single/batch processing, multi-GPU inference)
+- **[Text2Image 推理](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2image.md)**：根据文本提示生成高质量图像
+- **[Video2World 推理](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_video2world.md)**：结合文本提示从图像/视频生成视频（单条/批量处理、多帧条件、多 GPU 推理、提示词优化、拒绝采样）
+- **[Text2World 推理](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2world.md)**：直接根据文本提示生成视频（单条/批量处理、多 GPU 推理）
 
-#### Post-Training with Cosmos Predict 2 Models
+#### 使用 Cosmos Predict 2 模型进行后训练
 
-- **[Video2World Post-Training Guide](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world.md)**: General guide to the Video2World training system
-- **[Video2World Post-Training on Cosmos-NeMo-Assets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_cosmos_nemo_assets.md)**: Post-training on Cosmos-NeMo-Assets data
-- **[Video2World Post-Training on Fisheye-View AgiBotWorld-Alpha Dataset](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_agibot_fisheye.md)**: Post-training on fisheye-view robot videos from the AgiBotWorld-Alpha dataset
-- **[Video2World Post-Training on GR00T Dreams GR1 and DROID Datasets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_gr00t.md)**: Post-training on GR00T Dreams GR1 and DROID datasets
-- **[Video2World Action-Conditioned Post-Training on Bridge Dataset](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_action.md)**: Action-conditioned post-training on Bridge dataset
-- **[Text2Image Post-Training Guide](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image.md)**: General guide to the Text2Image training system
-- **[Text2Image Post-Training on Cosmos-NeMo-Assets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image_cosmos_nemo_assets.md)**: Post-training on Cosmos-NeMo-Assets image data
+- **[Video2World 后训练指南](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world.md)**：Video2World 训练系统通用指南
+- **[在 Cosmos-NeMo-Assets 上进行 Video2World 后训练](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_cosmos_nemo_assets.md)**：基于 Cosmos-NeMo-Assets 数据进行后训练
+- **[在鱼眼视角 AgiBotWorld-Alpha 数据集上进行 Video2World 后训练](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_agibot_fisheye.md)**：基于 AgiBotWorld-Alpha 数据集中的鱼眼视角机器人视频进行后训练
+- **[在 GR00T Dreams GR1 和 DROID 数据集上进行 Video2World 后训练](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_gr00t.md)**：基于 GR00T Dreams GR1 和 DROID 数据集进行后训练
+- **[在 Bridge 数据集上进行动作条件 Video2World 后训练](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_action.md)**：基于 Bridge 数据集进行动作条件后训练
+- **[Text2Image 后训练指南](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image.md)**：Text2Image 训练系统通用指南
+- **[在 Cosmos-NeMo-Assets 上进行 Text2Image 后训练](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image_cosmos_nemo_assets.md)**：基于 Cosmos-NeMo-Assets 图像数据进行后训练
 
 ## Cosmos Transfer
 
-### Cosmos Transfer 2.5 *(Latest)*
+### Cosmos Transfer 2.5 *(最新)*
 
-For the latest Cosmos Transfer 2.5 model documentation, visit the [Cosmos Transfer 2.5 Repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5).
+有关最新的 Cosmos Transfer 2.5 模型文档，请访问 [Cosmos Transfer 2.5 Repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5)。
 
-#### Inference with Pre-Trained Cosmos Transfer 2.5 Models
+#### 使用预训练 Cosmos Transfer 2.5 模型进行推理
 
-- **[Inference Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference.md)**: Multi-control video generation with depth, segmentation, LiDAR, and HDMap conditioning
-- **[Auto Multiview Inference Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference_auto_multiview.md)**: Multi-camera view generation for autonomous vehicle applications
+- **[推理指南](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference.md)**：基于深度、分割、LiDAR 和 HDMap 条件的多控制视频生成
+- **[自动多视角推理指南](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference_auto_multiview.md)**：面向自动驾驶应用的多摄像头视角生成
 
-#### Post-Training with Cosmos Transfer 2.5 Models
+#### 使用 Cosmos Transfer 2.5 模型进行后训练
 
-- **[Post-Training Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training.md)**: General guide for custom control modalities and domain adaptation
-- **[Auto Multiview Post-Training for HDMap](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training_auto_multiview.md)**: Multi-view autonomous driving scenarios with HDMap control
+- **[后训练指南](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training.md)**：面向自定义控制模态与领域自适应的通用指南
+- **[面向 HDMap 的自动多视角后训练](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training_auto_multiview.md)**：使用 HDMap 控制的多视角自动驾驶场景
 
 ### Cosmos Transfer 1
 
-#### Inference with Pre-Trained Cosmos Transfer 1 Models
+#### 使用预训练 Cosmos Transfer 1 模型进行推理
 
-- **[Cosmos-Transfer1-7B Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md)**: Multi-GPU support
-- **[Cosmos-Transfer1-7B-Sample-AV Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av.md)**: Multi-GPU support
-- **[Cosmos-Transfer1-7B-4KUpscaler Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_4kupscaler.md)**: 4K upscaling with multi-GPU support
-- **[Cosmos-Transfer1-7B Inference (Depth)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_depth.md)**: Depth-based control
-- **[Cosmos-Transfer1-7B Inference (Segmentation)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_seg.md)**: Segmentation-based control
-- **[Cosmos-Transfer1-7B Inference (Edge)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md#example-1-single-control-edge)**: Edge-based control
-- **[Cosmos-Transfer1-7B Inference (Vis)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_vis.md)**: Visual-based control
-- **[Cosmos-Transfer1pt1-7B Inference (Keypoint)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1pt1_7b_keypoint.md)**: Keypoint-based control
-- **[Cosmos-Transfer1-7B-Sample-AV-Multiview Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av_single2multiview.md)**: Multi-view generation
+- **[Cosmos-Transfer1-7B 推理](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md)**：支持多 GPU
+- **[Cosmos-Transfer1-7B-Sample-AV 推理](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av.md)**：支持多 GPU
+- **[Cosmos-Transfer1-7B-4KUpscaler 推理](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_4kupscaler.md)**：支持多 GPU 的 4K 超分辨率
+- **[Cosmos-Transfer1-7B 推理（Depth）](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_depth.md)**：基于深度的控制
+- **[Cosmos-Transfer1-7B 推理（Segmentation）](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_seg.md)**：基于分割的控制
+- **[Cosmos-Transfer1-7B 推理（Edge）](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md#example-1-single-control-edge)**：基于边缘的控制
+- **[Cosmos-Transfer1-7B 推理（Vis）](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_vis.md)**：基于视觉的控制
+- **[Cosmos-Transfer1pt1-7B 推理（Keypoint）](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1pt1_7b_keypoint.md)**：基于关键点的控制
+- **[Cosmos-Transfer1-7B-Sample-AV-Multiview 推理](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av_single2multiview.md)**：多视角生成
 
-#### Post-Training with Cosmos Transfer 1 Models
+#### 使用 Cosmos Transfer 1 模型进行后训练
 
-- **[Cosmos-Transfer1-7B Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md)**: Depth, Edge, Keypoint, Segmentation, and Vis controls with multi-GPU support
-- **[Cosmos-Transfer1-7B-Sample-AV Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: LiDAR and HDMap controls with multi-GPU support
-- **[Cosmos-Transfer1-7B-Sample-AV-Multiview Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: Multi-view LiDAR and HDMap controls with multi-GPU support
+- **[Cosmos-Transfer1-7B 后训练](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md)**：支持多 GPU 的 Depth、Edge、Keypoint、Segmentation 和 Vis 控制
+- **[Cosmos-Transfer1-7B-Sample-AV 后训练](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**：支持多 GPU 的 LiDAR 和 HDMap 控制
+- **[Cosmos-Transfer1-7B-Sample-AV-Multiview 后训练](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**：支持多 GPU 的多视角 LiDAR 和 HDMap 控制
 
-#### Post-Training Cosmos Transfer 1 Models from Scratch
+#### 从零开始对 Cosmos Transfer 1 模型进行后训练
 
-- **[Cosmos-Transfer1-7B Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md)**: Depth, Edge, Keypoint, Segmentation, and Vis controls with multi-GPU support
-- **[Cosmos-Transfer1-7B-Sample-AV Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: LiDAR and HDMap controls with multi-GPU support
-- **[Cosmos-Transfer1-7B-Sample-AV-Multiview Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: Multi-view LiDAR and HDMap controls with multi-GPU support
+- **[Cosmos-Transfer1-7B 后训练](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md)**：支持多 GPU 的 Depth、Edge、Keypoint、Segmentation 和 Vis 控制
+- **[Cosmos-Transfer1-7B-Sample-AV 后训练](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**：支持多 GPU 的 LiDAR 和 HDMap 控制
+- **[Cosmos-Transfer1-7B-Sample-AV-Multiview 后训练](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**：支持多 GPU 的多视角 LiDAR 和 HDMap 控制
 
 ## Cosmos Reason 1
 
-For the latest Cosmos Reason 1 model documentation, visit the [Cosmos Reason 1 Repository](https://github.com/nvidia-cosmos/cosmos-reason1).
+有关最新的 Cosmos Reason 1 模型文档，请访问 [Cosmos Reason 1 Repository](https://github.com/nvidia-cosmos/cosmos-reason1)。
 
-### Post-Training with Cosmos Reason 1 Models
+### 使用 Cosmos Reason 1 模型进行后训练
 
-- **[Cosmos Reason 1 Post-Training Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/README.md)**: Complete post-training guide for vision-language reasoning tasks
+- **[Cosmos Reason 1 后训练示例](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/README.md)**：面向视觉语言推理任务的完整后训练指南

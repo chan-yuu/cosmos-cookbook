@@ -1,4 +1,4 @@
-# Cookbook
+# 手册
 
-- [All recipes](all_recipes.md)
-- [Additional examples](./additional_examples.md)
+- [全部配方](all_recipes.md)
+- [更多示例](./additional_examples.md)

@@ -1,115 +1,118 @@
-# Synthetic Data Generation (SDG) for Traffic Scenarios
+# 面向交通场景的合成数据生成 (SDG)
 
-> **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/) • [Adityan Jothi](https://www.linkedin.com/in/adityan-jothi-23a229105)
-> **Organization:** NVIDIA
+> **作者：** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/) • [Adityan Jothi](https://www.linkedin.com/in/adityan-jothi-23a229105)
+> **组织：** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
+| **模型** | **工作负载** | **使用场景** |
 |-----------|--------------|--------------|
-| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5), [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1), CARLA Simulator | End-to-End | Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning |
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5), [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1), CARLA Simulator | 端到端 | 面向交通场景、结合 VLM 微调的照片级真实感合成数据生成 |
 
-> **Prerequisites**: This workflow requires specific API keys, system requirements, and workflow inputs. See the [Prerequisites](#prerequisites) section below before starting.
+> **先决条件**：此工作流需要特定的 API keys、系统要求和工作流输入。开始之前，请先阅读下面的[先决条件](#prerequisites)部分。
 
-## Overview
+## 概述
 
-This recipe demonstrates how to utilize Cosmos models for generating photorealistic synthetic data for urban traffic scenarios. The workflow is designed to accelerate the development of perception and vision-language models (VLMs) for smart city applications.
+本配方演示如何利用 Cosmos 模型为城市交通场景生成照片级真实感的合成数据。该工作流旨在加速智能城市应用中的感知模型和视觉语言模型（VLM）开发。
 
-![Main Workflow Diagram](./assets/main_workflow.png)
-
----
-
-### Why use SDG?
-
-In areas where the highest model accuracy is vital, finetuning on domain specific data is essential. Synthetic data generation and augmentation offer an easy and scalable way to collect this data to your exact specifications. However, there are significant challenges associated with creating diverse, photorealistic training data from simulators:
-
-- **Domain Gap**: While simulators provide perfect ground truth and controllable scenarios, their synthetic appearance creates a substantial domain gap that limits the performance of models trained on simulator data when deployed in real-world environments.
-- **Scalability Constraints**: Manually crafting diverse scenarios in simulators requires substantial engineering effort and computational resources, making it prohibitively expensive to scale up data diversity.
-- **Limited Visual Realism**: Traditional simulator outputs lack the photorealistic quality needed for robust real-world model deployment, requiring additional post-processing or domain adaptation techniques.
-
-This workflow provides a recipe to:
-
-- Simulate customized traffic scenarios using CARLA
-  - Ground-truth extraction from simulation (RGB, Depth, Segmentation, Normals, 2D/3D bounding boxes, events)
-- Use COSMOS-Transfer to generate photo-realistic augmentations that bridge the sim-to-real gap
-- Help scale synthetic data with customizable augmentation variables
-- Generate post-training datasets for model fine-tuning
-  - SoM-aware post-processing to preserve object correspondence across modalities
-  - Q&A Caption generation for VLM post-training
-
-The output of this recipe is designed to offer a simple hand-off for further fine-tuning and deployment.
-
-Refer to the Cosmos Cookbook [Intelligent Transportation Fine-tuning Guide](../../post_training/reason1/intelligent-transportation/post_training.md) and [VSS documentation](https://docs.nvidia.com/vss/latest/#) for [Deployment](https://docs.nvidia.com/vss/latest/content/installation-vlms.html#local-models-cosmos-reason1) guides.
+![主工作流示意图](./assets/main_workflow.png)
 
 ---
 
-## Prerequisites
+### 为什么使用 SDG？
 
-### Obtain API keys
+在对模型精度要求极高的场景中，基于领域专属数据进行微调至关重要。合成数据生成与增强提供了一种简单且可扩展的方式，可以按你的精确需求收集这类数据。然而，要从仿真器中构建多样化、照片级真实感的训练数据，仍然存在显著挑战：
 
-> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults (e.g., HashiCorp Vault, AWS Secrets Manager). Never commit API keys to source control or share them in plain text.
+- **领域鸿沟**：仿真器虽然能提供完美的 ground truth 和可控场景，但其合成外观会造成显著的领域鸿沟，限制了在真实环境部署时，基于仿真数据训练的模型性能。
+- **可扩展性限制**：在仿真器中手动构造多样场景需要大量工程投入和计算资源，使得大规模提升数据多样性成本极高。
+- **视觉真实感有限**：传统仿真器输出缺乏面向真实世界部署所需的照片级真实感，因此往往还需要额外的后处理或领域自适应技术。
+
+该工作流提供了一套配方，用于：
+
+- 使用 CARLA 模拟自定义交通场景
+  - 从仿真中提取 ground truth（RGB、Depth、Segmentation、Normals、2D/3D bounding boxes、事件）
+- 使用 COSMOS-Transfer 生成照片级真实感增强结果，缩小 sim-to-real gap
+- 通过可定制的增强变量帮助扩展合成数据规模
+- 生成用于模型后训练/微调的数据集
+  - 利用 SoM-aware 后处理保持跨模态目标对应关系
+  - 为 VLM 后训练生成 Q&A 字幕
+
+该配方的输出旨在为后续微调与部署提供一个简洁的交接点。
+
+更多部署相关说明，请参阅 Cosmos Cookbook 的 [Intelligent Transportation Fine-tuning Guide](../../post_training/reason1/intelligent-transportation/post_training.md) 和 [VSS documentation](https://docs.nvidia.com/vss/latest/#) 中的[部署](https://docs.nvidia.com/vss/latest/content/installation-vlms.html#local-models-cosmos-reason1)指南。
+
+---
+
+<a id="prerequisites"></a>
+## 先决条件
+
+### 获取 API keys
+
+> ⚠️ **安全警告：** 请将 API keys 存储在环境变量或安全密钥库（例如 HashiCorp Vault、AWS Secrets Manager）中。切勿将 API keys 提交到源代码管理系统，也不要以明文形式分享。
 
 - [NGC API key](https://org.ngc.nvidia.com/setup/api-keys)
-  - Steps to setup [HERE](https://docs.nvidia.com/ngc/latest/ngc-user-guide.html#generating-api-key)
-- [Hugging Face Token](https://huggingface.co/settings/tokens):
-  - Ensure your Hugging Face token has access to Cosmos-Transfer2.5 checkpoints
-    - Get a [Hugging Face Access Token](https://huggingface.co/settings/tokens) with Read permission
-    - Install [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli)
-    - Login with `hf auth login`.
-    - Read and accept the [NVIDIA Open Model License Agreement](https://huggingface.co/nvidia/Cosmos-Predict2.5-2B)
-    - Read and accept the [terms for Cosmos-Guardrail1](https://huggingface.co/nvidia/Cosmos-Guardrail1)
-    - Read and accept the [terms for Cosmos-Transfer2.5](https://huggingface.co/nvidia/Cosmos-Transfer2.5-2B)
+  - 配置步骤见[这里](https://docs.nvidia.com/ngc/latest/ngc-user-guide.html#generating-api-key)
+- [Hugging Face Token](https://huggingface.co/settings/tokens)：
+  - 请确保你的 Hugging Face token 拥有 Cosmos-Transfer2.5 checkpoints 的访问权限
+    - 获取一个具有 Read 权限的 [Hugging Face Access Token](https://huggingface.co/settings/tokens)
+    - 安装 [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli)
+    - 运行 `hf auth login` 登录。
+    - 阅读并接受 [NVIDIA Open Model License Agreement](https://huggingface.co/nvidia/Cosmos-Predict2.5-2B)
+    - 阅读并接受 [Cosmos-Guardrail1 的使用条款](https://huggingface.co/nvidia/Cosmos-Guardrail1)
+    - 阅读并接受 [Cosmos-Transfer2.5 的使用条款](https://huggingface.co/nvidia/Cosmos-Transfer2.5-2B)
 
-### Workflow Inputs
+<a id="workflow-inputs"></a>
+### 工作流输入
 
-The SDG workflow requires 3 unique inputs: maps, scenario logs, and sensor config. This [repository](https://github.com/inverted-ai/metropolis/) provides a small number of examples for each, from Inverted AI (see step 2 of quickstart). Please see the following sections for descriptions and ways to generate your own.
+SDG 工作流需要 3 类独特输入：地图、场景日志和传感器配置。来自 Inverted AI 的这个[仓库](https://github.com/inverted-ai/metropolis/)为每一种输入都提供了少量示例（见快速开始的第 2 步）。关于这些输入的说明以及如何生成你自己的版本，请参阅下列各节。
 
-#### Maps
+#### 地图
 
-A map includes both the 3D model of a location and its road definition. A map's road definition is based on an OpenDRIVE file. CARLA provides a set of [pre-built maps](https://carla.readthedocs.io/en/latest/catalogue/#maps) that can be used for building and testing this SDG workflow. Further details about maps and their elements can be found [here](https://carla.readthedocs.io/en/latest/core_map/). To create a digital twin of a real-world location, a plugin with a CARLA bridge from [AVES Reality](https://avesreality.com/) can be used.
+地图同时包含位置的 3D 模型及其道路定义。地图的道路定义基于 OpenDRIVE 文件。CARLA 提供了一组可用于构建和测试此 SDG 工作流的[预构建地图](https://carla.readthedocs.io/en/latest/catalogue/#maps)。有关地图及其元素的更多细节可见[这里](https://carla.readthedocs.io/en/latest/core_map/)。如果要为真实地点创建数字孪生，可使用带有 CARLA bridge 的 [AVES Reality](https://avesreality.com/) 插件。
 
-#### Scenario Logs
+#### 场景日志
 
-Along with the map, the workflow requires a scenario log. This file defines the list of actors (vehicles and pedestrians) and exactly how they move during playback, e.g. collision, wrong way driving. CARLA provides a set of vehicle [assets](https://carla.readthedocs.io/en/latest/catalogue_vehicles/) to use in the simulation.
+除了地图外，工作流还需要场景日志。该文件定义了参与者（车辆和行人）列表，以及它们在回放时的精确运动方式，例如碰撞、逆行等。CARLA 提供了一组车辆[资源](https://carla.readthedocs.io/en/latest/catalogue_vehicles/)，可用于仿真。
 
-- To generate scenarios with simple, randomized traffic, please refer to the [CARLA quick start guide](https://carla.readthedocs.io/en/latest/start_quickstart/#run-a-python-client-example-script)
-- Complex scenarios can be created using third-party tools. One such tool is [RoadRunner](https://www.mathworks.com/help/roadrunner/) from Mathworks. There are also providers like [InvertedAI](https://www.inverted.ai/home) who can generate scenarios based on your requirements.
+- 若要生成简单且随机化的交通场景，请参阅 [CARLA 快速开始指南](https://carla.readthedocs.io/en/latest/start_quickstart/#run-a-python-client-example-script)
+- 复杂场景可以借助第三方工具创建。其中一个例子是 Mathworks 的 [RoadRunner](https://www.mathworks.com/help/roadrunner/)。也有像 [InvertedAI](https://www.inverted.ai/home) 这样的提供商，可按你的需求生成场景。
 
-Scenario simulation can be recorded and saved as a CARLA log file (in custom binary file format). The log file can then be played back, queried, and used to generate ground truths. See the [Scenario Configs](#scenario-configs) section for recorder details and helpful Python [scripts](https://carla.readthedocs.io/en/latest/adv_recorder/#sample-python-scripts) for this purpose.
+场景仿真可以录制并保存为 CARLA 日志文件（自定义二进制文件格式）。随后可回放、查询该日志文件，并用它生成真值数据。有关录制器细节及相关 Python [scripts](https://carla.readthedocs.io/en/latest/adv_recorder/#sample-python-scripts)，请参阅[场景配置](#scenario-configs)部分。
 
-The scenario logs used in this repo can be found [HERE](https://github.com/inverted-ai/metropolis/tree/master/examples)
+本仓库使用的场景日志可见[这里](https://github.com/inverted-ai/metropolis/tree/master/examples)
 
-#### Scenario Configs
+<a id="scenario-configs"></a>
+#### 场景配置
 
-To generate the ground truths, the SDG workflow needs to know the location of the various CARLA sensors, and their attributes. The camera config (.yaml) defines a list of sensors to place (rgb, depth, seg, etc.) and their location, angle, and quality. The log config (.json) provides a scenario ID as well as information on recording duration and start-time. Please refer to the provided [samples](https://github.com/inverted-ai/metropolis/tree/master/examples) for details.
+为了生成真值数据，SDG 工作流需要知道各类 CARLA 传感器的位置及其属性。camera config（`.yaml`）定义了要放置的传感器列表（rgb、depth、seg 等）及其位置、角度和质量。log config（`.json`）提供场景 ID，以及录制时长和起始时间等信息。详情请参阅提供的[示例](https://github.com/inverted-ai/metropolis/tree/master/examples)。
 
-## System Requirements
+## 系统要求
 
-- Linux with NVIDIA GPU and drivers
-- Docker Engine 28.0+ and Docker Compose v2
-- NVIDIA Container Toolkit (GPU access)
-- Git LFS (Large File Storage)
-- Internet access for pulling images and model weights
-- 250 GB Storage
-- 4x RTX GPUs (80+GB Vram)
+- Linux，并配有 NVIDIA GPU 和驱动
+- Docker Engine 28.0+ 与 Docker Compose v2
+- NVIDIA Container Toolkit（用于 GPU 访问）
+- Git LFS（Large File Storage）
+- 可联网以拉取镜像和模型权重
+- 250 GB 存储空间
+- 4x RTX GPUs（80+GB Vram）
 
-Optional:
+可选：
 
-- X11 if you need on-screen rendering for CARLA; the stack defaults to offscreen rendering but mounts X11 by default for flexibility
+- 如果你需要在屏幕上渲染 CARLA，则需要 X11；该堆栈默认使用离屏渲染，但仍默认挂载 X11 以保留灵活性
 
 ---
 
-## Workflow Usage
+## 工作流使用方式
 
-This recipe operates in three distinct stages: **Simulation**, **Augmentation**, and **Post-processing**, and there are 4 endpoints required to complete them (Carla, VLM, LLM, Cosmos Transfer). This section will cover high level usage assuming all endpoints are active. Please refer to the [quickstart](#quickstart-docker-compose) for help with spinning up the endpoints and the [Github](https://github.com/NVIDIA/metropolis-sdg-smart-cities) for a guided experience using a docker compose and jupyter notebook.
+本配方分为三个阶段：**仿真**、**增强**和**后处理**，完成这些阶段需要 4 个端点（Carla、VLM、LLM、Cosmos Transfer）。本节将介绍在所有端点都已激活前提下的高级用法。若需要了解如何启动这些端点，请参阅[快速开始](#quickstart-docker-compose)；若希望获得基于 docker compose 和 jupyter notebook 的引导式体验，请参阅 [Github](https://github.com/NVIDIA/metropolis-sdg-smart-cities)。
 
-### Stage 1 - Generating GT with Carla Simulation
+### 阶段 1 - 使用 Carla 仿真生成 GT
 
-This workflow uses the open source [Carla](https://carla.org/) simulator to simulate various kinds of traffic patterns and incidents at a variety of map locations. The current SDG release is based on Carla 0.9.16. This stage takes in 3 pieces of information: An unreal engine map to run the simulation in, a scenario log (.log) containing the actor playback information (car/pedestrian movements), and a sensor config that defines where the cameras are placed and what info they should record (.json / .yaml). Samples of all 3 of these files can be found in this [repo](https://github.com/inverted-ai/metropolis) for your convenience. For information on creating your own scenario files see [workflow inputs](#workflow-inputs).
+该工作流使用开源的 [Carla](https://carla.org/) 仿真器，在多种地图位置上模拟不同类型的交通模式和事故。当前 SDG 版本基于 Carla 0.9.16。此阶段需要 3 类输入信息：用于运行仿真的 Unreal Engine 地图、包含参与者回放信息（车辆/行人运动）的场景日志（`.log`），以及定义摄像头放置位置和记录内容的 sensor config（`.json` / `.yaml`）。为了方便使用，这三个文件的示例都可以在这个[仓库](https://github.com/inverted-ai/metropolis)中找到。关于如何创建自己的场景文件，请参阅[工作流输入](#workflow-inputs)。
 
 <img src="assets/Stage1.png" width="50%">
 
 ---
 
-Before running the log simulations, you have the option to customize a few settings in a global config. Please reference the [Carla Documentation](https://carla.readthedocs.io/en/latest/python_api/) for more info on specific variables.
+在运行日志仿真之前，你可以先在一个全局配置中自定义一些设置。关于具体变量的更多信息，请参考 [Carla Documentation](https://carla.readthedocs.io/en/latest/python_api/)。
 
 ``` json
 {
@@ -128,7 +131,7 @@ Before running the log simulations, you have the option to customize a few setti
 }
 ```
 
-With the carla server running on the host and port set in the global config specified above, you can run the simulation for a single log file like so:
+在指定的全局配置中设置好 host 和 port，并确保 Carla server 正在运行后，你可以像下面这样对单个日志文件运行仿真：
 
 ``` bash
 python modules/carla-ground-truth-generation/main.py \
@@ -140,27 +143,27 @@ python modules/carla-ground-truth-generation/main.py \
             --target-fps 30
 ```
 
-See the [workflow inputs](#workflow-inputs) section for more details on what each of these files provide.
+有关这些文件分别提供什么信息的更多细节，请参见[工作流输入](#workflow-inputs)部分。
 
-After generation is complete you should have a set of ground-truth images:
+生成完成后，你应该会得到一组真值图像：
 
 <img src="./assets/rgb.gif" width="400"><img src="./assets/edges.gif" width="400">
 
 <img src="./assets/seg.gif" width="400"><img src="./assets/depth.gif" width="400">
 
-In addition to to images, the simulation records other data such as masks, bbox, collisions, etc. This data can be directly taken for use in fine-tuning or training tasks, or further augmented in the next stages of the workflow.
+除了图像之外，仿真还会记录 masks、bbox、collisions 等其他数据。这些数据既可以直接用于微调或训练任务，也可以在工作流下一阶段进一步增强。
 
-### Stage 2 - Creating augmented data from ground-truth
+### 阶段 2 - 从真值创建增强数据
 
-For stage 2, we'll take the ground truth data generated by Carla and augment it to expand our dataset variety. This is done in 3 steps. First, the input video is captioned using Cosmos Reason 1. This gives us a detailed caption that captures attributes such as lighting, physical events, etc. Next, we can generate variations on this prompt using an LLM. The goal is to preserve all the core elements of the scene changing just a few attributes at a time, such as time of day or weather. This step can be repeated as many times as we like, creating a new augmented scene caption for each. Finally, we can pass these augmented prompts along with the ground-truth data to Cosmos Transfer 2.5 to generate a new augmented videos.
+在第 2 阶段，我们将利用 Carla 生成的真值数据进行增强，以扩展数据集的多样性。这一阶段分为 3 步。首先，使用 Cosmos Reason 1 对输入视频生成字幕，从而得到包含光照、物理事件等属性的详细描述。接着，我们可以借助 LLM 为该提示生成变化版本。目标是在保留场景核心元素的同时，每次只改变少量属性，如一天中的时间或天气。这个步骤可以重复多次，从而为每种变化生成新的增强场景描述。最后，我们可以将这些增强后的提示与真值数据一起传给 Cosmos Transfer 2.5，生成新的增强视频。
 
-Prompting for this stage can also be done manually, although this is not recommended for larger batches of augmentations. For a more in-depth usage guide for Cosmos Transfer see [CARLA Sim2Real Augmentation Guide](../../inference/transfer2_5/inference-carla-sdg-augmentation/inference.md)
+此阶段也可以手动编写提示词，但对于大批量增强并不推荐。关于 Cosmos Transfer 的更深入使用说明，请参阅 [CARLA Sim2Real Augmentation Guide](../../inference/transfer2_5/inference-carla-sdg-augmentation/inference.md)
 
 <img src="assets/Stage2.png" width="50%">
 
 ---
 
-To control the Cosmos Transfer generation you can put together a simple config file defining the captioning prompts, and augmentation variables to use. At runtime, one variable will be chosen randomly from each of the lists to generate the augmented caption and video. Below is a cut down version of the configuration see the [sample config](https://github.com/NVIDIA/metropolis-sdg-smart-cities/blob/main/modules/augmentation/configs/config_carla.yaml) on the github for the full spec.
+为了控制 Cosmos Transfer 的生成过程，你可以编写一个简单的配置文件，定义字幕提示词和要使用的增强变量。运行时会从每个列表中随机选择一个变量，用于生成增强后的字幕和视频。下方是一个精简版配置，完整规范请参见 github 上的[sample config](https://github.com/NVIDIA/metropolis-sdg-smart-cities/blob/main/modules/augmentation/configs/config_carla.yaml)。
 
 ``` yaml
 data:
@@ -191,29 +194,29 @@ cosmos:
   model_version: ct25
 ```
 
-Once the config has been set you can generate your augmented videos:
+设置好配置后，你就可以生成增强视频：
 
 ``` bash
 python modules/augmentation/modules/cli.py --config /path/to/augmentation_config.yaml
 ```
 
-**Augmentations sunrise vs night:**
+**日出与夜晚增强效果对比：**
 
 <img src="./assets/aug.gif" width="400"><img src="./assets/aug2.gif" width="400">
 
-### Stage 3 - Processing data for post-training tasks
+### 阶段 3 - 为后训练任务处理数据
 
-At this point, we have successfully created a ground-truth dataset, and augmented it to increase variety. The final step is to package all this information up for actual use in model training or fine-tuning. To do this we'll perform 2 actions: generate SOM overlays and Q&A pairs.
+到这里，我们已经成功创建了一个真值数据集，并通过增强提高了其多样性。最后一步是把这些信息打包成可实际用于模型训练或微调的格式。为此，我们将执行两项操作：生成 SOM 叠加结果和 Q&A 对。
 
-SOM (set of marks) is a structured labeling approach where points of interest are annotated with discrete marks or identifiers. In our case we will add bounding boxes as well as numeric IDs to specific cars involved in the incident. These additional labels help ground the VLM, improving the quality of fine-tuning.
+SOM（set of marks）是一种结构化标注方法，会为关注目标添加离散标记或标识符。在本场景中，我们会为事故相关的特定车辆添加 bounding boxes 和数字 ID。这些额外标签有助于对 VLM 进行 grounding，从而提升微调质量。
 
-Q&A pairs are text prompts and responses automatically generated from the ground-truth data. They provide a useful mechanism for fine-tuning VLMs by enabling the model to learn from the dataset in a semi-supervised or self-supervised manner.
+Q&A 对是根据真值数据自动生成的文本提示与回答。它们通过半监督或自监督方式帮助模型从数据集中学习，因此是微调 VLM 的有效机制。
 
 <img src="assets/Stage3.png" width="50%">
 
 ---
 
-To overlay the ground-truth bbox data you can simply pass in the augmented video along with it's corresponding ground-truth data generated in stage 1.
+要叠加真值 bbox 数据，你只需传入增强后的视频以及与之对应的第 1 阶段生成的真值数据。
 
 ```bash
 python modules/carla-ground-truth-generation/som.py \
@@ -222,11 +225,11 @@ python modules/carla-ground-truth-generation/som.py \
       --output-video /path/to/SOM.mp4
 ```
 
-**Overlayed Video:**
+**叠加后的视频：**
 
 <img src="./assets/som.gif" width="400">
 
-Using our overlayed videos, we can generate a Q&A dataset for finetuning a VLM. Since we know which vehicles are involved in incidents we can create a large number of simple yes or no questions grounded in our videos.
+利用叠加后的视频，我们可以生成一个用于微调 VLM 的 Q&A 数据集。由于我们知道哪些车辆参与了事故，因此可以基于视频创建大量简单的是/否问题。
 
 ``` bash
 python modules/postprocess/postprocess_for_vlm.py \
@@ -236,7 +239,7 @@ python modules/postprocess/postprocess_for_vlm.py \
                 --run_id 1
 ```
 
-**Q&A format:**
+**Q&A 格式：**
 
 ```
 "id": "events_collision_rgb_som.mp4",​
@@ -250,27 +253,28 @@ python modules/postprocess/postprocess_for_vlm.py \
   ]
 ```
 
-## Quickstart (Docker Compose)
+<a id="quickstart-docker-compose"></a>
+## 快速开始（Docker Compose）
 
-1. Clone the repository
+1. 克隆仓库
 
     ```bash
     git clone https://github.com/NVIDIA/metropolis-sdg-smart-cities.git
     cd metropolis-sdg-smart-cities
     ```
 
-1. Download sample CARLA logs
+1. 下载示例 CARLA 日志
 
-    > **Note:** Sample logs are provided by Inverted AI. Please review the data [terms of use](https://github.com/inverted-ai/metropolis/blob/master/LICENSE.md) to determine whether they are appropriate for your purposes. If you have your own data you may skip this step and place it under `./data/examples/`
+    > **注意：** 示例日志由 Inverted AI 提供。请先查看数据[使用条款](https://github.com/inverted-ai/metropolis/blob/master/LICENSE.md)，以判断它们是否适合你的用途。如果你已有自己的数据，可以跳过此步骤并将其放入 `./data/examples/`。
 
     ```bash
     git clone https://github.com/inverted-ai/metropolis.git
     mv ./metropolis/examples ./data/examples
     ```
 
-1. Set up the deployment configuration.
+1. 设置部署配置。
 
-    You need to provide your NGC_API_KEY [with access to pull images from build.nvidia](https://build.nvidia.com/settings/api-keys) and Hugging Face Token with access to the checkpoints mentioned under [Prerequisites](#prerequisites). The other parameters are optional to configure GPU IDs that each NIM/service should run on, and ports to launch the NIMs on. By default, they assume a homogeneous deployment to a system with at least 4x RTX 6000 Pro or equivalent.
+    你需要提供 `NGC_API_KEY`（需具备[从 build.nvidia 拉取镜像](https://build.nvidia.com/settings/api-keys)的权限）以及对[先决条件](#prerequisites)中所述 checkpoints 具有访问权限的 Hugging Face Token。其他参数是可选项，用于配置各个 NIM/service 使用的 GPU ID，以及启动这些 NIM 的端口。默认配置假设部署在至少配备 4x RTX 6000 Pro 或同等级 GPU 的同构系统上。
 
     ```bash
     cd deploy/compose
@@ -278,20 +282,20 @@ python modules/postprocess/postprocess_for_vlm.py \
     # Edit values for NGC_API_KEY, HF_TOKEN, GPU IDs, ports, etc.
     ```
 
-1. Deploy the stack.
+1. 部署整个堆栈。
 
-    The deployment script automatically performs prerequisite checks before starting containers:
+    部署脚本在启动容器之前会自动执行先决条件检查：
 
-    - **GPU availability**: Verifies NVIDIA GPUs are detected and accessible
-    - **NVIDIA Container Toolkit**: Confirms GPU access from containers is configured
-    - **Port availability**: Checks that required ports (8001, 8002, 8080, 8888, 2000-2002) are not already in use
-    - **Docker and Docker Compose**: Verifies required tools are installed and Docker daemon is running
+    - **GPU 可用性**：验证是否检测到并可访问 NVIDIA GPUs
+    - **NVIDIA Container Toolkit**：确认容器中的 GPU 访问配置正确
+    - **端口可用性**：检查所需端口（8001、8002、8080、8888、2000-2002）是否已被占用
+    - **Docker 和 Docker Compose**：验证所需工具已安装且 Docker daemon 正在运行
 
-    If any critical checks fail, the script will exit with clear error messages. Address any issues before retrying deployment.
+    如果任何关键检查失败，脚本会给出清晰的错误信息并退出。请先解决相关问题，再重新尝试部署。
 
-    There are two main deployment options available:
+    有两种主要的部署方式：
 
-    - **Homogeneous Deployment:** This mode launches all NIM services (VLM, LLM, Cosmos-Transfer) and the Workbench on a single machine (default, no extra arguments). It is recommended for systems with at least 4 suitable GPUs (RTX support and 80+ GB VRAM). Simply run `./deploy.sh` to start the entire stack locally.
+    - **同构部署：** 此模式会在单台机器上启动所有 NIM 服务（VLM、LLM、Cosmos-Transfer）和 Workbench（默认模式，无需额外参数）。建议用于至少拥有 4 张合适 GPU（支持 RTX 且显存 80+ GB）的系统。只需运行 `./deploy.sh` 即可在本地启动整个堆栈。
 
     ```bash
     # On the target machine
@@ -303,18 +307,18 @@ python modules/postprocess/postprocess_for_vlm.py \
     # NIMs: VLM http://<host>:8001, LLM http://<host>:8002, Cosmos-Transfer http://<host>:8080
     ```
 
-    > **Note:** On the first run, you may see warnings such as "pull access denied for `smartcity-sdg-workbench`" or for the Transfer Gradio container. This is expected and harmless—the required images are built locally by `deploy.sh` during initial setup.
+    > **注意：** 首次运行时，你可能会看到诸如“pull access denied for `smartcity-sdg-workbench`”或 Transfer Gradio 容器的警告。这是预期且无害的——`deploy.sh` 会在初始设置期间本地构建所需镜像。
 
-    - **Heterogeneous Deployment:** This mode allows you to run the NIM stack (VLM, LLM, Cosmos-Transfer) on one machine and the Workbench (with CARLA) on another, using the `nim` and `workbench` arguments respectively. This is useful if you wish to distribute resource usage across multiple hosts. You'll need to set the `NIM_HOST` environment variable on the Workbench node to point to the NIM node.
+    - **异构部署：** 此模式允许你在一台机器上运行 NIM 堆栈（VLM、LLM、Cosmos-Transfer），在另一台机器上运行 Workbench（带 CARLA），分别使用 `nim` 和 `workbench` 参数。这适合希望将资源负载分散到多台主机的场景。你需要在 Workbench 节点上设置 `NIM_HOST` 环境变量，使其指向 NIM 节点。
 
-    The NIM stack requires a machine with 3 GPUs with 80+ GB VRAM (Ampere or later) to launch the 3 inference endpoints using the command below:
+    NIM 堆栈需要一台配备 3 张 80+ GB VRAM GPU（Ampere 或更新架构）的机器，以通过下述命令启动 3 个推理端点：
 
     ```bash
     ./deploy.sh nim
     # Note the printed NIM_HOST and use it on the workbench node.
     ```
 
-    Once the NIM stack is up, launch the CARLA server and notebook/workbench stack, which requires at least 1 RTX-compatible GPU (L40/RTX 6000 Pro or equivalent) using the following command:
+    当 NIM 堆栈启动后，再启动 CARLA server 和 notebook/workbench 堆栈；后者至少需要 1 张兼容 RTX 的 GPU（L40/RTX 6000 Pro 或同等级）并使用以下命令：
 
     ```bash
     # On the second machine, ensure steps 1-3 are complete to have the repository and configuration ready before this step.
@@ -323,13 +327,13 @@ python modules/postprocess/postprocess_for_vlm.py \
     ./deploy.sh workbench
     ```
 
-    Choose the option that best fits your available hardware and workflow needs.
+    请根据你的可用硬件和工作流需求选择最合适的方案。
 
-1. Verify deployment and start using the system
+1. 验证部署并开始使用系统
 
-    **Note:** On first deployment, NIMs require several minutes to download model checkpoints and initialize. Wait a few minutes before accessing services.
+    **注意：** 首次部署时，NIM 需要数分钟下载模型 checkpoints 并完成初始化。请等待几分钟后再访问服务。
 
-    **Check NIM health endpoints:**
+    **检查 NIM 健康检查端点：**
 
     ```bash
     # If using heterogeneous deployment, set NIM_HOST to the NIM node IP first:
@@ -340,54 +344,54 @@ python modules/postprocess/postprocess_for_vlm.py \
     ```
 
     - Cosmos-Transfer2.5 Gradio service:
-      - The notebook communicates with the Gradio server via the Gradio client. Opening `http://localhost:8080` (or `http://$NIM_HOST:8080` in heterogeneous deployments) in a browser is optional and mainly useful to verify the service is up.
+      - notebook 通过 Gradio client 与 Gradio server 通信。在浏览器中打开 `http://localhost:8080`（或异构部署下的 `http://$NIM_HOST:8080`）是可选的，主要用于确认服务已经启动。
 
-    - Open the Workbench (Jupyter):
-      - Visit `http://localhost:8888` (or `http://<WORKBENCH_HOST>:8888` if using heterogeneous deployment).
-      - Open the notebook `notebooks/carla_synthetic_data_generation.ipynb`. It is a self-guided walkthrough covering all three stages using the deployed services:
-        - Stage 1: CARLA ground truth generation
-        - Stage 2: COSMOS photo-realistic augmentation
-        - Stage 3: SoM-aligned post-processing for VLM training
+    - 打开 Workbench（Jupyter）：
+      - 访问 `http://localhost:8888`（若为异构部署，则访问 `http://<WORKBENCH_HOST>:8888`）。
+      - 打开 notebook `notebooks/carla_synthetic_data_generation.ipynb`。这是一个自引导式流程，使用已部署服务覆盖全部三个阶段：
+        - 阶段 1：CARLA 真值生成
+        - 阶段 2：COSMOS 照片级真实感增强
+        - 阶段 3：面向 VLM 训练的 SoM 对齐后处理
 
-1. Cleanup (when finished)
+1. 清理（完成后）
 
-    To stop and remove all containers:
+    要停止并移除所有容器：
 
     ```bash
     cd deploy/compose
     ./deploy.sh cleanup
     ```
 
-    This will stop and remove all containers from both the NIM and Workbench stacks. For heterogeneous deployments, run this command on both nodes (NIM node and Workbench node) to fully clean up all containers.
+    这会停止并移除 NIM 和 Workbench 两个堆栈中的所有容器。若采用异构部署，请在两个节点（NIM 节点和 Workbench 节点）上都运行此命令，以彻底清理所有容器。
 
-## Resources
+## 资源
 
-### Related Cookbook Recipes
+### 相关 Cookbook 配方
 
-- **[Cosmos Transfer 2.5 Sim2Real for Simulator Videos](../../inference/transfer2_5/inference-carla-sdg-augmentation/inference.md)** - Deep dive into augmentation techniques for CARLA simulated driving data
-- **[Intelligent Transportation Fine-tuning](../../post_training/reason1/intelligent-transportation/post_training.md)** - Guide for fine-tuning VLMs on your generated synthetic data
-- **[CARLA Simulator](https://carla.org/)** - Official CARLA documentation and tutorials
+- **[Cosmos Transfer 2.5 用于仿真器视频的 Sim2Real](../../inference/transfer2_5/inference-carla-sdg-augmentation/inference.md)** - 深入了解 CARLA 仿真驾驶数据的增强技术
+- **[Intelligent Transportation Fine-tuning](../../post_training/reason1/intelligent-transportation/post_training.md)** - 关于如何在生成的合成数据上微调 VLM 的指南
+- **[CARLA Simulator](https://carla.org/)** - 官方 CARLA 文档与教程
 
-### Deployment & Integration
+### 部署与集成
 
-- **[SDG for Smart Cities GitHub](https://github.com/NVIDIA/metropolis-sdg-smart-cities)** - Complete deployment stack with Docker Compose, configuration files, and Jupyter notebooks
-- **[VSS Documentation](https://docs.nvidia.com/vss/latest/#)** - Deploy fine-tuned models with [Cosmos Reason1 on VSS](https://docs.nvidia.com/vss/latest/content/installation-vlms.html#local-models-cosmos-reason1)
+- **[SDG for Smart Cities GitHub](https://github.com/NVIDIA/metropolis-sdg-smart-cities)** - 包含 Docker Compose、配置文件和 Jupyter notebooks 的完整部署堆栈
+- **[VSS Documentation](https://docs.nvidia.com/vss/latest/#)** - 在 VSS 上部署经过微调的模型，可参见 [Cosmos Reason1 on VSS](https://docs.nvidia.com/vss/latest/content/installation-vlms.html#local-models-cosmos-reason1)
 
-### Models Used
+### 使用的模型
 
-- **[Cosmos Transfer 2.5](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)** - Multi-control video generation for photorealistic augmentation
-- **[Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)** - Vision-language model for video captioning
-- **[Nemotron](https://developer.nvidia.com/nemotron)** - LLM for prompt augmentation and variation
+- **[Cosmos Transfer 2.5](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)** - 面向照片级真实感增强的多控制视频生成
+- **[Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)** - 用于视频字幕生成的视觉语言模型
+- **[Nemotron](https://developer.nvidia.com/nemotron)** - 用于提示增强与变体生成的 LLM
 
 ---
 
-## Document Information
+## 文档信息
 
-**Publication Date:** November 26, 2025
+**发布日期：** 2025 年 11 月 26 日
 
-### Citation
+### 引用
 
-If you use this recipe or reference this work, please cite it as:
+如果你使用了此配方或参考了这项工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_synthetic_data_generation_2025,
@@ -400,6 +404,6 @@ If you use this recipe or reference this work, please cite it as:
 }
 ```
 
-**Suggested text citation:**
+**建议的文本引用：**
 
-> Aidan Ladenburg, & Adityan Jothi (2025). Synthetic Data Generation (SDG) for Traffic Scenarios. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html>
+> Aidan Ladenburg、Adityan Jothi（2025）。面向交通场景的合成数据生成 (SDG)。载于 *NVIDIA Cosmos Cookbook*。访问地址：<https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html>
