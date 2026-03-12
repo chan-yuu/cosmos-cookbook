@@ -1,4 +1,4 @@
-# Cosmos Transfer 1 Weather Augmentation for Intelligent Transportation System (ITS) Images
+# 用于智能交通系统 (ITS) 图像天气增强的 Cosmos Transfer 1
 
 > **Authors:** [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)
 > **Organization:** NVIDIA
@@ -7,45 +7,45 @@
 |-----------|--------------|--------------|
 | [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Data augmentation |
 
-This tutorial demonstrates how to use the Cosmos Transfer 1 model for Synthetic Data Generation (SDG) to augment data and improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
+本教程演示如何使用 Cosmos Transfer 1 模型进行合成数据生成（SDG），以增强数据并提升下游计算机视觉（CV）或视觉语言模型（VLM）算法的准确性。
 
-- [Setup and System Requirement](setup.md)
+- [安装与系统要求](setup.md)
 
-## Why Weather Augmentation Matters
+## 为什么天气增强很重要
 
-Acquiring Intelligent Transportation System (ITS) data in adverse weather conditions is time consuming and challenging, and adding weather-based diversity to pre-recorded datasets is prohibitive and impossible. This data scarcity leads to poor performance of computer vision models in real-world adverse weather scenarios. We can address this critical gap by using Cosmos Transfer 1 to perform weather augmentation, generating synthetic weather-diverse training data from existing clear-weather datasets, thus significantly improving the robustness and accuracy of downstream ITS object detection models across various weather conditions.
+在恶劣天气条件下采集智能交通系统（ITS）数据既耗时又困难，而为预先录制的数据集加入基于天气的多样性往往成本高昂，甚至无法实现。数据稀缺会导致计算机视觉模型在真实世界恶劣天气场景中的表现不佳。我们可以通过使用 Cosmos Transfer 1 执行天气增强来弥补这一关键缺口，从现有的晴天数据集中生成具有天气多样性的合成训练数据，从而显著提升下游 ITS 目标检测模型在各种天气条件下的鲁棒性和准确性。
 
-## Demonstration Overview
+## 演示概览
 
-This is a demonstration of using Cosmos Transfer 1 for weather augmentation of ITS images. To showcase the impact, this tutorial walks through a step-by-step Cosmos Transfer 1 weather augmentation process for ITS images to improve a downstream ITS object detector RT-DETR model.
+这是一个使用 Cosmos Transfer 1 对 ITS 图像进行天气增强的演示。为展示其效果，本教程将逐步讲解如何使用 Cosmos Transfer 1 对 ITS 图像进行天气增强，以提升下游 ITS 目标检测器 RT-DETR 模型的表现。
 
-## Cosmos Transfer 1 Pipeline Components
+## Cosmos Transfer 1 流程组件
 
-### Sample Input ITS Images/Videos
+### ITS 图像/视频示例输入
 
-Start with clear daylight highway scenes as the base input for augmentation.
+从晴朗白天的高速公路场景开始，作为增强的基础输入。
 
 ![Input image](assets/input.jpg)
 
-> **Note**: If you are dealing with images only, you need to create a video with a repeating image frame before proceeding with the next steps and Cosmos Transfer 1.
+> **Note**: 如果你处理的只有图像，在继续执行后续步骤并使用 Cosmos Transfer 1 之前，需要先将重复图像帧制作成视频。
 
-### Video Captioning Using a VLM
+### 使用 VLM 进行视频描述生成
 
-First, generate detailed captions of the input images using a VLM as captioner:
+首先，使用 VLM 作为描述生成器，为输入图像生成详细描述：
 
-> "The video depicts a busy highway scene during what appears to be late afternoon, as indicated by the long shadows cast by the trees and vehicles. The sky is clear and blue, suggesting fair weather with no visible clouds. The highway is multi-lane, with traffic flowing in both directions. There are several cars on the road, varying in color and model, indicating a mix of personal vehicles. The surrounding landscape includes dense greenery on both sides of the highway, with trees lining the edges. In the background, there are hills or low mountains, adding depth to the scene. The overall atmosphere is calm yet active, typical of a weekday commute"
+> “该视频展示了一个繁忙的高速公路场景，从树木和车辆投下的长阴影来看，时间似乎是傍晚时分。天空晴朗蔚蓝，表明天气良好且没有可见云层。高速公路为多车道，双向车流通行。道路上有多辆汽车，颜色和车型各异，说明其中混有多种私人车辆。高速公路两侧环境由茂密的绿色植被组成，边缘排列着树木。背景中可以看到丘陵或低山，为场景增加了纵深感。整体氛围平静而活跃，符合工作日通勤时段的典型特征。”
 
-> **Note**: We used Qwen 2.5 VL for captioning with the following input prompt:
+> **Note**: 我们使用 Qwen 2.5 VL 进行描述生成，输入提示词如下：
 
 > *Describe this video in detail and please include weather or time of the day detail at the start.*
 
-### Prompt Augmentation for Rainy Night Conditions Using a LLM
+### 使用 LLM 为雨夜条件增强提示词
 
-Next, use a LLM to augment the caption for the desired weather conditions (rainy night):
+接下来，使用 LLM 根据目标天气条件（雨夜）增强描述：
 
-> "The video depicts a busy highway scene during a rainy night, shrouded in deep darkness. The sky is obscured, and the only visible light comes from scattered headlights and dim streetlights, casting faint reflections on the rain-soaked road. The highway is multi-lane, with traffic flowing in both directions, and the surrounding landscape is barely visible, with dense greenery on both sides of the highway and hills or low mountains in the background, but these features are only faintly discernible due to the darkness. There are several cars on the road, varying in color and model, their headlights illuminating the rain-soaked road, where puddles and thin streams of water shimmer faintly. The overall atmosphere is calm yet active, typical of a nighttime commute."
+> “该视频展示了一个繁忙的高速公路雨夜场景，笼罩在深沉的黑暗之中。天空被遮蔽，仅有零星的车灯和昏暗的路灯可见，在被雨水浸湿的道路上投下微弱的反光。高速公路为多车道，双向车流通行，周围景观几乎难以辨认，只能依稀看出高速公路两侧有茂密的绿植，背景中还有丘陵或低山，但这些特征因黑暗而仅能隐约看见。道路上有多辆颜色和车型各异的汽车，它们的车灯照亮了湿漉漉的路面，路面上的积水和细小水流微微闪烁。整体氛围平静而活跃，是典型的夜间通勤场景。”
 
-NOTE: We used Llama 3.1 with the following input prompt for weather augmentation:
+NOTE: 我们使用 Llama 3.1，并采用以下输入提示词进行天气增强：
 
 > *I have the following caption describing a video captured by a CCTV camera. I want to adapt this caption so that it accurately reflects the following environmental condition. The updated caption will be used as a prompt for a video generation model.*
 >
@@ -62,25 +62,25 @@ NOTE: We used Llama 3.1 with the following input prompt for weather augmentation
 > *Environmental Condition to Reflect:*
 > *{condition}*
 
-The weather condition description for rainy night is as follows:
+雨夜的天气条件描述如下：
 
 > *Rainy night shrouded in deep darkness, with only scattered headlights and dim streetlights casting faint reflections on the rain-soaked road, where puddles and thin streams of water shimmer faintly.*
 
-### Cosmos Transfer 1 Output Image for Rainy Night
+### Cosmos Transfer 1 在雨夜条件下的输出图像
 
-Using the augmented prompt, Cosmos Transfer 1 generates realistic rainy night scenes while preserving the structural elements of the original scene.
+使用增强后的提示词，Cosmos Transfer 1 可以在保留原始场景结构元素的同时，生成逼真的雨夜场景。
 
 ![Rainy night](assets/rainy_night.jpg)
 
-> **Note**: We have chosen the middle frame of the output video from Cosmos Transfer 1.
+> **Note**: 我们选择了 Cosmos Transfer 1 输出视频的中间帧。
 
-## Control Parameters in Cosmos Transfer 1
+## Cosmos Transfer 1 中的控制参数
 
-In general, it is possible to control for vis, edge, segmentation, and depth when running Cosmos Transfer 1. However, experiments have demonstrated that when controlling only for **segmentation and depth**, the generated images are well suited for daylight/weather augmentations, especially when generating night scenes.
+总体而言，在运行 Cosmos Transfer 1 时可以控制 vis、edge、segmentation 和 depth。然而，实验表明，当仅控制 **segmentation 和 depth** 时，生成图像最适合用于白天/天气增强，尤其是在生成夜间场景时。
 
-### Recommended Control Configuration
+### 推荐的控制配置
 
-The recommended control config file is as follows:
+推荐的控制配置文件如下：
 
 ```json
 {
@@ -97,79 +97,79 @@ The recommended control config file is as follows:
 }
 ```
 
-> **Note**: Control weights with magnitude of 0.9 are used so that the output image adheres better to the input image.
+> **Note**: 使用了 0.9 的控制权重，以便输出图像更好地贴合输入图像。
 
-### Removing Vis and Edge Controls
+### 移除 Vis 和 Edge 控制
 
-To illustrate why vis and edge controls are removed when using Cosmos Transfer 1, two rainy night images were generated from the same input image:
+为了说明在使用 Cosmos Transfer 1 时为什么要移除 vis 和 edge 控制，我们基于同一张输入图像生成了两张雨夜图像：
 
-1. **With all controls** (vis, edge, seg, depth): Night scenes are not generated as expected.
-2. **With only seg and depth controls**: The generated image achieves the desired darkness level.
+1. **使用全部控制**（vis、edge、seg、depth）：无法按预期生成夜景。
+2. **仅使用 seg 和 depth 控制**：生成图像达到了期望的黑暗程度。
 
-#### Cosmos Transfer 1 Generated Image - All Controls (vis, edge, depth, seg control weights of 0.9)
+#### Cosmos Transfer 1 生成图像 - 全部控制（vis、edge、depth、seg 的 control weights 为 0.9）
 
 ![Rainy night with all controls](assets/rainy_night_all_09.jpg)
 
-#### Cosmos Transfer 1 Generated Image - Depth and Seg Only (control weights of 0.9)
+#### Cosmos Transfer 1 生成图像 - 仅使用 Depth 和 Seg（control weights 为 0.9）
 
 ![Rainy night with depth and segmentation controls](assets/rainy_night.jpg)
 
-As demonstrated, using all controls (vis, edge, depth, seg) fails to generate proper night scenes, while using only depth and seg controls produces the expected dark imagery.
+如上所示，使用全部控制（vis、edge、depth、seg）无法生成合适的夜景，而仅使用 depth 和 seg 控制则能生成符合预期的黑暗图像。
 
-## Training Downstream ITS Detector
+## 训练下游 ITS 检测器
 
-To illustrate the impact of Cosmos Transfer 1 weather augmentation on a downstream ITS detector, we have trained an RT-DETR detector with and without the Cosmos Transfer 1 augmented images (using all possible weather/lighting conditions). We evaluated the trained models on three public KPIs.
+为了说明 Cosmos Transfer 1 天气增强对下游 ITS 检测器的影响，我们分别使用有无 Cosmos Transfer 1 增强图像（采用所有可能的天气/光照条件）训练了 RT-DETR 检测器。我们在三个公开 KPI 上评估了训练后的模型。
 
-## Results
+## 结果
 
-Experiments were conducted with a set of ~12k real ITS images and ~84K weather augmented Cosmos Transfer 1 images using the pipeline described in this tutorial. Below are the results on the three KPIs:
+我们使用约 ~12k 张真实 ITS 图像和约 ~84K 张由 Cosmos Transfer 1 通过本教程所述流程生成的天气增强图像进行了实验。以下是三个 KPI 的结果：
 
-## ACDC Dataset
+## ACDC 数据集
 
-The ACDC dataset is an Intelligent Transportation System (ITS)-related dataset with different weather conditions such as snow, fog, rain, and night. The dataset contains approximately ~2k images and can be found here: <https://acdc.vision.ee.ethz.ch/>
+ACDC 数据集是一个与智能交通系统（ITS）相关的数据集，包含雪、雾、雨和夜间等不同天气条件。该数据集约包含 ~2k 张图像，可在此处获取：<https://acdc.vision.ee.ethz.ch/>
 
-Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
+以下是在所有天气条件下，数据集中最常见目标（car、person、bicycle）的 AP50 结果：
 
 ![Result plot ACDC](assets/acdc_plots.png)
-As shown above, the blue curves (which are from the trained detector *with* Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+如上所示，蓝色曲线（来自使用 Cosmos Transfer 1 增强图像训练的检测器）在所有天气/光照条件和目标类别上都持续高于红色曲线的 AP50。
 
-## SUTD Dataset
+## SUTD 数据集
 
-The SUTD dataset is another ITS-related dataset with more diverse weather conditions such as snow, fog, rain, night, cloudy, and sunny. The dataset contains approximately ~10k images and can be found here: <https://sutdcv.github.io/SUTD-TrafficQA/#/download>
+SUTD 数据集是另一个 ITS 相关数据集，天气条件更加多样，包括雪、雾、雨、夜间、多云和晴天。该数据集约包含 ~10k 张图像，可在此处获取：<https://sutdcv.github.io/SUTD-TrafficQA/#/download>
 
-Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
+以下是在所有天气条件下，数据集中最常见目标（car、person、bicycle）的 AP50 结果：
 
 ![Result plot SUTD](assets/sutd_plots.png)
-As shown above, the blue curves (which are from the trained detector with Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+如上所示，蓝色曲线（来自使用 Cosmos Transfer 1 增强图像训练的检测器）在所有天气/光照条件和目标类别上都持续高于红色曲线的 AP50。
 
-## DAWN Dataset
+## DAWN 数据集
 
-The DAWN dataset is also another ITS-related dataset with different weather conditions such as snow, fog, rain, and sandy. The dataset contains approximately ~1k images and can be found here: <https://www.kaggle.com/datasets/shuvoalok/dawn-dataset>
+DAWN 数据集也是一个 ITS 相关数据集，包含雪、雾、雨和沙尘等不同天气条件。该数据集约包含 ~1k 张图像，可在此处获取：<https://www.kaggle.com/datasets/shuvoalok/dawn-dataset>
 
-Below are the AP50 results of the most common objects (car, person) in the dataset along all weather conditions:
+以下是在所有天气条件下，数据集中最常见目标（car、person）的 AP50 结果：
 
 ![Result plot DAWN](assets/dawn_plots.png)
-As shown above, the blue curves (which are from the trained detector *with* Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+如上所示，蓝色曲线（来自使用 Cosmos Transfer 1 增强图像训练的检测器）在所有天气/光照条件和目标类别上都持续高于红色曲线的 AP50。
 
-## Conclusion
+## 结论
 
-This tutorial demonstrates how Cosmos Transfer 1 can effectively augment ITS datasets with challenging weather conditions, leading to improved performance of downstream object detection models. These are the key insights:
+本教程展示了 Cosmos Transfer 1 如何有效地为 ITS 数据集增加具有挑战性的天气条件，从而提升下游目标检测模型的性能。以下是关键要点：
 
-- Use only segmentation and depth controls for optimal weather augmentation.
-- Proper prompt engineering is crucial for realistic weather condition generation.
-- Synthetic augmentation significantly improves model performance on rare weather conditions.
+- 仅使用 segmentation 和 depth 控制可获得最佳天气增强效果。
+- 合理的提示词工程对于生成逼真的天气条件至关重要。
+- 合成增强能显著提升模型在稀有天气条件下的表现。
 
-For more details on implementation and training configurations, refer to the accompanying setup and configuration files in this repository.
+有关实现和训练配置的更多细节，请参阅本仓库中配套的设置与配置文件。
 
 ---
 
-## Document Information
+## 文档信息
 
 **Publication Date:** October 09, 2025
 
-### Citation
+### 引用
 
-If you use this recipe or reference this work, please cite it as:
+如果你使用了此配方或引用了这项工作，请按如下方式引用：
 
 ```bibtex
 @misc{cosmos_cookbook_cosmos_transfer_1_2025,
