@@ -3,6 +3,12 @@
 [![Documentation](https://img.shields.io/badge/docs-cosmos--cookbook-blue)](https://nvidia-cosmos.github.io/cosmos-cookbook/)
 [![Contributing](https://img.shields.io/badge/contributing-guide-green)](CONTRIBUTING.md)
 
+## 中文说明
+
+本仓库包含对 Cosmos Cookbook 的中文整理内容。为避免版权争议并保留原始出处，请优先参考英文原版 README：
+
+- **Original English README**: <https://github.com/nvidia-cosmos/cosmos-cookbook/blob/main/README.md>
+
 A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
 **📚 [View the Full Documentation →](https://nvidia-cosmos.github.io/cosmos-cookbook/)** — Step-by-step workflows, case studies, and technical recipes
