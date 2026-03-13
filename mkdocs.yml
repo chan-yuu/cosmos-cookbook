@@ -1,8 +1,8 @@
 site_name: Cosmos Cookbook
 site_author: NVIDIA Cosmos
 site_url: https://nvidia-cosmos.github.io/cosmos-cookbook/
-repo_url: https://github.com/nvidia-cosmos/cosmos-cookbook
-repo_name: nvidia-cosmos/cosmos-cookbook
+repo_url: https://github.com/chan-yuu/cosmos-cookbook
+repo_name: chan-yuu/cosmos-cookbook
 docs_dir: build/docs
 nav:
   - Home: index.md
@@ -79,7 +79,7 @@ extra_javascript:
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 extra:
-  github_url: https://github.com/nvidia-cosmos/cosmos-cookbook
+  github_url: https://github.com/chan-yuu/cosmos-cookbook
 copyright: |
   &copy; Copyright 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 use_directory_urls: false
