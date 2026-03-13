@@ -3,183 +3,189 @@
 [![Documentation](https://img.shields.io/badge/docs-cosmos--cookbook-blue)](https://nvidia-cosmos.github.io/cosmos-cookbook/)
 [![Contributing](https://img.shields.io/badge/contributing-guide-green)](CONTRIBUTING.md)
 
-A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
+## 中文说明
 
-**📚 [View the Full Documentation →](https://nvidia-cosmos.github.io/cosmos-cookbook/)** — Step-by-step workflows, case studies, and technical recipes
+本仓库为 Cosmos Cookbook 的中文整理版本。为避免版权争议并保留原始出处，请优先参考英文原版 README：
+
+- **Original English README**: <https://github.com/nvidia-cosmos/cosmos-cookbook/blob/main/README.md>
+
+这是一个面向 **NVIDIA Cosmos 生态** 的综合指南。Cosmos 提供一组面向真实世界与行业场景的世界基础模型（World Foundation Models, WFMs），可用于机器人、仿真、自动驾驶系统与物理场景理解等方向。
+
+**📚 [查看完整文档 →](https://nvidia-cosmos.github.io/cosmos-cookbook/)** —— 包含分步骤工作流、案例研究与技术配方
 
 <https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276>
 
-## Latest Updates
+## 最新更新
 
-| **Date** | **Recipe** | **Model** | **Description** |
-|----------|------------|-----------|-----------------|
-| Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/gr00t-dreams/post-training.html) | Cosmos Predict 2.5, Reason 2 | End-to-end pipeline for synthetic robot trajectory generation: post-train Predict 2.5 on GR1 data, generate trajectories, and use Cosmos Reason 2 as video critic for rejection sampling |
-| Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html) | Cosmos Predict 2.5 | Recipe upgraded to **Cosmos Predict 2.5**: state-of-the-art robot policy via latent frame injection. Results—LIBERO 98.33%, RoboCasa **71.1%** (new SOTA, +4% over Predict2) |
-| Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/av_3d_grounding/post_training.html) | Cosmos Reason 1 & 2 | 3D vehicle grounding in autonomous driving: detect and localize vehicles in 3D from camera images with SFT (Cosmos-RL and Qwen-Finetune) |
-| Feb 4 | [Worker Safety in a Classical Warehouse](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/worker_safety/inference.html) | Cosmos Reason 2 | Zero-shot industrial safety compliance and hazard detection in classical warehouse environments using context-aware prompt engineering |
-| Jan 30 | [Prompt Guide](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/prompt_guide/reason_guide.html) | Cosmos Reason 2 | Inference Prompt Guide |
-| Jan 29 | [Video Search and Summarization with Cosmos Reason](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html) | Cosmos Reason 2 | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts across warehouses, factories, retail, and smart cities |
-| Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html) | Cosmos Predict 2 | State-of-the-art robot policy through latent frame injection for visuomotor control achieving 98.5% on LIBERO, 67.1% on RoboCasa, and 93.6% on ALOHA |
-| Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/physical-plausibility-check/post_training.html) | Cosmos Reason 2 | Supervised fine-tuning for physical plausibility prediction using VideoPhy-2 dataset with improved zero-shot and SFT performance |
-| Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/intelligent-transportation/post_training.html) | Cosmos Reason 2 | Post-training Cosmos Reason 2 for intelligent transportation scene understanding using WovenTraffic Safety dataset |
+| **日期** | **配方** | **模型** | **说明** |
+|----------|----------|----------|----------|
+| Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/gr00t-dreams/post-training.html) | Cosmos Predict 2.5, Reason 2 | 端到端的机器人合成轨迹生成流程：在 GR1 数据上后训练 Predict 2.5，生成轨迹，并使用 Cosmos Reason 2 作为视频评审器进行拒绝采样 |
+| Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html) | Cosmos Predict 2.5 | 配方升级至 **Cosmos Predict 2.5**：通过潜变量帧注入实现当前领先的机器人策略。结果：LIBERO 98.33%，RoboCasa **71.1%**（新 SOTA，较 Predict2 提升 4%） |
+| Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/av_3d_grounding/post_training.html) | Cosmos Reason 1 & 2 | 自动驾驶场景中的 3D 车辆定位：通过 SFT（Cosmos-RL 和 Qwen-Finetune）从相机图像中检测并定位车辆 |
+| Feb 4 | [Worker Safety in a Classical Warehouse](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/worker_safety/inference.html) | Cosmos Reason 2 | 在传统仓储环境中，利用上下文感知提示工程实现零样本工业安全合规与隐患检测 |
+| Jan 30 | [Prompt Guide](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/prompt_guide/reason_guide.html) | Cosmos Reason 2 | 推理提示指南 |
+| Jan 29 | [Video Search and Summarization with Cosmos Reason](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html) | Cosmos Reason 2 | GPU 加速的视频分析流程，支持大规模视频摘要、问答与直播告警，覆盖仓储、工厂、零售与智慧城市场景 |
+| Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html) | Cosmos Predict 2 | 通过潜变量帧注入实现领先的机器人策略，在 LIBERO 达到 98.5%、RoboCasa 达到 67.1%、ALOHA 达到 93.6% |
+| Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/physical-plausibility-check/post_training.html) | Cosmos Reason 2 | 基于 VideoPhy-2 数据集进行物理合理性预测的监督微调，提升零样本与 SFT 表现 |
+| Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/intelligent-transportation/post_training.html) | Cosmos Reason 2 | 基于 WovenTraffic Safety 数据集后训练 Cosmos Reason 2，用于智能交通场景理解 |
 
-## Upcoming Activities
+## 近期活动
 
 ### NVIDIA GTC 2026
 
-Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the [Cosmos sessions](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
+欢迎注册将于 **2026 年 3 月 16–19 日** 举办的 [NVIDIA GTC](https://www.nvidia.com/gtc/)，并将 [Cosmos 相关议程](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) 添加到日历。不要错过 Jensen Huang 在 3 月 16 日（周一）上午 11:00（PT）于 SAP Center 的重磅主题演讲。
 
 ### NVIDIA Cosmos Cookoff
 
-Introducing the **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
+**[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** 是一个为期四周的线上 Physical AI 挑战活动，时间为 **1 月 29 日至 2 月 26 日**，面向机器人、自动驾驶与视觉 AI 开发者。
 
-Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
+基于 NVIDIA Cosmos Reason 与 Cosmos Cookbook 配方进行构建——从第一视角机器人推理到物理合理性检查，再到交通场景感知模型，即有机会赢取 **5,000 美元**、**NVIDIA DGX Spark** 等奖项。
 
-**[Register Now →](https://luma.com/nvidia-cosmos-cookoff)**
+**[立即报名 →](https://luma.com/nvidia-cosmos-cookoff)**
 
-Sponsored by Nebius and Milestone.
+赞助方：Nebius 与 Milestone。
 
-## Prerequisites
+## 前置要求
 
-| Use Case | Linux (Ubuntu) | macOS | Windows |
+| 使用场景 | Linux (Ubuntu) | macOS | Windows |
 |----------|----------------|-------|---------|
-| Running cookbook recipes (GPU workflows) | ✅ Supported | ❌ | ❌ |
-| Local documentation & contribution | ✅ Supported | ✅ Supported | ⚠️ WSL recommended |
+| 运行 cookbook 配方（GPU 工作流） | ✅ 支持 | ❌ | ❌ |
+| 本地文档开发与贡献 | ✅ 支持 | ✅ 支持 | ⚠️ 推荐使用 WSL |
 
-### For Documentation & Contribution (All Platforms)
+### 文档开发与贡献（全平台）
 
-- **Git** with [Git LFS](#1-install-git-lfs-required)
-- **Python**: Version 3.10+
-- **Internet access** for cloning and dependencies
+- 安装 **Git** 与 [Git LFS](#1-安装-git-lfs-必需)
+- **Python** 版本 3.10+
+- 用于克隆与安装依赖的网络连接
 
-### For Running Cookbook Recipes (Ubuntu Only)
+### 运行 Cookbook 配方（仅 Ubuntu）
 
-Full GPU workflows require an Ubuntu Linux environment with NVIDIA GPUs.
+完整的 GPU 工作流需要 Ubuntu Linux 环境与 NVIDIA GPU。
 
-→ See **[Getting Started](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/setup.html)** for complete hardware and software requirements.
+→ 完整软硬件要求请见 **[Getting Started](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/setup.html)**。
 
-→ Or **[Deploy on Cloud](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/cloud_platform.html)** (Nebius, Brev, and more to come) for ready-to-launch GPU instances.
+→ 也可参考 **[Deploy on Cloud](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/cloud_platform.html)**（Nebius、Brev 等，后续将支持更多平台）快速启动 GPU 实例。
 
-## Quick Start
+## 快速开始
 
-### 1. Install Git LFS (Required)
+### 1. 安装 Git LFS（必需）
 
-> ⚠️ **Important**: This repository contains many media files (videos, images, demonstrations). Git LFS is **required** to clone and work with this repository properly.
+> ⚠️ **重要**：本仓库包含大量媒体文件（视频、图片、演示内容）。要正确克隆并使用仓库，必须安装 Git LFS。
 
 ```bash
-# Ubuntu/Debian (recommended)
+# Ubuntu/Debian（推荐）
 sudo apt update && sudo apt install git-lfs
 
-# Enable Git LFS globally
+# 全局启用 Git LFS
 git lfs install
 ```
 
-For other platforms (macOS, Windows, Fedora), see the official installation guide at **[git-lfs.com](https://git-lfs.com/)**.
+其他平台（macOS、Windows、Fedora）请参考官方安装指南：**[git-lfs.com](https://git-lfs.com/)**。
 
-If you've already cloned without LFS, fetch the media files with:
+如果你在未启用 LFS 的情况下已经克隆仓库，可执行：
 
 ```bash
 git lfs pull
 ```
 
-### 2. Install System Dependencies
+### 2. 安装系统依赖
 
 ```bash
-# Install uv (fast Python package manager)
+# 安装 uv（高性能 Python 包管理器）
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
 
-# Install just (command runner)
+# 安装 just（命令运行器）
 uv tool install -U rust-just
 ```
 
-For other platforms, see **[astral.sh/uv](https://astral.sh/uv/)** for installation instructions.
+其他平台请参考 **[astral.sh/uv](https://astral.sh/uv/)** 的安装说明。
 
-### 3. Clone and Setup Repository
+### 3. 克隆并初始化仓库
 
 ```bash
-# Clone the repository
-git clone https://github.com/nvidia-cosmos/cosmos-cookbook.git
+# 克隆仓库
+git clone https://github.com/chan-yuu/cosmos-cookbook.git
 cd cosmos-cookbook
 
-# Install dependencies and setup
+# 安装依赖并初始化
 just install
 ```
 
-### 4. Explore the Documentation
+### 4. 浏览文档
 
 ```bash
-# Serve documentation locally
-just serve-external  # For public documentation
-# or
-just serve-internal   # For internal documentation (if applicable)
+# 本地启动文档
+just serve-external  # 公共文档
+# 或
+just serve-internal  # 内部文档（如适用）
 ```
 
-Then open [http://localhost:8000](http://localhost:8000) in your browser.
+然后在浏览器中打开 [http://localhost:8000](http://localhost:8000)。
 
-## Repository Structure
+## 仓库结构
 
-The Cosmos Cookbook is organized into two main directories:
+Cosmos Cookbook 主要由两个目录构成：
 
 ### `docs/`
 
-Contains the source documentation in markdown files:
+包含 Markdown 文档源码：
 
-- Technical guides and workflows
-- End-to-end examples and case studies
-- Step-by-step recipes and tutorials
-- Getting started guides
+- 技术指南与工作流
+- 端到端示例与案例研究
+- 分步骤配方与教程
+- 入门指南
 
 ### `scripts/`
 
-Contains executable scripts referenced throughout the cookbook:
+包含 cookbook 中引用的可执行脚本：
 
-- Data processing and curation pipelines
-- Model evaluation and quality control scripts
-- Configuration files for post-training tasks
-- Automation tools and utilities
+- 数据处理与整理流程
+- 模型评估与质量控制脚本
+- 后训练任务配置文件
+- 自动化工具与实用脚本
 
-This structure separates documentation from implementation, making it easy to navigate between reading about workflows and executing the corresponding scripts.
+这种结构将文档与实现分离，便于在“阅读工作流说明”和“执行对应脚本”之间快速切换。
 
-## Media File Guidelines
+## 媒体文件规范
 
-When contributing media files, prefer `.mp4` over `.gif`:
+贡献媒体文件时，建议优先使用 `.mp4` 而不是 `.gif`：
 
-- **Better quality** — MP4 supports full color depth vs GIF's 256-color limit
-- **Smaller file size** — Modern video codecs compress far more efficiently
-- **Audio support** — MP4 can include narration when needed
+- **更高画质** —— MP4 支持完整色深，而 GIF 仅支持 256 色
+- **更小体积** —— 现代视频编码压缩效率更高
+- **支持音频** —— MP4 可在需要时包含解说音轨
 
-Use **H.264** encoding for universal browser compatibility.
+请使用 **H.264** 编码，以获得最佳浏览器兼容性。
 
-## Available Commands
+## 可用命令
 
 ```bash
-# Development
-just install          # Install dependencies and setup
-just setup            # Setup pre-commit hooks
-just serve-external   # Serve public documentation locally
-just serve-internal   # Serve internal documentation locally
+# 开发
+just install          # 安装依赖并初始化
+just setup            # 配置 pre-commit hooks
+just serve-external   # 本地启动公共文档
+just serve-internal   # 本地启动内部文档
 
-# Quality Control
-just lint            # Run linting and formatting
-just test            # Run all tests and validation
+# 质量控制
+just lint            # 运行 lint 与格式化
+just test            # 运行全部测试与校验
 
-# Continuous Integration
-just ci-lint         # Run CI linting checks
-just ci-deploy-internal         # Deploy internal documentation
-just ci-deploy-external         # Deploy external documentation
+# 持续集成
+just ci-lint         # 运行 CI lint 检查
+just ci-deploy-internal         # 部署内部文档
+just ci-deploy-external         # 部署公共文档
 ```
 
-## Contributing & Support
+## 贡献与支持
 
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the cookbook
-- **Report Issues**: Use [GitHub Issues](https://github.com/nvidia-cosmos/cosmos-cookbook/issues) for bugs and feature requests
-- **Share Success Stories**: We love hearing how you use Cosmos models creatively
+- **[贡献指南](CONTRIBUTING.md)** - 如何参与 Cosmos Cookbook
+- **问题反馈**：通过 [GitHub Issues](https://github.com/chan-yuu/cosmos-cookbook/issues) 提交缺陷与功能请求
+- **实践分享**：欢迎分享你使用 Cosmos 模型的创意与成果
 
-## License and Contact
+## 许可证与联系方式
 
-This project will download and install additional third-party open source software projects. Review the license terms of these open source projects before use.
+本项目会下载并安装额外的第三方开源软件。使用前请先阅读相关开源项目的许可证条款。
 
-NVIDIA Cosmos source code is released under the [Apache 2 License](https://www.apache.org/licenses/LICENSE-2.0).
+NVIDIA Cosmos 源代码采用 [Apache 2 License](https://www.apache.org/licenses/LICENSE-2.0) 发布。
 
-NVIDIA Cosmos models are released under the [NVIDIA Open Model License](https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license). For a custom license, please contact [cosmos-license@nvidia.com](mailto:cosmos-license@nvidia.com).
+NVIDIA Cosmos 模型采用 [NVIDIA Open Model License](https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license) 发布。如需定制许可，请联系 [cosmos-license@nvidia.com](mailto:cosmos-license@nvidia.com)。
